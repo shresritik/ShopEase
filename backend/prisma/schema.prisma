@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ENUMS
+enum ROLE {
+  SUPER_ADMIN @map("super-admin")
+  ADMIN       @map("admin")
+  USER        @map("user")
+}
+
+enum PERMISSION {
+  SUPER_ADMIN_GET    @map("super-admin.get")
+  SUPER_ADMIN_PUT    @map("super-admin.put")
+  SUPER_ADMIN_DELETE @map("super-admin.delete")
+  SUPER_ADMIN_POST   @map("super-admin.post")
+  ADMIN_GET          @map("admin.get")
+  ADMIN_PUT          @map("admin.put")
+  ADMIN_DELETE       @map("admin.delete")
+  ADMIN_POST         @map("admin.post")
+  USER_GET           @map("user.get")
+  USER_PUT           @map("user.put")
+  USER_DELETE        @map("user.delete")
+  USER_POST          @map("user.post")
+  PRODUCT_GET        @map("product.get")
+  PRODUCT_POST       @map("product.post")
+  PRODUCT_PUT        @map("product.put")
+  PRODUCT_DELETE     @map("product.delete")
+  REPORT_GET         @map("report.get")
+}
+
+// USERS
+model User {
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String
+  pic         String?
+  password    String
+  createdAt   DateTime  @default(now())
+  create      User?     @relation("user", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy   Int?      @unique
+  update      User?     @relation("update_user", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  updatedBy   Int?      @unique
+  updatedAt   DateTime? @updatedAt
+  createUser  User?     @relation("user")
+  updatedUser User?     @relation("update_user")
+  role        Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roleId      Int?
+}
+
+model Role {
+  id                Int                 @id @default(autoincrement())
+  roles             ROLE                @default(USER)
+  Roles_Permissions Roles_Permissions[]
+  user              User[]
+}
+
+model Permission {
+  id                Int                 @id @default(autoincrement())
+  permissions       PERMISSION
+  Roles_Permissions Roles_Permissions[]
+}
+
+model Roles_Permissions {
+  id           Int        @id @default(autoincrement())
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roleId       Int
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  permissionId Int
+}
+
+// model Users_Roles {
+//   id      Int  @id @default(autoincrement())
+//   user_id Int
+//   user    User @relation("user_roles", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   roles   Role @relation("user_roles", fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+//   role_id Int
+// }
