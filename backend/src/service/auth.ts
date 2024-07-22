@@ -6,7 +6,7 @@ import * as UserModel from "../model/user";
 import { PERMISSION } from "@prisma/client";
 import { signUser } from "../utils/auth";
 export const login = async (user: IUser) => {
-  const existingUser = await getUserByEmail(user.email);
+  const existingUser = await getUserByEmail(user.email, { email: user.email });
   if (!existingUser) {
     throw new BadRequest("Invalid email or password");
   }

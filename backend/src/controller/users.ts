@@ -7,10 +7,10 @@ import {
   deleteAUser,
   getAllUsers,
   getAUser,
+  getUserByEmail,
   updateAUser,
 } from "../service/user";
 import { IUser } from "../interface/users";
-import { UnauthorizedError } from "../error";
 const logger = loggerWithNameSpace("User Controller");
 export async function getUsers(
   req: IRequest,
@@ -44,7 +44,7 @@ export async function updateUser(
       roleId,
     };
     logger.info("create a user");
-    const users = await updateAUser(+id, user);
+    const users = await updateAUser(+id, user, +req.user?.id!);
     res.status(HttpStatusCode.OK).json(users);
   } catch (error) {
     logger.error(error);
@@ -60,6 +60,22 @@ export async function getUserById(
     const { id } = req.params;
 
     const users = await getAUser(+id);
+    res.status(HttpStatusCode.OK).json(users);
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+}
+export async function getUser(
+  req: IRequest,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    console.log(req.user?.email, req.body.email);
+    const users = await getUserByEmail(req.user?.email!, {
+      email: req.body.email,
+    });
     res.status(HttpStatusCode.OK).json(users);
   } catch (error) {
     logger.error(error);
@@ -97,9 +113,7 @@ export async function createUser(
       profile,
       roleId,
     };
-    const existingUser = req.user;
-    if (existingUser?.roleId! > roleId)
-      throw new UnauthorizedError("Unauthorized");
+
     logger.info("create a user");
     const users = await createAUser(user);
     res.status(HttpStatusCode.OK).json(users);

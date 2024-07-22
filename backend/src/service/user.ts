@@ -28,17 +28,21 @@ export const createAUser = async (body: IUser) => {
   return users;
 };
 
-export async function getUserByEmail(userEmail: string) {
+export async function getUserByEmail(
+  userEmail: string,
+  user: Omit<IUser, "password" | "name">
+) {
+  if (userEmail != user.email) throw new NotFound("User Mismatched");
+
   const result = await UserModel.getUserByEmail(userEmail);
   if (!result) throw new NotFound("No user found");
   logger.info("Get user by email");
   return result;
 }
-export const updateAUser = async (id: number, body: IUser) => {
+export const updateAUser = async (id: number, body: IUser, userId: number) => {
   const user = await UserModel.getUserById(id);
   if (!user) throw new NotFound("No user found with the id " + id);
-  //   TODO: GET UPDATED BY
-  const users = await UserModel.updateUser(id, body);
+  const users = await UserModel.updateUser(id, body, userId);
   logger.info("Update user by id " + id);
   return users;
 };

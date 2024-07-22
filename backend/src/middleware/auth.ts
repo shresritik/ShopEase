@@ -32,6 +32,13 @@ export function authorize(permission: PERMISSION[], options: Boolean = false) {
   return (req: IRequest, res: Response, next: NextFunction) => {
     try {
       const user = req.user;
+      const existingUser = req.user;
+      console.log(existingUser?.roleId, req.body.roleId);
+      if (existingUser?.roleId == 3 && options)
+        throw new UnauthorizedError("Unauthorized");
+
+      if (existingUser?.roleId! > req.body.roleId)
+        throw new UnauthorizedError("Unauthorized");
       // if (user?.roleId == 3 && options) next();
       const permit = permission.findIndex((p) => {
         return user?.permissions!.includes(p);
