@@ -2,6 +2,7 @@ import { BadRequest, NotFound } from "../error";
 import { IUser } from "../interface/users";
 import * as UserModel from "../model/user";
 import loggerWithNameSpace from "../utils/logger";
+import bcrypt from "bcryptjs";
 const logger = loggerWithNameSpace("UserService");
 export const getAllUsers = async () => {
   const users = await UserModel.getAllUsers();
@@ -15,11 +16,14 @@ export const getAllUsers = async () => {
 
 export const createAUser = async (body: IUser) => {
   const userId = await UserModel.getUserByEmail(body.email);
-
   if (userId) {
     throw new BadRequest("User with email already exist");
   }
-  const users = await UserModel.createUser(body);
+  const hashedPassword = await bcrypt.hash(body.password, 10);
+  const users = await UserModel.createUser({
+    ...body,
+    password: hashedPassword,
+  });
   logger.info("Get user data");
   return users;
 };

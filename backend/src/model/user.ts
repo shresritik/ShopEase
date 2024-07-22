@@ -8,6 +8,7 @@ export const getAllUsers = async () => {
       name: true,
       email: true,
       pic: true,
+      password: true,
       role: {
         select: {
           roles: true,
@@ -44,6 +45,8 @@ export const getUserById = async (id: number) => {
       name: true,
       email: true,
       pic: true,
+      password: true,
+
       role: {
         select: {
           roles: true,
@@ -74,6 +77,29 @@ export const getUserById = async (id: number) => {
 export const getUserByEmail = async (email: string) => {
   return await prisma.user.findFirst({ where: { email } });
 };
+export const findUserPermission = async (email: string) => {
+  const userWithPermissions = await prisma.user.findFirst({
+    where: { email },
+    include: {
+      role: {
+        include: {
+          Roles_Permissions: {
+            include: {
+              permission: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  if (!userWithPermissions) return;
+  // Extract permissions
+  const permit = userWithPermissions.role?.Roles_Permissions.map(
+    (u) => u.permission.permissions
+  );
+
+  return permit;
+};
 export const createUser = async ({
   email,
   password,
@@ -86,12 +112,11 @@ export const createUser = async ({
       role: true,
     },
     data: {
-      id: 2,
       email,
       password,
       name,
       pic: profile,
-      roleId,
+      roleId: roleId && +roleId,
     },
   });
   return user;

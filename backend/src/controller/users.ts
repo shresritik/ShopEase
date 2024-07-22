@@ -10,6 +10,7 @@ import {
   updateAUser,
 } from "../service/user";
 import { IUser } from "../interface/users";
+import { UnauthorizedError } from "../error";
 const logger = loggerWithNameSpace("User Controller");
 export async function getUsers(
   req: IRequest,
@@ -96,6 +97,9 @@ export async function createUser(
       profile,
       roleId,
     };
+    const existingUser = req.user;
+    if (existingUser?.roleId! > roleId)
+      throw new UnauthorizedError("Unauthorized");
     logger.info("create a user");
     const users = await createAUser(user);
     res.status(HttpStatusCode.OK).json(users);

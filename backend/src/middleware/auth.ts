@@ -5,7 +5,7 @@ import { verify } from "jsonwebtoken";
 import config from "../config";
 import loggerWithNameSpace from "../utils/logger";
 import { IUser } from "../interface/users";
-import { PERMISSION } from "../enum";
+import { PERMISSION } from "@prisma/client";
 const logger = loggerWithNameSpace("Authentication");
 export function authenticate(req: IRequest, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
@@ -28,13 +28,20 @@ export function authenticate(req: IRequest, res: Response, next: NextFunction) {
   }
   next();
 }
-export function authorize(permission: PERMISSION) {
+export function authorize(permission: PERMISSION[], options: Boolean = false) {
   return (req: IRequest, res: Response, next: NextFunction) => {
     try {
       const user = req.user;
-      const permit = user?.permissions.includes(permission);
-      if (!permit) next(new UnauthorizedError("Unauthorized"));
+      // if (user?.roleId == 3 && options) next();
+      const permit = permission.findIndex((p) => {
+        return user?.permissions!.includes(p);
+      });
+
+      if (permit == -1) {
+        next(new UnauthorizedError("Unauthorized"));
+      }
       logger.info("Authorize " + permit);
+      next();
     } catch (error) {
       logger.error("Authorization failed");
 

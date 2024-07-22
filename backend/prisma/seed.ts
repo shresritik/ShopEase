@@ -57,15 +57,8 @@ async function main() {
         roles: roleData[i].role,
       },
     });
-  await prisma.user.upsert({
-    where: { id: 1 },
-    update: {
-      id: 1,
-      ...userData,
-      roleId: 1,
-    },
-    create: {
-      id: 1,
+  await prisma.user.create({
+    data: {
       ...userData,
       roleId: 1,
     },
