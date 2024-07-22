@@ -18,7 +18,6 @@
           class="flex h-[5.5rem] items-stretch justify-between font-medium text-slate-700"
           role="navigation"
         >
-          <!-- Brand logo -->
           <a
             id="WindUI"
             aria-label="WindUI logo"
@@ -49,7 +48,6 @@
             </svg>
             Brand
           </a>
-          <!-- Mobile trigger -->
           <button
             class="relative self-center order-10 visible block w-10 h-10 opacity-100 lg:hidden"
             aria-expanded="false"
@@ -80,49 +78,47 @@
           >
             <li role="none" class="flex items-stretch">
               <a
-                role="menuitem"
-                aria-haspopup="false"
                 class="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                href="javascript:void(0)"
+                href="/settings"
+                data-link
               >
-                <span>Home</span></a
+                Settings</a
               >
             </li>
             <li role="none" class="flex items-stretch">
               <a
-                role="menuitem"
-                aria-current="page"
-                aria-haspopup="false"
                 class="flex items-center gap-2 py-4 transition-colors duration-300 text-emerald-500 hover:text-emerald-600 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                href="javascript:void(0)"
+                href="/"
+                data-link
               >
-                <span>Features</span>
+                Dashboard
               </a>
             </li>
             <li role="none" class="flex items-stretch">
               <a
-                role="menuitem"
-                aria-haspopup="false"
                 class="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                href="javascript:void(0)"
+                data-link
+                href="/posts"
               >
-                <span>Pricing</span>
+                Posts
               </a>
             </li>
             <li role="none" class="flex items-stretch">
               <a
-                role="menuitem"
-                aria-haspopup="false"
                 class="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                href="javascript:void(0)"
+                data-link
+                href="/login"
               >
-                <span>About</span>
+                Login
               </a>
             </li>
           </ul>
         </nav>
       </div>
     </header>
-    <!-- End Basic Navbar-->
+
+    <div id="app"></div>
+
+    <script type="module" src="./src/assets/scripts/script.ts"></script>
   </body>
 </html>
