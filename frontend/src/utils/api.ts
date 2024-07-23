@@ -1,36 +1,52 @@
+import axios from "axios";
 import { getToken, refreshToken } from "./auth.ts";
+const BASE_URL = "http://localhost:8000";
 
-export const login = async (email: string, password: string): Promise<void> => {
-  const response = await fetch("http://localhost:3000/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (response.ok) {
-    const { accessToken, refreshToken } = await response.json();
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
-  } else {
-    const error = await response.json();
-    throw new Error(error.error.message);
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await axios.post(BASE_URL + "/api/auth/login", {
+      email,
+      password,
+    });
+    localStorage.setItem("accessToken", response.data.accessToken);
+    localStorage.setItem("refreshToken", response.data.refreshToken);
+  } catch (error: any) {
+    throw new Error(error.response.data.error);
   }
 };
 
-export const register = async (
+export const update = async (
+  id: string,
   name: string,
   email: string,
-  password: string
-): Promise<void> => {
-  const response = await fetch("http://localhost:3000/users", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, name }),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error.message);
+  password: string,
+  roleId: number
+) => {
+  const token = getToken();
+  try {
+    return await axios.put(
+      BASE_URL + "/api/users/" + id,
+      {
+        name,
+        email,
+        password,
+        roleId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error: any) {
+    throw new Error(error.response.data.error);
+  }
+};
+export const register = async (data: FormData): Promise<void> => {
+  try {
+    await axios.post(BASE_URL + "/api/users", data);
+  } catch (error: any) {
+    throw new Error(error.response.data.error);
   }
 };
 
@@ -69,4 +85,24 @@ export const fetchWithAuth = async (
     console.error("API request failed:", error);
     throw error; // Optionally rethrow to handle at the calling site
   }
+};
+export const fetchUserProfile = async () => {
+  const token = getToken();
+
+  const res = await axios.get(BASE_URL + "/api/users/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+};
+export const deleteUser = async (id: string) => {
+  const token = getToken();
+
+  const res = await axios.delete(BASE_URL + `/api/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
 };

@@ -22,6 +22,7 @@ export const createAUser = async (body: IUser) => {
   const hashedPassword = await bcrypt.hash(body.password, 10);
   const users = await UserModel.createUser({
     ...body,
+    profile: `http:localhost:8000/static/profile/` + body.profile,
     password: hashedPassword,
   });
   logger.info("Get user data");
@@ -42,7 +43,20 @@ export async function getUserByEmail(
 export const updateAUser = async (id: number, body: IUser, userId: number) => {
   const user = await UserModel.getUserById(id);
   if (!user) throw new NotFound("No user found with the id " + id);
-  const users = await UserModel.updateUser(id, body, userId);
+  let hashedPassword = user.password;
+  if (body.password) {
+    hashedPassword = await bcrypt.hash(body.password, 10);
+  }
+
+  const users = await UserModel.updateUser(
+    id,
+    {
+      ...body,
+      profile: `http:localhost:8000/static/profile/` + body.profile,
+      password: hashedPassword,
+    },
+    userId
+  );
   logger.info("Update user by id " + id);
   return users;
 };

@@ -35,7 +35,7 @@ export async function updateUser(
   try {
     const { id } = req.params;
     const { name, email, password, roleId } = req.body;
-    const profile = req.file?.path;
+    const profile = req.file?.filename;
     const user: IUser = {
       name,
       email,
@@ -74,7 +74,7 @@ export async function getUser(
   try {
     console.log(req.user?.email, req.body.email);
     const users = await getUserByEmail(req.user?.email!, {
-      email: req.body.email,
+      email: req.body.email || req.user!.email,
     });
     res.status(HttpStatusCode.OK).json(users);
   } catch (error) {
@@ -105,7 +105,8 @@ export async function createUser(
   try {
     //   const data = await UserService.createUser(user.id, body);
     const { name, email, password, roleId } = req.body;
-    const profile = req.file?.path;
+    console.log(req.file);
+    const profile = req.file?.filename;
     const user: IUser = {
       name,
       email,

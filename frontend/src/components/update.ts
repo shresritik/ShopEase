@@ -1,47 +1,51 @@
-import { register } from "../utils/api.ts";
+import { fetchUserProfile, update } from "../utils/api.ts";
 import { createElement } from "../utils/createElement.ts";
-import { dispatch } from "../utils/dispatch.ts";
 import { fetchHtml } from "../utils/fetchHtml.ts";
 
-export const render = () => {
+export const render = async () => {
   const container = createElement("div", {
-    className: "flex justify-center items-center h-screen",
+    className: "flex justify-center items-center",
   });
 
   const form = createElement("form", {
     className: "bg-white p-6 rounded shadow-md w-full mt-8 mb-2 w-80 sm:w-96 ",
   });
-  const datas = fetchHtml("register");
-  datas.then((res) => {
+
+  try {
+    const user = await fetchUserProfile();
+    const res = await fetchHtml("update");
     form.innerHTML = res;
 
     const name = form.querySelector("#name") as HTMLInputElement;
+    name.value = user.name;
     const email = form.querySelector("#email") as HTMLInputElement;
+    email.value = user.email;
     const password = form.querySelector("#password") as HTMLInputElement;
     const confirmPassword = form.querySelector(
       "#confirmPassword"
     ) as HTMLInputElement;
-    const fileInput = form.querySelector("#file-upload") as HTMLInputElement;
-
+    const img = form.querySelector("img");
+    img!.src =
+      "http://localhost:8000/static/profile/1721749177172-revision.jpg";
     const inputs = [name, email, password, confirmPassword];
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       try {
         if (password.value !== confirmPassword.value) {
           throw new Error("Passwords do not match");
         }
-
-        const formData = new FormData();
-        formData.append("name", name.value);
-        formData.append("email", email.value);
-        formData.append("password", password.value);
-        formData.append("roleId", "3"); // Assuming roleId is a fixed value for this form
-
-        if (fileInput?.files?.[0]) {
-          formData.append("profile-pic", fileInput.files[0]);
+        const updateRes = await update(
+          user.id,
+          name.value,
+          email.value,
+          password.value,
+          3
+        );
+        if (updateRes.status == 200) {
+          const successElement = form.querySelector(".success") as HTMLElement;
+          successElement.classList.remove("hidden");
         }
-        await register(formData);
-        dispatch("/dashboard");
       } catch (error) {
         const errorElement = form.querySelector(".error") as HTMLElement;
         errorElement.textContent = `${error}`;
@@ -53,9 +57,15 @@ export const render = () => {
       input.addEventListener("input", () => {
         const errorElement = form.querySelector(".error") as HTMLElement;
         errorElement.classList.add("hidden");
+        const successElement = form.querySelector(".success") as HTMLElement;
+        successElement.classList.add("hidden");
       });
     });
-  });
+  } catch (error) {
+    console.error("Error rendering user update form:", error);
+    // Handle error appropriately, e.g., display an error message
+  }
+
   container.appendChild(form);
   return container;
 };

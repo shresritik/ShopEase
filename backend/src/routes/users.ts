@@ -7,7 +7,7 @@ import {
   deleteUser,
   getUser,
 } from "../controller/users";
-import { upload } from "../utils/fileUpload";
+import { uploadProfile } from "../utils/fileUpload";
 import { authenticate, authorize } from "../middleware/auth";
 import { PERMISSION } from "@prisma/client";
 import { validateReqBody, validateReqId } from "../middleware/validator";
@@ -134,7 +134,7 @@ router.get("/:id", validateReqId(getUserByIdSchema), getUserById);
  */
 router.post(
   "/",
-  upload.single("profile-pic"),
+  uploadProfile.single("profile-pic"),
   authenticate(true),
   authorize(
     [PERMISSION.SUPER_ADMIN_POST, PERMISSION.ADMIN_POST, PERMISSION.USER_POST],
@@ -179,7 +179,7 @@ router.put(
     PERMISSION.ADMIN_PUT,
     PERMISSION.USER_PUT,
   ]),
-  upload.single("profile-pic"),
+  uploadProfile.single("profile-pic"),
   validateReqBody(updateUserSchema),
   updateUser
 );

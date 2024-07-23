@@ -1,15 +1,7 @@
 import axios from "axios";
 import Abstract from "./Abstract";
-import { IUser } from "../../../interface/user";
 
 // Register function remains the same
-const register = async (data: IUser) => {
-  return await axios.post("/api/users", data, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-};
 
 export class Register extends Abstract {
   constructor(params: any) {
@@ -50,22 +42,31 @@ export class Register extends Abstract {
         const passwordConfirmation = (
           document.getElementById("passwordConfirmation") as HTMLInputElement
         ).value;
-
+        const fileInput = document.getElementById(
+          "file-upload"
+        ) as HTMLInputElement;
+        const file = fileInput?.files?.[0];
+        console.log("file", fileInput);
         if (password !== passwordConfirmation) {
           alert("Passwords do not match");
           return;
         }
 
-        const data: IUser = {
-          name: username,
-          email,
-          password,
-          roleId: 3,
-        };
-
+        // const data: IUser = {
+        //   name: username,
+        //   email,
+        //   password,
+        //   roleId: 3,
+        // };
+        const formData = new FormData();
+        formData.append("name", username);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("roleId", "3");
+        if (file) formData.append("pic", file);
         try {
-          const res = await register(data);
-          console.log(res);
+          // const res = await registerUser(formData);
+          // console.log(res);
         } catch (error) {
           console.error("Error during registration:", error);
         }

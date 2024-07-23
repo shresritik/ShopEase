@@ -71,6 +71,7 @@ export const getUserById = async (id: number) => {
     name: user.name,
     email: user.email,
     pic: user.pic,
+    password: user.password,
     permission: permit,
   };
 };

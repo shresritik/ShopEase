@@ -1,11 +1,16 @@
 import { isAuthenticated } from "./utils/auth.ts";
-
+const authenticate = (src: string, dest: string) => {
+  if (!isAuthenticated()) {
+    window.history.pushState(null, "", `/${src}`);
+    return import(`./pages/${src}.ts`); // Redirect to login page
+  }
+  return import(`./pages/${dest}.ts`);
+};
 // router.ts
 const routes: { [key: string]: () => Promise<any> } = {
   "/": () => import("./pages/login.ts"),
   "/login": () => import("./pages/login.ts"),
   "/register": () => import("./pages/register.ts"),
-
   "/dashboard": async () => {
     if (!isAuthenticated()) {
       window.history.pushState(null, "", "/login");
@@ -16,19 +21,18 @@ const routes: { [key: string]: () => Promise<any> } = {
 };
 
 export const initRouter = () => {
-  const container = document.getElementById("app") as HTMLElement;
+  const app = document.getElementById("app") as HTMLElement;
 
-  const navigateTo = async (path: string) => {
+  const navigate = async (path: string) => {
     try {
-      console.log(routes);
       const route = routes[path] || routes["/"];
       if (!route) {
         console.error(`Route not found for path: ${path}`);
         return;
       }
-      const module = await route();
-      container.innerHTML = "";
-      container.appendChild(module.render());
+      const view = await route();
+      app.innerHTML = "";
+      app.appendChild(view.render());
     } catch (error) {
       console.error(`Failed to navigate to ${path}:`, error);
     }
@@ -36,7 +40,7 @@ export const initRouter = () => {
 
   window.addEventListener("popstate", () => {
     const path = window.location.pathname;
-    navigateTo(path);
+    navigate(path);
   });
 
   document.addEventListener("click", (e) => {
@@ -46,10 +50,10 @@ export const initRouter = () => {
       console.log("Navigating to", target.href);
       const path = new URL(target.href).pathname;
       window.history.pushState(null, "", path);
-      navigateTo(path);
+      navigate(path);
     }
   });
 
   // Handle initial page load
-  navigateTo(window.location.pathname);
+  navigate(window.location.pathname);
 };
