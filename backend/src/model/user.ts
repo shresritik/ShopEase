@@ -1,8 +1,13 @@
 import { IUser } from "../interface/users";
 import prisma from "../utils/prisma";
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (existingId: number) => {
   const users = await prisma.user.findMany({
+    where: {
+      roleId: {
+        gte: existingId,
+      },
+    },
     select: {
       id: true,
       name: true,
@@ -33,6 +38,7 @@ export const getAllUsers = async () => {
       email: user.email,
       pic: user.pic,
       permission: permit,
+      role: user.role?.roles,
     };
   });
   return result;

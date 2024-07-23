@@ -4,8 +4,8 @@ import * as UserModel from "../model/user";
 import loggerWithNameSpace from "../utils/logger";
 import bcrypt from "bcryptjs";
 const logger = loggerWithNameSpace("UserService");
-export const getAllUsers = async () => {
-  const users = await UserModel.getAllUsers();
+export const getAllUsers = async (existingId: number) => {
+  const users = await UserModel.getAllUsers(existingId);
   if (!users || users.length == 0) {
     logger.info("User Data is empty");
     return { message: "User Data is empty" };

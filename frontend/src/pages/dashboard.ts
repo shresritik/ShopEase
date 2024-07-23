@@ -4,12 +4,12 @@ import { dispatch } from "../utils/dispatch";
 import { fetchHtml } from "../utils/fetchHtml";
 import * as Update from "../components/update";
 import * as Delete from "../components/deleteUser";
+import * as User from "./register";
+import { fetchUserProfile } from "../utils/api";
 
-export const render = async () => {
+export const render = () => {
   const container = createElement("div", { className: "p-6" });
-  const divElement = createElement("div", {
-    className: "flex item-center",
-  });
+  const divElement = createElement("div", { className: "flex item-center" });
   const leftElement = createElement("div", {
     className: "flex flex-col item-center",
   });
@@ -30,9 +30,13 @@ export const render = async () => {
 
   const renderSidebar = async () => {
     try {
+      const user = await fetchUserProfile();
       const res = await fetchHtml("sidebar");
       leftElement.innerHTML = res;
-
+      if (user.roleId != 3) {
+        document.querySelector("#create-user")?.classList.toggle("hidden");
+        document.querySelector("#create-product")?.classList.toggle("hidden");
+      }
       const handleSidebarClick = async (event: Event) => {
         const target = event.target as HTMLElement;
         const classArray = [...target.classList];
@@ -47,9 +51,18 @@ export const render = async () => {
           update.classList.add("profile-update");
           rightElement.appendChild(update);
         } else if (classArray.includes("delete")) {
-          const deleteUser = await Delete.render();
+          const deleteUser = await Delete.render(
+            user.roleId != 3 ? false : true
+          );
           deleteUser.classList.add("delete-user");
           rightElement.appendChild(deleteUser);
+        }
+
+        if (classArray.includes("create-user")) {
+          const createUser = await User.render(false);
+
+          createUser.classList.add("create-user");
+          rightElement.appendChild(createUser);
         }
       };
 

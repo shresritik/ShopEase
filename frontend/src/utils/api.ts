@@ -44,7 +44,12 @@ export const update = async (
 };
 export const register = async (data: FormData): Promise<void> => {
   try {
-    await axios.post(BASE_URL + "/api/users", data);
+    const token = getToken();
+    await axios.post(BASE_URL + "/api/users", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (error: any) {
     throw new Error(error.response.data.error);
   }
@@ -100,6 +105,16 @@ export const deleteUser = async (id: string) => {
   const token = getToken();
 
   const res = await axios.delete(BASE_URL + `/api/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+};
+export const getAllUsers = async () => {
+  const token = getToken();
+
+  const res = await axios.get(BASE_URL + `/api/users`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

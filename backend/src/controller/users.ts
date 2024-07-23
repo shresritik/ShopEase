@@ -19,8 +19,9 @@ export async function getUsers(
 ) {
   try {
     //   const data = await UserService.createUser(user.id, body);
+
     logger.info("create a user");
-    const users = await getAllUsers();
+    const users = await getAllUsers(+req.user?.roleId!);
     res.status(HttpStatusCode.OK).json(users);
   } catch (error) {
     logger.error(error);
