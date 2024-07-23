@@ -1,6 +1,6 @@
 services:
   postgres:
-    env_file: ".env"
+    env_file: "./backend/.env"
     container_name: postgres_2
     image: postgres:16
     environment:
@@ -14,7 +14,7 @@ services:
     restart: always
 
   pgadmin:
-    env_file: ".env"
+    env_file: "./backend/.env"
     container_name: pgadmin_2
     image: dpage/pgadmin4:8.9
     environment:

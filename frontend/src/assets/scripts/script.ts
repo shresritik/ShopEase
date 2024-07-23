@@ -1,8 +1,8 @@
 import Dashboard from "./views/Dashboard.ts";
 import { Login } from "./views/Login.ts";
 import { NotFound } from "./views/NotFound.ts";
-import Posts from "./views/Posts.ts";
 import PostView from "./views/PostVIew.ts";
+import { Register } from "./views/Register.ts";
 
 // const pathToRegex = (path: any) =>
 //   new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
@@ -28,7 +28,7 @@ const navigateTo = (url: any) => {
 const router = async () => {
   const routes = [
     { path: "/", view: Dashboard },
-    { path: "/posts", view: Posts },
+    { path: "/register", view: Register },
     { path: "/posts/:id", view: PostView },
     { path: "/login", view: Login },
     { path: "/not-found", view: NotFound },
@@ -53,7 +53,8 @@ const router = async () => {
 
   const view = new match.route.view({ id: 1 });
 
-  document.querySelector("#app")!.innerHTML = await view.getHtml();
+  // document.querySelector("#app")!.innerHTML = await view.getHtml();
+  view.render();
 };
 
 window.addEventListener("popstate", router);

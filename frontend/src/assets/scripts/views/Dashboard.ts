@@ -1,3 +1,4 @@
+import axios from "axios";
 import AbstractView from "./Abstract.ts";
 
 export default class extends AbstractView {
@@ -7,6 +8,7 @@ export default class extends AbstractView {
   }
 
   async getHtml() {
+    axios.get("/api/users/1", {}).then((res) => console.log(res));
     return `
             <h1>Welcome back, Dom</h1>
             <p>

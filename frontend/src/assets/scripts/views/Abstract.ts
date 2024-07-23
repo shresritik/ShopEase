@@ -11,4 +11,8 @@ export default class {
   async getHtml() {
     return "";
   }
+  async render() {
+    const html = await this.getHtml();
+    document.getElementById("app")!.innerHTML = html; // Insert the fetched HTML into a container
+  }
 }

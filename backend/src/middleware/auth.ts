@@ -7,36 +7,49 @@ import loggerWithNameSpace from "../utils/logger";
 import { IUser } from "../interface/users";
 import { PERMISSION } from "@prisma/client";
 const logger = loggerWithNameSpace("Authentication");
-export function authenticate(req: IRequest, res: Response, next: NextFunction) {
-  const { authorization } = req.headers;
-  if (!authorization) {
-    next(new UnauthorizedError("No token found"));
-    return;
-  }
-  const token = authorization?.split(" ");
-  if (token?.length != 2 || token[0] != "Bearer") {
-    next(new UnauthorizedError("No token found"));
-    return;
-  }
-  try {
-    const user = verify(token[1], config.secret!) as IUser;
-    logger.info("authenticate " + user.name);
-    req.user = user;
-  } catch (error) {
-    logger.error("Token failed");
-    next(new UnauthorizedError("Token Failed"));
-  }
-  next();
+export function authenticate(options: boolean = false) {
+  return (req: IRequest, res: Response, next: NextFunction) => {
+    if (req.body.roleId == 3 && options) {
+      next();
+      return;
+    }
+    console.log("first");
+    const { authorization } = req.headers;
+    if (!authorization) {
+      next(new UnauthorizedError("No token found"));
+      return;
+    }
+    const token = authorization?.split(" ");
+    if (token?.length != 2 || token[0] != "Bearer") {
+      next(new UnauthorizedError("No token found"));
+      return;
+    }
+    try {
+      const user = verify(token[1], config.secret!) as IUser;
+      logger.info("authenticate " + user.name);
+      req.user = user;
+    } catch (error) {
+      logger.error("Token failed");
+      next(new UnauthorizedError("Token Failed"));
+    }
+    next();
+  };
 }
 export function authorize(permission: PERMISSION[], options: Boolean = false) {
   return (req: IRequest, res: Response, next: NextFunction) => {
+    console.log(options);
     try {
       const user = req.user;
       const existingUser = req.user;
-      console.log(existingUser?.roleId, req.body.roleId);
+      console.log(existingUser?.roleId, req.body.roleId, options);
+      if (req.body.roleId == 3 && options) {
+        console.log("from here");
+
+        return next();
+      }
+      console.log("here");
       if (existingUser?.roleId == 3 && options)
         throw new UnauthorizedError("Unauthorized");
-
       if (existingUser?.roleId! > req.body.roleId)
         throw new UnauthorizedError("Unauthorized");
       // if (user?.roleId == 3 && options) next();

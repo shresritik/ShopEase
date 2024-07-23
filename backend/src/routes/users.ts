@@ -53,7 +53,7 @@ const router = express.Router();
  */
 router.get(
   "/",
-  authenticate,
+  authenticate(),
   authorize(
     [PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET, PERMISSION.USER_GET],
     true
@@ -80,7 +80,7 @@ router.get(
  */
 router.get(
   "/me",
-  authenticate,
+  authenticate(),
   authorize([
     PERMISSION.SUPER_ADMIN_GET,
     PERMISSION.ADMIN_GET,
@@ -135,7 +135,12 @@ router.get("/:id", validateReqId(getUserByIdSchema), getUserById);
 router.post(
   "/",
   upload.single("profile-pic"),
-  validateReqBody(createUserSchema),
+  authenticate(true),
+  authorize(
+    [PERMISSION.SUPER_ADMIN_POST, PERMISSION.ADMIN_POST, PERMISSION.USER_POST],
+    true
+  ),
+  // validateReqBody(createUserSchema),
   createUser
 );
 
@@ -168,7 +173,7 @@ router.post(
  */
 router.put(
   "/:id",
-  authenticate,
+  authenticate(),
   authorize([
     PERMISSION.SUPER_ADMIN_PUT,
     PERMISSION.ADMIN_PUT,
@@ -198,7 +203,7 @@ router.put(
  */
 router.delete(
   "/:id",
-  authenticate,
+  authenticate(),
   authorize([
     PERMISSION.SUPER_ADMIN_DELETE,
     PERMISSION.ADMIN_DELETE,
