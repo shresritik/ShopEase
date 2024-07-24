@@ -2,13 +2,28 @@ import { IProduct } from "../interface/product";
 import prisma from "../utils/prisma";
 
 export const getAllProducts = async () => {
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({
+    include: {
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
+    },
+  });
   return products;
 };
 export const getProductById = async (id: number) => {
   const prod = await prisma.product.findFirst({
     where: {
       id,
+    },
+    include: {
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
     },
   });
   return prod;
@@ -20,6 +35,13 @@ export const getProductsByCategory = async (category: string) => {
         category_name: {
           equals: category,
           mode: "insensitive",
+        },
+      },
+    },
+    include: {
+      category: {
+        select: {
+          category_name: true,
         },
       },
     },
