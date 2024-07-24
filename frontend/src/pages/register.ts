@@ -1,4 +1,4 @@
-import { register } from "../utils/api.ts";
+import { register } from "../utils/userApi.ts";
 import { createElement } from "../utils/createElement.ts";
 import { dispatch } from "../utils/dispatch.ts";
 import { fetchHtml } from "../utils/fetchHtml.ts";

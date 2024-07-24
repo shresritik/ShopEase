@@ -1,23 +1,22 @@
 import { isAuthenticated } from "./utils/auth.ts";
-const authenticate = (src: string, dest: string) => {
+const authenticate = (dest: string, fallback: string) => {
   if (!isAuthenticated()) {
-    window.history.pushState(null, "", `/${src}`);
-    return import(`./pages/${src}.ts`); // Redirect to login page
+    window.history.pushState(null, "", `/${fallback}`);
+    return import(`./pages/${fallback}.ts`); // Redirect to login page
   }
   return import(`./pages/${dest}.ts`);
 };
 // router.ts
 const routes: { [key: string]: () => Promise<any> } = {
-  "/": () => import("./pages/login.ts"),
-  "/login": () => import("./pages/login.ts"),
-  "/register": () => import("./pages/register.ts"),
-  "/dashboard": async () => {
-    if (!isAuthenticated()) {
-      window.history.pushState(null, "", "/login");
-      return import("./pages/login.ts"); // Redirect to login page
-    }
-    return import("./pages/dashboard.ts");
-  },
+  "/": async () => await import("./pages/login.ts"),
+  "/login": async () => await authenticate("dashboard", "login"),
+  "/register": async () => await import("./pages/register.ts"),
+  "/dashboard": async () => await authenticate("dashboard", "login"),
+  //   if (!isAuthenticated()) {
+  //     window.history.pushState(null, "", "/login");
+  //     return import("./pages/login.ts"); // Redirect to login page
+  //   }
+  //   return import("./pages/dashboard.ts");
 };
 
 export const router = () => {

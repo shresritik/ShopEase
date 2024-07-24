@@ -6,11 +6,13 @@ import {
   getProductByCategoryAndId,
   updateProduct,
   getProductsByCategory,
+  getAllCategories,
 } from "../controller/products";
 import { authenticate, authorize } from "../middleware/auth";
 import { uploadProduct } from "../utils/fileUpload";
 const router = express();
 router.get("/", getAllProducts);
+router.get("/categories", getAllCategories);
 router.post(
   "/",
   authenticate(),

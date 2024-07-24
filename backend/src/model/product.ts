@@ -1,6 +1,13 @@
 import { IProduct } from "../interface/product";
 import prisma from "../utils/prisma";
-
+export const getAllCategories = async () => {
+  return await prisma.category.findMany({
+    select: {
+      id: true,
+      category_name: true,
+    },
+  });
+};
 export const getAllProducts = async () => {
   const products = await prisma.product.findMany({
     include: {

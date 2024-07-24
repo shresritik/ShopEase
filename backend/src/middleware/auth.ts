@@ -37,7 +37,6 @@ export function authenticate(options: boolean = false) {
 }
 export function authorize(permission: PERMISSION[], options: Boolean = false) {
   return (req: IRequest, res: Response, next: NextFunction) => {
-    console.log(options);
     try {
       const user = req.user;
       const existingUser = req.user;
@@ -55,7 +54,6 @@ export function authorize(permission: PERMISSION[], options: Boolean = false) {
       const permit = permission.findIndex((p) => {
         return user?.permissions!.includes(p);
       });
-
       if (permit == -1) {
         next(new UnauthorizedError("Unauthorized"));
       }

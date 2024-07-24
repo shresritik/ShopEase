@@ -1,4 +1,4 @@
-import { fetchUserProfile, update } from "../utils/api.ts";
+import { fetchUserProfile, update } from "../utils/userApi.ts";
 import { createElement } from "../utils/createElement.ts";
 import { fetchHtml } from "../utils/fetchHtml.ts";
 

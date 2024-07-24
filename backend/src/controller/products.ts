@@ -3,6 +3,7 @@ import {
   createAProduct,
   deleteAProducts,
   getAProductByCategoryAndId,
+  getCategories,
   getProductCategory,
   getProducts,
   updateAProduct,
@@ -16,6 +17,18 @@ export const getAllProducts = async (
 ) => {
   try {
     const products = await getProducts();
+    res.status(HttpStatusCode.OK).json(products);
+  } catch (error) {
+    next(error);
+  }
+};
+export const getAllCategories = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const products = await getCategories();
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {
     next(error);

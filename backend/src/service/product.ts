@@ -5,6 +5,10 @@ export const getProducts = async () => {
   const products = await ProductModel.getAllProducts();
   return products;
 };
+export const getCategories = async () => {
+  const products = await ProductModel.getAllCategories();
+  return products;
+};
 export const getAProductById = async (id: number) => {
   const products = await ProductModel.getProductById(id);
   return products;

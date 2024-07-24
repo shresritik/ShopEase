@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getToken, refreshToken } from "./auth.ts";
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from "../constants/index.ts";
 
 export const login = async (email: string, password: string) => {
   try {
@@ -35,6 +35,7 @@ export const update = async (
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -48,6 +49,7 @@ export const register = async (data: FormData): Promise<void> => {
     await axios.post(BASE_URL + "/api/users", data, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
   } catch (error: any) {
