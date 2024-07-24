@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import HttpStatusCode from "http-status-codes";
 import { IRequest } from "../interface/utils";
 import loggerWithNameSpace from "../utils/logger";
@@ -118,7 +118,7 @@ export async function createUser(
 
     logger.info("create a user");
     const users = await createAUser(user);
-    res.status(HttpStatusCode.OK).json(users);
+    res.status(HttpStatusCode.CREATED).json(users);
   } catch (error) {
     logger.error(error);
     next(error);

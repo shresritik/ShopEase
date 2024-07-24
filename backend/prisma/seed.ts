@@ -1,17 +1,41 @@
 import { PERMISSION, PrismaClient, ROLE } from "@prisma/client";
 import config from "../src/config";
+import { IProduct } from "../src/interface/product";
+import { IUser } from "../src/interface/users";
 const prisma = new PrismaClient();
-const userData = {
+const userData: IUser = {
   name: "shyam",
   email: "shyam@dsa.com",
   password: config.password!,
 };
-const roleData = [
-  { role: ROLE.SUPER_ADMIN },
-  { role: ROLE.ADMIN },
-  { role: ROLE.USER },
+const categoryData = ["Dairy", "Bakery", "Packaged Food"];
+const productData: IProduct[] = [
+  {
+    product_name: "DDC Milk",
+    description: "Refined Cow Milk",
+    cost_price: 40,
+    selling_price: 50,
+    category_id: 1,
+    avg_rating: 4,
+    total_review: 3.5,
+    createdBy: 1,
+  },
+  {
+    product_name: "Utsav Bread",
+    description: "Refined Bread from utsav",
+    cost_price: 40,
+    selling_price: 50,
+    category_id: 1,
+    avg_rating: 4,
+    total_review: 3.5,
+    createdBy: 1,
+  },
 ];
-
+const roleData = [
+  { roles: ROLE.SUPER_ADMIN, role_rank: 1 },
+  { roles: ROLE.ADMIN, role_rank: 2 },
+  { roles: ROLE.USER, role_rank: 3 },
+];
 const permissionData = [
   { permission: PERMISSION.SUPER_ADMIN_GET },
   { permission: PERMISSION.SUPER_ADMIN_PUT },
@@ -48,14 +72,8 @@ async function main() {
   for (let i = 0; i < roleData.length; i++)
     await prisma.role.upsert({
       where: { id: i + 1 },
-      update: {
-        id: i + 1,
-        roles: roleData[i].role,
-      },
-      create: {
-        id: i + 1,
-        roles: roleData[i].role,
-      },
+      update: roleData[i],
+      create: roleData[i],
     });
   await prisma.user.create({
     data: {
@@ -87,6 +105,20 @@ async function main() {
         permissionId: i,
       },
     });
+  //product
+
+  for (let i = 0; i < categoryData.length; i++) {
+    await prisma.category.create({
+      data: {
+        category_name: categoryData[i],
+      },
+    });
+  }
+  for (let i = 0; i < productData.length; i++) {
+    await prisma.product.create({
+      data: productData[i],
+    });
+  }
 }
 main()
   .then(async () => {

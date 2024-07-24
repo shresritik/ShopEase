@@ -20,7 +20,7 @@ const routes: { [key: string]: () => Promise<any> } = {
   },
 };
 
-export const initRouter = () => {
+export const router = () => {
   const app = document.getElementById("app") as HTMLElement;
 
   const navigate = async (path: string) => {

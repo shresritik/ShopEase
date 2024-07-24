@@ -18,13 +18,12 @@ export const login = async (user: IUser) => {
   const permissionOfUser = (await UserModel.findUserPermission(
     user.email
   )) as PERMISSION[];
-  console.log("a", permissionOfUser);
   const payload: Omit<IUser, "password"> = {
     id: existingUser.id,
     email: existingUser.email,
     name: existingUser.name,
     permissions: permissionOfUser,
-    roleId: +existingUser.roleId!,
+    roleId: +existingUser.role?.role_rank!,
   };
   //   console.log(permissionOfUser);
   // //   logger.info("sign user");

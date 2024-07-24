@@ -36,26 +36,31 @@ enum PERMISSION {
 
 // USERS
 model User {
-  id          Int       @id @default(autoincrement())
-  name        String
-  email       String
-  pic         String?
-  password    String
-  createdAt   DateTime  @default(now())
-  create      User?     @relation("user", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdBy   Int?      @unique
-  update      User?     @relation("update_user", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  updatedBy   Int?      @unique
-  updatedAt   DateTime? @updatedAt
-  createUser  User?     @relation("user")
-  updatedUser User?     @relation("update_user")
-  role        Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  roleId      Int?
+  id             Int            @id @default(autoincrement())
+  name           String
+  email          String
+  pic            String?        @default("http://localhost:8000/static/profile/default.png")
+  password       String
+  createdAt      DateTime       @default(now())
+  create         User?          @relation("user", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy      Int?           @unique
+  update         User?          @relation("update_user", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  updatedBy      Int?           @unique
+  updatedAt      DateTime?      @updatedAt
+  createUser     User?          @relation("user")
+  updatedUser    User?          @relation("update_user")
+  order          Order[]        @relation("order")
+  userProd       User_Product[] @relation("user_product")
+  role           Role?          @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  roleId         Int?
+  ProductCreator Product[]      @relation("product_creator")
+  ProductUpdator Product[]      @relation("product_updator")
 }
 
 model Role {
   id                Int                 @id @default(autoincrement())
   roles             ROLE                @default(USER)
+  role_rank         Int                 @default(3)
   Roles_Permissions Roles_Permissions[]
   user              User[]
 }
@@ -81,3 +86,59 @@ model Roles_Permissions {
 //   roles   Role @relation("user_roles", fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 //   role_id Int
 // }
+model Product {
+  id             Int             @id @default(autoincrement())
+  product_name   String
+  description    String?
+  pic            String?
+  cost_price     Decimal         @db.Decimal(10, 2)
+  selling_price  Decimal         @db.Decimal(10, 2)
+  category       Category?       @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category_id    Int // Foreign key for Category
+  avg_rating     Decimal?        @db.Decimal(10, 2)
+  total_review   Decimal?        @db.Decimal(10, 2)
+  User_Product   User_Product[]  @relation("user_product")
+  Order_Product  Order_Product[] @relation("order_product")
+  productCreator User?           @relation("product_creator", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy      Int
+  productUpdator User?           @relation("product_updator", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  updatedBy      Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id            Int       @id @default(autoincrement())
+  category_name String
+  Product       Product[]
+}
+
+model Order {
+  id            Int             @id @default(autoincrement())
+  user          User            @relation("order", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id       Int
+  total_amount  Decimal         @db.Decimal(10, 2)
+  location      String
+  createdAt     DateTime        @default(now())
+  Order_Product Order_Product[] @relation("order_product")
+}
+
+model User_Product {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation("user_product", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id    Int
+  product    Product? @relation("user_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product_id Int
+  rating     Int?
+  review     String?
+  createdAt  DateTime @default(now())
+}
+
+model Order_Product {
+  id         Int      @id @default(autoincrement())
+  order      Order    @relation("order_product", fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  order_id   Int
+  product    Product? @relation("order_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product_id Int
+}
