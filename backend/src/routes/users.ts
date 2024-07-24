@@ -134,12 +134,13 @@ router.get("/:id", validateReqId(getUserByIdSchema), getUserById);
  */
 router.post(
   "/",
-  uploadProfile.single("profile-pic"),
   authenticate(true),
   authorize(
     [PERMISSION.SUPER_ADMIN_POST, PERMISSION.ADMIN_POST, PERMISSION.USER_POST],
     true
   ),
+  uploadProfile.single("profile-pic"),
+
   // validateReqBody(createUserSchema),
   createUser
 );

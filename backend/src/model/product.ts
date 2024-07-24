@@ -76,9 +76,10 @@ export const createProduct = async (userId: number, product: IProduct) => {
       product_name: product.product_name,
       category: {
         connect: {
-          id: product.category_id,
+          id: +product.category_id,
         },
       },
+      pic: product.pic,
       cost_price: product.cost_price,
       selling_price: product.selling_price,
       description: product.description,
@@ -104,7 +105,7 @@ export const updateProduct = async (
       product_name: product.product_name,
       category: {
         connect: {
-          id: product.category_id,
+          id: +product.category_id,
         },
       },
       cost_price: product.cost_price,

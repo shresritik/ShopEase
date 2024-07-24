@@ -53,9 +53,12 @@ export const createProduct = async (
   next: NextFunction
 ) => {
   try {
-    const { body, user } = req;
+    const { body, user, file } = req;
 
-    const products = await createAProduct(user?.id!, body);
+    const products = await createAProduct(user?.id!, {
+      ...body,
+      pic: file?.filename,
+    });
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {
     next(error);

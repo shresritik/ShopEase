@@ -8,17 +8,20 @@ import {
   getProductsByCategory,
 } from "../controller/products";
 import { authenticate, authorize } from "../middleware/auth";
+import { uploadProduct } from "../utils/fileUpload";
 const router = express();
 router.get("/", getAllProducts);
 router.post(
   "/",
   authenticate(),
   authorize(["SUPER_ADMIN_POST", "ADMIN_POST"]),
+  uploadProduct.single("product"),
   createProduct
 );
 router.put(
   "/:id",
   authenticate(),
+  uploadProduct.single("product"),
   authorize(["SUPER_ADMIN_POST", "ADMIN_POST"]),
   updateProduct
 );
