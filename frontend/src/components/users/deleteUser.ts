@@ -1,9 +1,13 @@
-import { deleteUser, fetchUserProfile, getAllUsers } from "../utils/userApi.ts";
-import { removeToken } from "../utils/auth.ts";
-import { createElement } from "../utils/createElement.ts";
-import { dispatch } from "../utils/dispatch.ts";
-import { fetchHtml } from "../utils/fetchHtml.ts";
-import { deleteProduct, getAllProducts } from "../utils/productApi.ts";
+import {
+  deleteUser,
+  fetchUserProfile,
+  getAllUsers,
+} from "../../utils/userApi.ts";
+import { removeToken } from "../../utils/auth.ts";
+import { createElement } from "../../utils/createElement.ts";
+import { dispatch } from "../../utils/dispatch.ts";
+import { fetchHtml } from "../../utils/fetchHtml.ts";
+import { deleteProduct, getAllProducts } from "../../utils/productApi.ts";
 
 const populateDropdown = (container: HTMLSelectElement, options: any) => {
   options.forEach((option: any) => {

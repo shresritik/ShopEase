@@ -29,7 +29,7 @@ const routes: RouteDefinition[] = [
   },
   {
     path: "/dashboard",
-    load: () => authenticate("dashboard", "login"),
+    load: async () => await authenticate("dashboard", "login"),
     auth: true,
   },
 ];

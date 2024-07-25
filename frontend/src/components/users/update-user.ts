@@ -1,6 +1,6 @@
-import { fetchUserProfile, update } from "../utils/userApi.ts";
-import { createElement } from "../utils/createElement.ts";
-import { fetchHtml } from "../utils/fetchHtml.ts";
+import { fetchUserProfile, update } from "../../utils/userApi.ts";
+import { createElement } from "../../utils/createElement.ts";
+import { fetchHtml } from "../../utils/fetchHtml.ts";
 
 export const render = async () => {
   const container = createElement("div", {
