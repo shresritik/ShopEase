@@ -6,8 +6,9 @@ export interface ICard {
   category: string;
 }
 export default function Card(props: ICard) {
-  return `<div
-  class="relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96"
+  return `
+  <div
+  class="hover:cursor-pointer relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96"
 >
   <div
     class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96"

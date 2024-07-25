@@ -55,6 +55,14 @@ export async function getProductsByCategories(
     throw new Error(error.response.data.error);
   }
 }
+export async function getProductDetails(category: string, id: string) {
+  try {
+    const res = await axios.get(BASE_URL + `/api/products/${category}/${id}`);
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response.data.error);
+  }
+}
 export async function getProductByName(name: string) {
   try {
     const res = await axios.post(BASE_URL + "/api/products/me", {

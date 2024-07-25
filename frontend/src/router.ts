@@ -1,38 +1,87 @@
 import { isAuthenticated } from "./utils/auth.ts";
+
+interface RouteDefinition {
+  path: string;
+  load: () => Promise<any>;
+  auth?: boolean;
+}
+
 const authenticate = (dest: string, fallback: string) => {
   if (!isAuthenticated()) {
     window.history.pushState(null, "", `/${fallback}`);
-    return import(`./pages/${fallback}.ts`); // Redirect to login page
+    return import(`./pages/${fallback}.ts`);
   }
+  window.history.pushState(null, "", `/${dest}`);
   return import(`./pages/${dest}.ts`);
 };
-// router.ts
-const routes: { [key: string]: () => Promise<any> } = {
-  "/": async () => await import("./pages/products.ts"),
-  "/login": () => authenticate("dashboard", "login"),
-  "/register": () => import("./pages/register.ts"),
-  "/dashboard": () => authenticate("dashboard", "login"),
 
-  //   if (!isAuthenticated()) {
-  //     window.history.pushState(null, "", "/login");
-  //     return import("./pages/login.ts"); // Redirect to login page
-  //   }
-  //   return import("./pages/dashboard.ts");
-};
+const routes: RouteDefinition[] = [
+  { path: "/", load: () => import("./pages/products.ts") },
+  { path: "/login", load: () => authenticate("dashboard", "login") },
+  { path: "/register", load: () => authenticate("dashboard", "register") },
+  {
+    path: "/product/:category/:id",
+    load: () => import("./pages/product-details.ts"),
+  },
+  {
+    path: "/product/:category",
+    load: () => import("./pages/products-page.ts"),
+  },
+  {
+    path: "/dashboard",
+    load: () => authenticate("dashboard", "login"),
+    auth: true,
+  },
+];
 
 export const router = () => {
   const app = document.getElementById("app") as HTMLElement;
 
+  const matchRoute = (
+    path: string
+  ): { route: RouteDefinition; params: { [key: string]: string } } | null => {
+    for (const route of routes) {
+      const routeParts = route.path.split("/");
+      const pathParts = path.split("/");
+      if (routeParts.length !== pathParts.length) continue;
+      const params: { [key: string]: string } = {};
+      let match = true;
+
+      for (let i = 0; i < routeParts.length; i++) {
+        if (routeParts[i].startsWith(":")) {
+          params[routeParts[i].slice(1)] = pathParts[i];
+        } else if (routeParts[i] !== pathParts[i]) {
+          match = false;
+          break;
+        }
+      }
+      if (match) return { route, params };
+    }
+
+    return null;
+  };
+
   const navigate = async (path: string) => {
     try {
-      const route = routes[path] || routes["/"];
-      if (!route) {
+      const match = matchRoute(path);
+      if (!match) {
         console.error(`Route not found for path: ${path}`);
         return;
       }
-      const view = await route();
+
+      const { route, params } = match;
+
+      // if (route.auth && !isAuthenticated()) {
+      //   window.history.pushState(null, "", "/login");
+      //   const loginView = await import("./pages/login.ts");
+      //   app.innerHTML = "";
+      //   app.appendChild(await loginView.render());
+      //   return;
+      // }
+
+      const view = await route.load();
       app.innerHTML = "";
-      app.appendChild(await view.render());
+      app.appendChild(await view.render(params));
     } catch (error) {
       console.error(`Failed to navigate to ${path}:`, error);
     }

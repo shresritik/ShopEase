@@ -36,7 +36,11 @@ router.get(
   getProductsByCategory
 );
 router.post("/me", getProductByName);
-router.get("/:category/:id", getProductByCategoryAndId);
+router.get(
+  "/:category/:id",
+  validateReqQuery(getProductByQuerySchema),
+  getProductByCategoryAndId
+);
 router.delete(
   "/:id",
   authenticate(),

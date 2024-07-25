@@ -1,9 +1,11 @@
 import Card from "../components/card";
 import { getProductsArray } from "../components/products/render-products";
 import { createElement } from "../utils/createElement";
+import { dispatch } from "../utils/dispatch";
 
 // Define interfaces for your data structures
 interface Product {
+  id: number;
   pic: string;
   selling_price: number;
   product_name: string;
@@ -38,13 +40,23 @@ export const render = async (): Promise<HTMLElement> => {
       const categoryDiv = createElement("div", {
         className: "category p-10 ",
       });
-
       const categoryTitle = createElement("h1", {
         className: "text-xl font-bold mb-4",
       });
+      const viewTitle = createElement("h1", {
+        className: "view text-xl font-bold mb-4 cursor-pointer",
+      });
+      const titleDiv = createElement("div", {
+        className: "title p-10 flex justify-between",
+      });
       categoryTitle.textContent = category;
-      categoryDiv.appendChild(categoryTitle);
-
+      viewTitle.textContent = "View All";
+      titleDiv.appendChild(categoryTitle);
+      titleDiv.appendChild(viewTitle);
+      viewTitle.addEventListener("click", (e) => {
+        e.preventDefault();
+        dispatch(`/product/${category}`);
+      });
       const productsList = createElement("div", {
         className: "products-list flex gap-4",
       });
@@ -63,10 +75,15 @@ export const render = async (): Promise<HTMLElement> => {
         });
 
         productElement.innerHTML += card;
+        productElement.addEventListener("click", (e) => {
+          e.preventDefault();
+          dispatch(`/product/${prod.category.category_name}/${prod.id}`);
+        });
         productsList.appendChild(productElement);
       });
 
       categoryDiv.appendChild(productsList);
+      container.appendChild(titleDiv);
       container.appendChild(categoryDiv);
     }
   } catch (error) {

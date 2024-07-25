@@ -90,6 +90,7 @@ export const getProductByCategoryAndId = async (
         },
       },
     },
+    skip: 0,
   });
 };
 export const deleteProduct = async (id: number) => {
