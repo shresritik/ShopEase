@@ -1,4 +1,4 @@
-import Card from "../components/card";
+import Card from "../components/utils/card";
 import { getProductsArray } from "../components/products/render-products";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
