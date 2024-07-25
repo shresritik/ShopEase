@@ -2,6 +2,7 @@ import Card from "../components/utils/card";
 import { getProductsArray } from "../components/products/render-products";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
+import { cartStore, counterStore } from "../store";
 
 // Define interfaces for your data structures
 interface Product {
@@ -75,10 +76,46 @@ export const render = async (): Promise<HTMLElement> => {
         });
 
         productElement.innerHTML += card;
-        productElement.addEventListener("click", (e) => {
-          e.preventDefault();
-          dispatch(`/product/${prod.category.category_name}/${prod.id}`);
-        });
+        productElement
+          .querySelector(".card")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            dispatch(`/product/${prod.category.category_name}/${prod.id}`);
+          });
+
+        productElement
+          .querySelector(".plus")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            counterStore.dispatch({
+              type: "INCREMENT",
+              payload: { id: prod.id },
+            });
+          });
+        productElement
+          .querySelector(".minus")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            counterStore.dispatch({
+              type: "DECREMENT",
+              payload: { id: prod.id },
+            });
+          });
+        const qty = productElement.querySelector(".quantity");
+        counterStore.subscribe(
+          (state) =>
+            state[prod.id] <= prod.stock && (qty!.textContent = state[prod.id])
+        );
+        productElement
+          .querySelector(".cart")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            const quantity = counterStore.getState();
+            cartStore.dispatch({
+              type: "INCREMENT",
+              payload: { ...prod, stock: quantity[prod.id] },
+            });
+          });
         productsList.appendChild(productElement);
       });
 

@@ -7,16 +7,20 @@ import {
 } from "./interface/store";
 
 function createStore<S, A extends Action>(
+  stateName: string,
   initialState: S,
   reducer: Reducer<S, A>
 ) {
   let state = initialState;
   const listeners: Listener<S>[] = [];
   function getState() {
-    return state;
+    if (localStorage.getItem(stateName)) {
+      return JSON.parse(localStorage.getItem(stateName)!);
+    }
   }
   function dispatch(action: A): void {
     state = reducer(state, action);
+    localStorage.setItem(stateName, JSON.stringify(state));
     listeners.forEach((listener) => listener(state));
   }
 
@@ -27,18 +31,71 @@ function createStore<S, A extends Action>(
   return { getState, dispatch, subscribe };
 }
 
-// Example usage:
-
-const counterReducer: Reducer<any, any> = (state, action) => {
+const counterReducer = (state: any, action: any) => {
   switch (action.type) {
-    case "INCREMENT":
-      return state + (action.payload ?? 1);
-    case "DECREMENT":
-      return state - (action.payload ?? 1);
+    case "INCREMENT": {
+      const { id, amount = 1 } = action.payload;
+      return {
+        ...state,
+        [id]: (state[id] || 0) + amount,
+      };
+    }
+    case "DECREMENT": {
+      const { id, amount = 1 } = action.payload;
+      return {
+        ...state,
+        [id]: Math.max(0, (state[id] || 0) - amount),
+      };
+    }
     default:
       return state;
   }
 };
+
+const cartReducer: Reducer<any, any> = (state = [], action) => {
+  switch (action.type) {
+    case "INCREMENT": {
+      const { id, stock, pic, product_name, selling_price } = action.payload;
+      // Add the new product to the state
+
+      const newState = [
+        ...state,
+        { id, stock, pic, product_name, selling_price },
+      ];
+      if (!!cartStore.getState()) {
+        newState.push(...cartStore.getState());
+      }
+      // Combine products with the same id
+      const combinedState = newState.reduce((acc, product) => {
+        const existingProduct = acc.find((p: any) => p.id === product.id);
+        if (existingProduct) {
+          existingProduct.stock = product.stock;
+        } else {
+          acc.push(product);
+        }
+        return acc;
+      }, []);
+
+      return combinedState;
+    }
+    case "DECREMENT": {
+      const { id, stock } = action.payload;
+      const newState = state
+        .map((product: any) => {
+          if (product.id === id) {
+            return { ...product, stock: product.stock - stock };
+          }
+          return product;
+        })
+        .filter((product: any) => product.stock > 0);
+
+      return newState;
+    }
+    default:
+      return state;
+  }
+};
+
 const updateProdReducer: Reducer<any, CounterAction> = (state, action) => {
   switch (action.type) {
     case "STORE": {
@@ -50,11 +107,14 @@ const updateProdReducer: Reducer<any, CounterAction> = (state, action) => {
   }
 };
 
-export const counterStore = createStore<CounterState, CounterAction>(
-  0,
+export const cartStore = createStore<any, any>("cart", [], cartReducer);
+export const counterStore = createStore<any, any>(
+  "counter",
+  {},
   counterReducer
 );
-export const updateStore = createStore<any, CounterAction>(
+export const updateStore = createStore<any, any>(
+  "profile",
   {},
   updateProdReducer
 );

@@ -1,3 +1,4 @@
+import { navbarRender } from "./components/utils/navbar.ts";
 import { isAuthenticated } from "./utils/auth.ts";
 
 interface RouteDefinition {
@@ -106,3 +107,4 @@ export const router = () => {
   // Handle initial page load
   navigate(window.location.pathname);
 };
+navbarRender();

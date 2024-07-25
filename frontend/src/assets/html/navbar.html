@@ -1,11 +1,4 @@
-import { cartStore, counterStore, updateStore } from "../../store";
-import { isAuthenticated } from "../../utils/auth";
-import { fetchHtml } from "../../utils/fetchHtml";
-
-export const navbarRender = async () => {
-  const navbar = await fetchHtml("navbar");
-  document.getElementById("navbar")!.innerHTML = `
-  <header
+<header
   class="relative z-20 w-full border-b shadow-lg border-b-1 border-slate-200 bg-white/90 shadow-slate-700/5 after:absolute after:top-full after:left-0 after:z-10 after:block after:h-px after:w-full after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden"
 >
   <div
@@ -77,10 +70,7 @@ export const navbarRender = async () => {
             Orders
           </a>
         </li>
-        ${
-          !isAuthenticated()
-            ? `
-           <li role="none" class="flex items-stretch">
+        <li role="none" class="flex items-stretch">
           <a
             class="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
             data-link
@@ -89,11 +79,6 @@ export const navbarRender = async () => {
             Login
           </a>
         </li>
-          
-          `
-            : ""
-        }
-       
       </ul>
       <div class="flex items-center px-6">
         <svg
@@ -111,12 +96,10 @@ export const navbarRender = async () => {
           id="cartList"
           class="bg-red-500 text-white w-5 h-5 p-3 flex items-center justify-center rounded-full"
         >
-          ${!!cartStore.getState() ? cartStore.getState().length : 0}
+          0
         </p>
       </div>
-      ${
-        isAuthenticated()
-          ? `  <div class="flex items-center px-6 ml-auto lg:ml-0 lg:p-0">
+      <div class="flex items-center px-6 ml-auto lg:ml-0 lg:p-0">
         <!-- Avatar -->
         <a
           href="/dashboard"
@@ -133,16 +116,7 @@ export const navbarRender = async () => {
           />
         </a>
         <!-- End Avatar -->
-      </div>`
-          : ""
-      }
-    
+      </div>
     </nav>
   </div>
 </header>
-
-  
-  `;
-  const text = document.getElementById("cartList");
-  cartStore.subscribe((state) => (text!.innerText = "" + state.length));
-};
