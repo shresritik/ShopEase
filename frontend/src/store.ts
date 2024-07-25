@@ -12,7 +12,9 @@ function createStore<S, A extends Action>(
 ) {
   let state = initialState;
   const listeners: Listener<S>[] = [];
-
+  function getState() {
+    return state;
+  }
   function dispatch(action: A): void {
     state = reducer(state, action);
     listeners.forEach((listener) => listener(state));
@@ -22,15 +24,12 @@ function createStore<S, A extends Action>(
     listeners.push(listener);
   }
 
-  return { dispatch, subscribe };
+  return { getState, dispatch, subscribe };
 }
 
 // Example usage:
 
-const counterReducer: Reducer<CounterState, CounterAction> = (
-  state,
-  action
-) => {
+const counterReducer: Reducer<any, any> = (state, action) => {
   switch (action.type) {
     case "INCREMENT":
       return state + (action.payload ?? 1);
@@ -40,8 +39,22 @@ const counterReducer: Reducer<CounterState, CounterAction> = (
       return state;
   }
 };
+const updateProdReducer: Reducer<any, CounterAction> = (state, action) => {
+  switch (action.type) {
+    case "STORE": {
+      Object.assign(state, action.payload);
+      return state;
+    }
+    default:
+      return state;
+  }
+};
 
 export const counterStore = createStore<CounterState, CounterAction>(
   0,
   counterReducer
+);
+export const updateStore = createStore<any, CounterAction>(
+  {},
+  updateProdReducer
 );

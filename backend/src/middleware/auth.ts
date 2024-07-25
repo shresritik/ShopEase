@@ -25,6 +25,8 @@ export function authenticate(options: boolean = false) {
       return;
     }
     try {
+      console.log("user", token[1]);
+
       const user = verify(token[1], config.secret!) as IUser;
       logger.info("authenticate " + user.name);
       req.user = user;

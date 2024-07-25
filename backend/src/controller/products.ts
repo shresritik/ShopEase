@@ -1,7 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, query, Request, Response } from "express";
 import {
   createAProduct,
   deleteAProducts,
+  getAProduct,
   getAProductByCategoryAndId,
   getCategories,
   getProductCategory,
@@ -16,7 +17,8 @@ export const getAllProducts = async (
   next: NextFunction
 ) => {
   try {
-    const products = await getProducts();
+    const { query } = req;
+    const products = await getProducts(query);
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {
     next(error);
@@ -41,7 +43,8 @@ export const getProductByCategoryAndId = async (
 ) => {
   try {
     const { category, id } = req.params;
-    const products = await getAProductByCategoryAndId(category, +id);
+    const { query } = req;
+    const products = await getAProductByCategoryAndId(category, +id, query);
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {
     next(error);
@@ -67,7 +70,6 @@ export const createProduct = async (
 ) => {
   try {
     const { body, user, file } = req;
-
     const products = await createAProduct(user?.id!, {
       ...body,
       pic: file?.filename,
@@ -99,8 +101,22 @@ export const getProductsByCategory = async (
 ) => {
   try {
     const { category } = req.params;
+    const { query } = req;
+    const products = await getProductCategory(category, query);
+    res.status(HttpStatusCode.OK).json(products);
+  } catch (error) {
+    next(error);
+  }
+};
+export const getProductByName = async (
+  req: IRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { body } = req;
 
-    const products = await getProductCategory(category);
+    const products = await getAProduct(body.product_name);
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {
     next(error);

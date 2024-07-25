@@ -52,7 +52,7 @@ export const render = async () => {
         errorElement.classList.remove("hidden");
       }
     });
-
+    // TODO Admin level update
     inputs.forEach((input) => {
       input.addEventListener("input", () => {
         const errorElement = form.querySelector(".error") as HTMLElement;

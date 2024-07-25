@@ -2,7 +2,7 @@ import { removeToken } from "../utils/auth";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import { fetchHtml } from "../utils/fetchHtml";
-import * as Update from "../components/update";
+import * as Update from "../components/update-user";
 import * as Delete from "../components/deleteUser";
 import * as User from "./register";
 import * as Product from "../components/products/create-products";
@@ -47,7 +47,6 @@ export const render = () => {
         rightElement.innerHTML = ""; // Clear right element
 
         if (classArray.includes("orders")) {
-          console.log("orders");
           // Add orders related content here
         } else if (classArray.includes("profile")) {
           const update = await Update.render();
@@ -71,7 +70,7 @@ export const render = () => {
           createProduct.classList.add("create-product");
           rightElement.appendChild(createProduct);
         } else if (classArray.includes("update-product")) {
-          const createProduct = await Product.render();
+          const createProduct = await Product.render(false);
 
           createProduct.classList.add("update-Product");
           rightElement.appendChild(createProduct);

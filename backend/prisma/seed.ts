@@ -19,6 +19,7 @@ const productData: IProduct[] = [
     avg_rating: 4,
     total_review: 3.5,
     createdBy: 1,
+    stock: 5,
   },
   {
     product_name: "Utsav Bread",
@@ -29,6 +30,7 @@ const productData: IProduct[] = [
     avg_rating: 4,
     total_review: 3.5,
     createdBy: 1,
+    stock: 2,
   },
 ];
 const roleData = [

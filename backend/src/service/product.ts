@@ -1,8 +1,9 @@
 import { NotFound } from "../error";
 import { IProduct } from "../interface/product";
+import { IQuery } from "../interface/utils";
 import * as ProductModel from "../model/product";
-export const getProducts = async () => {
-  const products = await ProductModel.getAllProducts();
+export const getProducts = async (query: IQuery) => {
+  const products = await ProductModel.getAllProducts(query);
   return products;
 };
 export const getCategories = async () => {
@@ -23,7 +24,7 @@ export const deleteAProducts = async (id: number) => {
 export const createAProduct = async (userId: number, product: IProduct) => {
   const products = await ProductModel.createProduct(userId, {
     ...product,
-    pic: `http:localhost:8000/static/products/${product.pic}`,
+    pic: `http://localhost:8000/static/products/${product.pic}`,
   });
   return products;
 };
@@ -42,10 +43,11 @@ export const updateAProduct = async (
 };
 export const getAProductByCategoryAndId = async (
   category: string,
-  id: number
+  id: number,
+  query: IQuery
 ) => {
   const prodId = await ProductModel.getProductById(id);
-  const prodCat = await ProductModel.getProductsByCategory(category);
+  const prodCat = await ProductModel.getProductsByCategory(category, query);
   console.log(prodId, prodCat);
   if (!prodId && !prodCat)
     throw new NotFound(
@@ -53,6 +55,14 @@ export const getAProductByCategoryAndId = async (
     );
   return await ProductModel.getProductByCategoryAndId(category, id);
 };
-export const getProductCategory = async (category: string) => {
-  return await ProductModel.getProductsByCategory(category);
+export const getProductCategory = async (category: string, query: IQuery) => {
+  const cat = await ProductModel.getProductsByCategory(category, query);
+  if (cat.length == 0 || !cat)
+    throw new NotFound(`Category ${category} not found`);
+  return cat;
+};
+export const getAProduct = async (name: string) => {
+  const prod = await ProductModel.getProductByName(name);
+  if (!prod) throw new NotFound(`Product ${name} not found`);
+  return prod;
 };

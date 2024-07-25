@@ -9,4 +9,5 @@ export interface IProduct {
   category_id: number;
   total_review?: number;
   createdBy: number;
+  stock: number;
 }

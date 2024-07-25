@@ -7,11 +7,14 @@ import {
   updateProduct,
   getProductsByCategory,
   getAllCategories,
+  getProductByName,
 } from "../controller/products";
 import { authenticate, authorize } from "../middleware/auth";
 import { uploadProduct } from "../utils/fileUpload";
+import { validateReqQuery } from "../middleware/validator";
+import { getProductByQuerySchema } from "../schema/products";
 const router = express();
-router.get("/", getAllProducts);
+router.get("/", validateReqQuery(getProductByQuerySchema), getAllProducts);
 router.get("/categories", getAllCategories);
 router.post(
   "/",
@@ -27,7 +30,12 @@ router.put(
   authorize(["SUPER_ADMIN_POST", "ADMIN_POST"]),
   updateProduct
 );
-router.get("/:category", getProductsByCategory);
+router.get(
+  "/:category",
+  validateReqQuery(getProductByQuerySchema),
+  getProductsByCategory
+);
+router.post("/me", getProductByName);
 router.get("/:category/:id", getProductByCategoryAndId);
 router.delete(
   "/:id",

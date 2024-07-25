@@ -8,10 +8,11 @@ const authenticate = (dest: string, fallback: string) => {
 };
 // router.ts
 const routes: { [key: string]: () => Promise<any> } = {
-  "/": async () => await import("./pages/login.ts"),
-  "/login": async () => await authenticate("dashboard", "login"),
-  "/register": async () => await import("./pages/register.ts"),
-  "/dashboard": async () => await authenticate("dashboard", "login"),
+  "/": async () => await import("./pages/products.ts"),
+  "/login": () => authenticate("dashboard", "login"),
+  "/register": () => import("./pages/register.ts"),
+  "/dashboard": () => authenticate("dashboard", "login"),
+
   //   if (!isAuthenticated()) {
   //     window.history.pushState(null, "", "/login");
   //     return import("./pages/login.ts"); // Redirect to login page
@@ -31,7 +32,7 @@ export const router = () => {
       }
       const view = await route();
       app.innerHTML = "";
-      app.appendChild(view.render());
+      app.appendChild(await view.render());
     } catch (error) {
       console.error(`Failed to navigate to ${path}:`, error);
     }

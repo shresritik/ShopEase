@@ -90,8 +90,9 @@ model Product {
   id             Int             @id @default(autoincrement())
   product_name   String
   description    String?
-  pic            String?
+  pic            String?         @default("http://localhost:8000/static/products/default-product-image.png")
   cost_price     Decimal         @db.Decimal(10, 2)
+  stock          Int             @default(0)
   selling_price  Decimal         @db.Decimal(10, 2)
   category       Category?       @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   category_id    Int // Foreign key for Category
@@ -141,4 +142,6 @@ model Order_Product {
   order_id   Int
   product    Product? @relation("order_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   product_id Int
+  quantity   Int      @default(0)
+  net_amount Decimal  @db.Decimal(10, 2)
 }
