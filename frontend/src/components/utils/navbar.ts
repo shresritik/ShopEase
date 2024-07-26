@@ -153,6 +153,7 @@ export const navbarRender = async () => {
     <div class="relative h-10 w-full min-w-[200px]">
      
       <div id="sidebar-content" class="flex flex-col">
+      <h1>Cart is empty</h1>
       </div>
       
     </div>
@@ -165,6 +166,7 @@ export const navbarRender = async () => {
   const sidebarContent = document.querySelector("#sidebar-content");
   function sidebarText(state: any) {
     sidebarContent!.innerHTML = "";
+    console.log(state);
     if (state.length > 0) {
       state.forEach((prod) => {
         sidebarContent!.innerHTML += `
@@ -226,6 +228,8 @@ export const navbarRender = async () => {
           });
         });
       });
+    } else {
+      sidebarContent!.innerHTML = "Cart is empty";
     }
   }
 
