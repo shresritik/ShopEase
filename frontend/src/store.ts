@@ -32,7 +32,7 @@ function createStore<S, A extends Action>(
 
   function subscribe(listener: Listener<S>): void {
     listeners.push(listener);
-    listener(state); // Call the listener immediately with the current state
+    listener(state);
   }
 
   return { getState, dispatch, subscribe };
@@ -54,6 +54,11 @@ const counterReducer = (state: any, action: any) => {
         ...state,
         [id]: Math.max(0, (state[id] || 0) - amount),
       };
+    }
+    case "RESET": {
+      state = [];
+      localStorage.removeItem("counter");
+      return state;
     }
     default:
       return state;
@@ -101,6 +106,12 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
       const existingProduct = newState.findIndex((p: any) => p.id == id);
       newState.splice(existingProduct, 1);
       return newState;
+    }
+    case "RESET": {
+      state = [];
+      localStorage.removeItem("cart");
+      counterStore.dispatch({ type: "RESET" });
+      return state;
     }
     default:
       return state;

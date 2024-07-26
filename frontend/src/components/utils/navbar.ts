@@ -1,6 +1,5 @@
-import { cartStore, counterStore, updateStore } from "../../store";
+import { cartStore, counterStore } from "../../store";
 import { isAuthenticated } from "../../utils/auth";
-import { fetchHtml } from "../../utils/fetchHtml";
 
 export const navbarRender = async () => {
   document.getElementById("navbar")!.innerHTML = `
@@ -166,13 +165,20 @@ export const navbarRender = async () => {
   const sidebar = document.querySelector("#sidebar-cart");
   const sidebarContent = document.querySelector("#sidebar-content");
 
-  function sidebarText(cartState: any) {
+  function updateSidebarContent() {
+    const cartState = cartStore.getState();
+    const counterState = counterStore.getState();
     sidebarContent!.innerHTML = "";
+    let totalAmount = 0;
+
     if (cartState.length > 0) {
       cartState.forEach((prod) => {
-        const quantity = counterStore.getState()[prod.id] || 0;
+        const quantity = counterState[prod.id] || 0;
+        const prodTotal = quantity * prod.selling_price;
+        totalAmount += prodTotal;
+
         sidebarContent!.innerHTML += `
-      <div class="flex gap-4 justify-start items-center">
+      <div class="flex gap-4 justify-start items-center border-b-2 py-3">
         <img src="${prod.pic}" class="w-12 object-contain">
         <h1 class="w-28">${prod.product_name}</h1>
         <div class="flex justify-center items-center gap-1">
@@ -180,11 +186,26 @@ export const navbarRender = async () => {
           <p class="quantity" data-id="${prod.id}">${quantity}</p>
           <button data-prod="${prod.id}" class="minus bg-gray-900 block w-maxselect-none text-white m-1 w-8 text-xl">-</button>
         </div>
-        <h1>Price: Rs.${prod.selling_price}</h1>
+        <h1 class="w-10">Price: Rs.${prod.selling_price}</h1>
+        <h1 class="w-10">Total: Rs.${prodTotal}</h1>
         <button data-prod="${prod.id}" class="remove bg-red-500 text-white px-5 py-2">X</button>
       </div>`;
       });
 
+      sidebarContent!.innerHTML += `
+      <div class="flex flex-col justify-end items-center mt-4 gap-2">
+        <h1 class="text-lg font-bold">Subtotal: Rs.${totalAmount}</h1>
+      <button id="order" class=" block w-full select-none rounded-lg bg-orange-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-orange-900/10 transition-all hover:shadow-lg hover:shadow-orange-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Order</button>
+      <button id="reset"     class="  block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+>Reset</button>
+        '
+      </div>`;
+      sidebarContent!
+        .querySelector("#reset")!
+        .addEventListener("click", (e) => {
+          e.preventDefault();
+          cartStore.dispatch({ type: "RESET" });
+        });
       sidebarContent!.querySelectorAll(".plus").forEach((plus) => {
         plus.addEventListener("click", function (e) {
           e.preventDefault();
@@ -226,13 +247,9 @@ export const navbarRender = async () => {
     }
   }
 
-  // Updating quantities when counterStore changes
-  counterStore.subscribe((counterState) => {
-    const quantities = sidebarContent?.querySelectorAll(".quantity");
-    quantities?.forEach((q) => {
-      const prodId = q.getAttribute("data-id");
-      q.textContent = counterState[prodId] || "0";
-    });
+  // Updating quantities and total amount when counterStore changes
+  counterStore.subscribe(() => {
+    updateSidebarContent();
   });
 
   // Toggle sidebar visibility on cart icon click
@@ -243,8 +260,7 @@ export const navbarRender = async () => {
   });
 
   // Subscribe to cartStore to update sidebar content
-  cartStore.subscribe(sidebarText);
+  cartStore.subscribe(updateSidebarContent);
+
   cartStore.subscribe((state) => (text!.innerText = "" + state.length));
-  // Initial rendering of the cart count
-  // text!.innerText = `${cartStore.getState().length}`;
 };

@@ -102,10 +102,11 @@ export const render = async (): Promise<HTMLElement> => {
             });
           });
         const qty = productElement.querySelector(".quantity");
-        counterStore.subscribe(
-          (state) =>
-            state[prod.id] <= prod.stock && (qty!.textContent = state[prod.id])
-        );
+        counterStore.subscribe((state) => {
+          if (!state[prod.id]) qty!.textContent = "0";
+          else
+            state[prod.id] <= prod.stock && (qty!.textContent = state[prod.id]);
+        });
         productElement
           .querySelector(".cart")
           ?.addEventListener("click", (e) => {
