@@ -5,7 +5,7 @@ import {
   Listener,
   Reducer,
 } from "./interface/store";
-import { removeToken } from "./utils/auth";
+import { userProfileReducer } from "./reducers/userReducer";
 
 function createStore<S, A extends Action>(
   stateName: string,
@@ -14,14 +14,8 @@ function createStore<S, A extends Action>(
 ) {
   let state = initialState;
   const listeners: Listener<S>[] = [];
-
   function getState() {
-    const storedState = localStorage.getItem(stateName);
-    if (storedState) {
-      state = JSON.parse(storedState);
-    } else {
-      state = initialState;
-    }
+    if (!state || state.length) return (state = initialState);
     return state;
   }
 
@@ -32,8 +26,8 @@ function createStore<S, A extends Action>(
   }
 
   function subscribe(listener: Listener<S>): void {
+    state = getState();
     listeners.push(listener);
-    listener(state);
   }
 
   return { getState, dispatch, subscribe };
@@ -43,6 +37,7 @@ const counterReducer = (state: any, action: any) => {
   switch (action.type) {
     case "INCREMENT": {
       const { id, amount = 1, qty } = action.payload;
+      console.log(action.payload);
       return {
         ...state,
         [id]:
@@ -56,11 +51,7 @@ const counterReducer = (state: any, action: any) => {
         [id]: Math.max(0, (state[id] || 0) - amount),
       };
     }
-    case "RESET": {
-      state = [];
-      localStorage.removeItem("counter");
-      return state;
-    }
+
     default:
       return state;
   }
@@ -71,6 +62,8 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
     case "INCREMENT": {
       const { id, stock, qty, pic, product_name, selling_price } =
         action.payload;
+      // Add the new product to the state
+
       const newState = [
         ...state,
         { id, stock, qty, pic, product_name, selling_price },
@@ -78,6 +71,7 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
       if (!!cartStore.getState()) {
         newState.push(...cartStore.getState());
       }
+      // Combine products with the same id
       const combinedState = newState.reduce((acc, product) => {
         const existingProduct = acc.find((p: any) => p.id == product.id);
         if (existingProduct) {
@@ -87,6 +81,7 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
         }
         return acc;
       }, []);
+
       return combinedState;
     }
     case "DECREMENT": {
@@ -99,6 +94,7 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
           return product;
         })
         .filter((product: any) => product.stock > 0);
+
       return newState;
     }
     case "REMOVE": {
@@ -108,32 +104,16 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
       newState.splice(existingProduct, 1);
       return newState;
     }
-    case "RESET": {
-      state = [];
-      localStorage.removeItem("cart");
-      counterStore.dispatch({ type: "RESET" });
-      return state;
-    }
+    // case "RESET": {
+    //   state = [];
+    //   localStorage.removeItem("cart");
+    //   return state;
+    // }
     default:
       return state;
   }
 };
-const userProfileReducer: Reducer<any, CounterAction> = (state, action) => {
-  switch (action.type) {
-    case "STORE": {
-      Object.assign(state, action.payload);
-      return state;
-    }
-    case "RESET": {
-      state = {};
-      removeToken();
-      localStorage.removeItem("user-profile");
-      return state;
-    }
-    default:
-      return state;
-  }
-};
+
 const updateProdReducer: Reducer<any, CounterAction> = (state, action) => {
   switch (action.type) {
     case "STORE": {

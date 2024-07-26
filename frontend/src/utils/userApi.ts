@@ -35,7 +35,6 @@ export const update = async (
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -49,7 +48,6 @@ export const register = async (data: FormData): Promise<void> => {
     await axios.post(BASE_URL + "/api/users", data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
   } catch (error: any) {
@@ -74,9 +72,7 @@ export const fetchWithAuth = async (
     const response = await fetch(url, options);
 
     if (response.status === 401) {
-      // Handle token expiration
       await refreshToken();
-      // Retry the request with a new token
       const newToken = getToken();
       if (newToken) {
         options.headers = {
@@ -90,7 +86,7 @@ export const fetchWithAuth = async (
     return response;
   } catch (error) {
     console.error("API request failed:", error);
-    throw error; // Optionally rethrow to handle at the calling site
+    throw error;
   }
 };
 export const fetchUserProfile = async () => {

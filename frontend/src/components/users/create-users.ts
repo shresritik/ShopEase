@@ -1,7 +1,7 @@
-import { register } from "../utils/userApi.ts";
-import { createElement } from "../utils/createElement.ts";
-import { dispatch } from "../utils/dispatch.ts";
-import { fetchHtml } from "../utils/fetchHtml.ts";
+import { register } from "../../utils/userApi.ts";
+import { createElement } from "../../utils/createElement.ts";
+import { dispatch } from "../../utils/dispatch.ts";
+import { fetchHtml } from "../../utils/fetchHtml.ts";
 
 export const render = () => {
   const container = createElement("div", {
