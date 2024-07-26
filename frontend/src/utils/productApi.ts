@@ -42,13 +42,13 @@ export async function getCategories() {
     throw new Error(error.response.data.error);
   }
 }
-export async function getProductsByCategories(
-  category: string,
-  size: string = "4"
-) {
+export async function getProductsByCategories(category: string, size?: string) {
+  console.log(size);
   try {
+    const sizeCheck = size ? `?size=${size}` : "";
+    console.log(sizeCheck);
     const res = await axios.get(
-      BASE_URL + "/api/products/" + category + `?size=${size}`
+      BASE_URL + "/api/products/" + category + sizeCheck
     );
     return res.data;
   } catch (error: any) {

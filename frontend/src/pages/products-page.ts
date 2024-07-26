@@ -5,15 +5,15 @@ import { getProductsByCategories } from "../utils/productApi";
 
 export const render = async (params: { category: string }) => {
   const container = createElement("div", {
-    className: "flex flex-col justify-center gap-2  w-max mx-auto",
+    className: "flex flex-col justify-center gap-2 w-full  py-20 ",
   });
   const productsList = createElement("div", {
-    className: "products-list flex gap-4",
+    className: "products-list grid grid-cols-4 w-full justify-center gap-4",
   });
   const products = await getProductsByCategories(params.category);
   products.forEach((prod: any) => {
     const productElement = createElement("div", {
-      className: "product",
+      className: "product flex justify-center",
     });
 
     const card = Card({
@@ -27,7 +27,7 @@ export const render = async (params: { category: string }) => {
     productElement.innerHTML += card;
     productElement.addEventListener("click", (e) => {
       e.preventDefault();
-      dispatch(`/product/${prod.category.category_name}/${prod.id}`);
+      dispatch(`/products/${prod.category.category_name}/${prod.id}`);
     });
     productsList.appendChild(productElement);
   });

@@ -178,7 +178,7 @@ export const navbarRender = async () => {
   </div>
 
     
-    <h1>Rs.${prod.selling_price}</h1>
+    <h1>Price: Rs.${prod.selling_price}</h1>
     <button data-prod="${prod.id}" class="remove bg-red-500 text-white px-5 py-2">X</button>
     
     </div>

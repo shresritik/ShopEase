@@ -17,16 +17,17 @@ const authenticate = (dest: string, fallback: string) => {
 };
 
 const routes: RouteDefinition[] = [
-  { path: "/", load: () => import("./pages/products.ts") },
+  { path: "/", load: () => import("./pages/homepage.ts") },
+  { path: "/products", load: () => import("./pages/products.ts") },
   { path: "/login", load: () => authenticate("dashboard", "login") },
   { path: "/register", load: () => authenticate("dashboard", "register") },
   {
-    path: "/product/:category/:id",
+    path: "/products/:category/:id",
     load: () => import("./pages/product-details.ts"),
   },
   {
-    path: "/product/:category",
-    load: () => import("./pages/products-page.ts"),
+    path: "/products/:category",
+    load: () => import("./pages/products.ts"),
   },
   {
     path: "/dashboard",

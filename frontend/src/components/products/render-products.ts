@@ -6,7 +6,7 @@ export const getProductsArray = async () => {
     const categories = await getCategories();
     for (const category of categories) {
       const categoryName = category.category_name;
-      const products = await getProductsByCategories(categoryName);
+      const products = await getProductsByCategories(categoryName, "4");
       categorizedProducts[categoryName] = products;
     }
   } catch (error) {
