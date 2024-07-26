@@ -160,32 +160,31 @@ export const navbarRender = async () => {
   </div>
 </div>
 `;
+
   const text = document.getElementById("cartList");
   const cartIcon = document.querySelector("#cartIcon");
   const sidebar = document.querySelector("#sidebar-cart");
   const sidebarContent = document.querySelector("#sidebar-content");
-  function sidebarText(state: any) {
+
+  function sidebarText(cartState: any) {
     sidebarContent!.innerHTML = "";
-    console.log(state);
-    if (state.length > 0) {
-      state.forEach((prod) => {
+    if (cartState.length > 0) {
+      cartState.forEach((prod) => {
+        const quantity = counterStore.getState()[prod.id] || 0;
         sidebarContent!.innerHTML += `
       <div class="flex gap-4 justify-start items-center">
-    <img src="${prod.pic}" class="w-12 object-contain">
-    <h1 class="w-28">${prod.product_name}</h1>
-         <div class="flex justify-center items-center gap-1">
-    <button data-prod="${prod.id}" data-qty="${prod.stock}" class="plus bg-gray-900  block w-maxselect-none  text-white m-1 w-8 text-xl ">+</button>
-    <p class="quantity" data-id="${prod.id}">0</p>
-        <button data-prod="${prod.id}" class="minus bg-gray-900  block w-maxselect-none  text-white m-1 w-8 text-xl ">-</button>
-  </div>
-
-    
-    <h1>Price: Rs.${prod.selling_price}</h1>
-    <button data-prod="${prod.id}" class="remove bg-red-500 text-white px-5 py-2">X</button>
-    
-    </div>
-    `;
+        <img src="${prod.pic}" class="w-12 object-contain">
+        <h1 class="w-28">${prod.product_name}</h1>
+        <div class="flex justify-center items-center gap-1">
+          <button data-prod="${prod.id}" data-qty="${prod.stock}" class="plus bg-gray-900 block w-maxselect-none text-white m-1 w-8 text-xl">+</button>
+          <p class="quantity" data-id="${prod.id}">${quantity}</p>
+          <button data-prod="${prod.id}" class="minus bg-gray-900 block w-maxselect-none text-white m-1 w-8 text-xl">-</button>
+        </div>
+        <h1>Price: Rs.${prod.selling_price}</h1>
+        <button data-prod="${prod.id}" class="remove bg-red-500 text-white px-5 py-2">X</button>
+      </div>`;
       });
+
       sidebarContent!.querySelectorAll(".plus").forEach((plus) => {
         plus.addEventListener("click", function (e) {
           e.preventDefault();
@@ -195,8 +194,9 @@ export const navbarRender = async () => {
           });
         });
       });
-      sidebarContent!.querySelectorAll(".minus").forEach((plus) => {
-        plus.addEventListener("click", function (e) {
+
+      sidebarContent!.querySelectorAll(".minus").forEach((minus) => {
+        minus.addEventListener("click", function (e) {
           e.preventDefault();
           counterStore.dispatch({
             type: "DECREMENT",
@@ -204,47 +204,47 @@ export const navbarRender = async () => {
           });
         });
       });
-      const qty = sidebarContent?.querySelectorAll(".quantity");
-      counterStore.subscribe((state) => {
-        qty?.forEach((q) => {
-          const prodId = q.getAttribute("data-id");
-          Object.keys(state).forEach((loop) => {
-            if (loop == prodId) {
-              q.textContent = !!state[prodId] ? state[prodId] : 0;
-              // state[prodId] <= prod.stock &&
-              //   (qty!.textContent = state[prod.id]);
-            }
-          });
-        });
-      });
 
-      const removeButtons = sidebarContent!.querySelectorAll(".remove");
-      removeButtons.forEach((button) => {
-        button.addEventListener("click", function (e) {
+      sidebarContent!.querySelectorAll(".remove").forEach((remove) => {
+        remove.addEventListener("click", function (e) {
           e.preventDefault();
           cartStore.dispatch({
             type: "REMOVE",
             payload: { id: this.dataset.prod },
           });
+          counterStore.dispatch({
+            type: "DECREMENT",
+            payload: {
+              id: this.dataset.prod,
+              amount: counterStore.getState()[this.dataset.prod],
+            },
+          });
         });
       });
     } else {
-      sidebarContent!.innerHTML = "Cart is empty";
+      sidebarContent!.innerHTML = "<h1>Cart is empty</h1>";
     }
   }
 
+  // Updating quantities when counterStore changes
+  counterStore.subscribe((counterState) => {
+    const quantities = sidebarContent?.querySelectorAll(".quantity");
+    quantities?.forEach((q) => {
+      const prodId = q.getAttribute("data-id");
+      q.textContent = counterState[prodId] || "0";
+    });
+  });
+
+  // Toggle sidebar visibility on cart icon click
   cartIcon?.addEventListener("click", (e) => {
     e.preventDefault();
     sidebar?.classList.toggle("translate-x-0");
     sidebar?.classList.toggle("translate-x-full");
   });
+
+  // Subscribe to cartStore to update sidebar content
   cartStore.subscribe(sidebarText);
-  document.getElementById("reset")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    cartStore.dispatch({ type: "RESET" });
-    console.log(cartStore.getState());
-  });
-  // const values = cartStore.getState();
-  // sidebarText(values);
   cartStore.subscribe((state) => (text!.innerText = "" + state.length));
+  // Initial rendering of the cart count
+  // text!.innerText = `${cartStore.getState().length}`;
 };

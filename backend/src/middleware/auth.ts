@@ -20,7 +20,6 @@ export function authenticate(options: boolean = false) {
       return;
     }
     const token = authorization?.split(" ");
-    console.log(token);
     if (token?.length != 2 || token[0] != "Bearer") {
       next(new UnauthorizedError("No token found"));
       return;
