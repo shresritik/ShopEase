@@ -2,6 +2,7 @@ import { IProduct } from "../../interface/product";
 import { cartStore, counterStore } from "../../store";
 import { BaseCart } from "./BaseCart";
 export function updateSidebarContent(sidebarContent: HTMLElement) {
+  console.log(sidebarContent);
   const cartState = cartStore.getState();
   const counterState = counterStore.getState();
   sidebarContent!.innerHTML = "";
