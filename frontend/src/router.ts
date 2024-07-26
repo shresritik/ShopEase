@@ -1,4 +1,4 @@
-import { navbarRender } from "./components/utils/navbar.ts";
+import { navbarRender } from "./components/utils/header.ts";
 import { isAuthenticated } from "./utils/auth.ts";
 
 interface RouteDefinition {

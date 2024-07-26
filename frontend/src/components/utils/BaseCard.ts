@@ -5,7 +5,7 @@ export interface ICard {
   img: string;
   category: string;
 }
-export default function Card(props: ICard) {
+export default function BaseCard(props: ICard) {
   return `
   <div
   class="hover:cursor-pointer relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96"

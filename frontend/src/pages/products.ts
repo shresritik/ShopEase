@@ -1,34 +1,20 @@
-import Card from "../components/utils/card";
+import Card from "../components/utils/BaseCard";
 import { getProductsArray } from "../components/products/render-products";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import { cartStore, counterStore } from "../store";
 import { getAllProducts, getProductsByCategories } from "../utils/productApi";
+import { IProduct } from "../interface/product";
+import { CardFunction } from "../types/card";
+import { CardWrapper } from "../components/utils/CardWrapper";
 
 // Define interfaces for your data structures
-interface Product {
-  id: number;
-  pic: string;
-  selling_price: number;
-  product_name: string;
-  stock: number;
-  category: {
-    category_name: string;
-  };
-}
 
 interface CategorizedProducts {
-  [category: string]: Product[];
+  [category: string]: IProduct[];
 }
 
 // Define the type for the Card function
-type CardFunction = (props: {
-  img: string;
-  price: number;
-  title: string;
-  qty: number;
-  category: string;
-}) => string;
 
 export const render = async (params: {
   category: string;
@@ -58,53 +44,8 @@ export const render = async (params: {
       page.appendChild(categoryTitle);
     }
 
-    products.forEach((prod: Product) => {
-      const productElement = createElement("div", {
-        className: "products",
-      });
-
-      const card = (Card as CardFunction)({
-        img: prod.pic,
-        price: prod.selling_price,
-        title: prod.product_name,
-        qty: prod.stock,
-        category: prod.category.category_name,
-      });
-
-      productElement.innerHTML += card;
-      productElement.querySelector(".card")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        dispatch(`/products/${prod.category.category_name}/${prod.id}`);
-      });
-
-      productElement.querySelector(".plus")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        counterStore.dispatch({
-          type: "INCREMENT",
-          payload: { id: prod.id, qty: prod.stock },
-        });
-      });
-      productElement.querySelector(".minus")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        counterStore.dispatch({
-          type: "DECREMENT",
-          payload: { id: prod.id },
-        });
-      });
-      const qty = productElement.querySelector(".quantity");
-      counterStore.subscribe((state) => {
-        if (!state[prod.id]) qty!.textContent = "0";
-        else
-          state[prod.id] <= prod.stock && (qty!.textContent = state[prod.id]);
-      });
-      productElement.querySelector(".cart")?.addEventListener("click", (e) => {
-        e.preventDefault();
-        const quantity = counterStore.getState();
-        cartStore.dispatch({
-          type: "INCREMENT",
-          payload: { ...prod, qty: quantity[prod.id], stock: prod.stock },
-        });
-      });
+    products.forEach((prod: IProduct) => {
+      const productElement = CardWrapper(prod);
       productList.appendChild(productElement);
       container.appendChild(page);
     });

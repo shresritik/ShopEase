@@ -5,6 +5,7 @@ import {
   Listener,
   Reducer,
 } from "./interface/store";
+import { removeToken } from "./utils/auth";
 
 function createStore<S, A extends Action>(
   stateName: string,
@@ -117,7 +118,22 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
       return state;
   }
 };
-
+const userProfileReducer: Reducer<any, CounterAction> = (state, action) => {
+  switch (action.type) {
+    case "STORE": {
+      Object.assign(state, action.payload);
+      return state;
+    }
+    case "RESET": {
+      state = {};
+      removeToken();
+      localStorage.removeItem("user-profile");
+      return state;
+    }
+    default:
+      return state;
+  }
+};
 const updateProdReducer: Reducer<any, CounterAction> = (state, action) => {
   switch (action.type) {
     case "STORE": {
@@ -139,4 +155,9 @@ export const updateStore = createStore<any, any>(
   "profile",
   {},
   updateProdReducer
+);
+export const userProfileStore = createStore<any, any>(
+  "user-profile",
+  {},
+  userProfileReducer
 );
