@@ -89,7 +89,7 @@ export const render = async (): Promise<HTMLElement> => {
             e.preventDefault();
             counterStore.dispatch({
               type: "INCREMENT",
-              payload: { id: prod.id },
+              payload: { id: prod.id, qty: prod.stock },
             });
           });
         productElement
@@ -113,12 +113,11 @@ export const render = async (): Promise<HTMLElement> => {
             const quantity = counterStore.getState();
             cartStore.dispatch({
               type: "INCREMENT",
-              payload: { ...prod, stock: quantity[prod.id] },
+              payload: { ...prod, qty: quantity[prod.id], stock: prod.stock },
             });
           });
         productsList.appendChild(productElement);
       });
-
       categoryDiv.appendChild(productsList);
       container.appendChild(titleDiv);
       container.appendChild(categoryDiv);

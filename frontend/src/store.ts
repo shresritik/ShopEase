@@ -14,9 +14,8 @@ function createStore<S, A extends Action>(
   let state = initialState;
   const listeners: Listener<S>[] = [];
   function getState() {
-    if (localStorage.getItem(stateName)) {
-      return JSON.parse(localStorage.getItem(stateName)!);
-    }
+    if (!state || state.length) return (state = initialState);
+    return state;
   }
   function dispatch(action: A): void {
     state = reducer(state, action);
@@ -25,6 +24,7 @@ function createStore<S, A extends Action>(
   }
 
   function subscribe(listener: Listener<S>): void {
+    state = getState();
     listeners.push(listener);
   }
 
@@ -34,10 +34,12 @@ function createStore<S, A extends Action>(
 const counterReducer = (state: any, action: any) => {
   switch (action.type) {
     case "INCREMENT": {
-      const { id, amount = 1 } = action.payload;
+      const { id, amount = 1, qty } = action.payload;
+      console.log(action.payload);
       return {
         ...state,
-        [id]: (state[id] || 0) + amount,
+        [id]:
+          qty > (state[id] || 0) ? (state[id] || 0) + amount : state[id] || 0,
       };
     }
     case "DECREMENT": {
@@ -47,6 +49,7 @@ const counterReducer = (state: any, action: any) => {
         [id]: Math.max(0, (state[id] || 0) - amount),
       };
     }
+
     default:
       return state;
   }
@@ -55,21 +58,22 @@ const counterReducer = (state: any, action: any) => {
 const cartReducer: Reducer<any, any> = (state = [], action) => {
   switch (action.type) {
     case "INCREMENT": {
-      const { id, stock, pic, product_name, selling_price } = action.payload;
+      const { id, stock, qty, pic, product_name, selling_price } =
+        action.payload;
       // Add the new product to the state
 
       const newState = [
         ...state,
-        { id, stock, pic, product_name, selling_price },
+        { id, stock, qty, pic, product_name, selling_price },
       ];
       if (!!cartStore.getState()) {
         newState.push(...cartStore.getState());
       }
       // Combine products with the same id
       const combinedState = newState.reduce((acc, product) => {
-        const existingProduct = acc.find((p: any) => p.id === product.id);
+        const existingProduct = acc.find((p: any) => p.id == product.id);
         if (existingProduct) {
-          existingProduct.stock = product.stock;
+          existingProduct.qty = product.qty;
         } else {
           acc.push(product);
         }
@@ -91,6 +95,18 @@ const cartReducer: Reducer<any, any> = (state = [], action) => {
 
       return newState;
     }
+    case "REMOVE": {
+      const { id } = action.payload;
+      const newState = [...state];
+      const existingProduct = newState.findIndex((p: any) => p.id == id);
+      newState.splice(existingProduct, 1);
+      return newState;
+    }
+    // case "RESET": {
+    //   state = [];
+    //   localStorage.removeItem("cart");
+    //   return state;
+    // }
     default:
       return state;
   }
