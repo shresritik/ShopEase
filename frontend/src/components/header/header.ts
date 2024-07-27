@@ -33,7 +33,7 @@ export const navbarRender = async () => {
           e.preventDefault();
           cartStore.dispatch({ type: "RESET" });
         });
-      sidebarContent!.querySelectorAll(".plus").forEach((plus) => {
+      sidebarContent!.querySelectorAll<HTMLElement>(".plus").forEach((plus) => {
         plus.addEventListener("click", function (e) {
           e.preventDefault();
           counterStore.dispatch({
@@ -43,32 +43,39 @@ export const navbarRender = async () => {
         });
       });
 
-      sidebarContent!.querySelectorAll(".minus").forEach((minus) => {
-        minus.addEventListener("click", function (e) {
-          e.preventDefault();
-          counterStore.dispatch({
-            type: "DECREMENT",
-            payload: { id: this.dataset.prod },
+      sidebarContent!
+        .querySelectorAll<HTMLElement>(".minus")
+        .forEach((minus) => {
+          minus.addEventListener("click", function (e) {
+            e.preventDefault();
+            counterStore.dispatch({
+              type: "DECREMENT",
+              payload: { id: this.dataset.prod },
+            });
           });
         });
-      });
 
-      sidebarContent!.querySelectorAll(".remove").forEach((remove) => {
-        remove.addEventListener("click", function (e) {
-          e.preventDefault();
-          cartStore.dispatch({
-            type: "REMOVE",
-            payload: { id: this.dataset.prod },
-          });
-          counterStore.dispatch({
-            type: "DECREMENT",
-            payload: {
-              id: this.dataset.prod,
-              amount: counterStore.getState()[this.dataset.prod],
-            },
+      sidebarContent!
+        .querySelectorAll<HTMLElement>(".remove")
+        .forEach((remove) => {
+          remove.addEventListener("click", function (e) {
+            e.preventDefault();
+            const prodId = this.dataset.prod;
+            if (prodId) {
+              cartStore.dispatch({
+                type: "REMOVE",
+                payload: { id: this.dataset.prod },
+              });
+              counterStore.dispatch({
+                type: "DECREMENT",
+                payload: {
+                  id: this.dataset.prod,
+                  amount: counterStore.getState()[prodId],
+                },
+              });
+            }
           });
         });
-      });
     } else {
       sidebarContent!.innerHTML = "<h1>Cart is empty</h1>";
     }
