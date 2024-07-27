@@ -3,7 +3,7 @@ import { Cart } from "../cart/Cart";
 import { IProduct } from "../../interface/product";
 import { BaseCart } from "../cart/BaseCart";
 import { Navbar } from "./Navbar";
-import { TotalAmount } from "../utils/subview";
+import { TotalAmountView } from "../utils/subview";
 export const navbarRender = async () => {
   document.getElementById("navbar")!.innerHTML = Navbar();
   document.getElementById("navbar")!.innerHTML += Cart();
@@ -26,7 +26,7 @@ export const navbarRender = async () => {
         sidebarContent!.innerHTML += BaseCart(prod, quantity, prodTotal);
       });
 
-      sidebarContent!.innerHTML += TotalAmount(totalAmount);
+      sidebarContent!.innerHTML += TotalAmountView(totalAmount);
       sidebarContent!
         .querySelector("#reset")!
         .addEventListener("click", (e) => {

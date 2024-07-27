@@ -2,6 +2,7 @@ import { Action, Listener, Reducer } from "./interface/store";
 import { cartReducer } from "./reducers/cartReducer";
 import { counterReducer } from "./reducers/counterReducer";
 import { updateProdReducer, userProfileReducer } from "./reducers/userReducer";
+import { getToken, saveToken } from "./utils/auth";
 
 function createStore<S, A extends Action>(
   stateName: string,
@@ -12,7 +13,7 @@ function createStore<S, A extends Action>(
   const listeners: Listener<S>[] = [];
 
   function getState() {
-    const storedState = localStorage.getItem(stateName);
+    const storedState = getToken(stateName);
     if (storedState) {
       state = JSON.parse(storedState);
     } else {
@@ -23,7 +24,7 @@ function createStore<S, A extends Action>(
 
   function dispatch(action: A): void {
     state = reducer(state, action);
-    localStorage.setItem(stateName, JSON.stringify(state));
+    saveToken(stateName, JSON.stringify(state));
     listeners.forEach((listener) => listener(state));
   }
 

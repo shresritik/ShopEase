@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { getToken } from "./auth";
 
-const token = getToken();
+const token = getToken("accessToken");
 export async function createProduct(data: FormData) {
   try {
     return await axios.post(BASE_URL + "/api/products", data, {

@@ -75,7 +75,7 @@ export const render = async (prod = false, forUsers: boolean = true) => {
               selectedOption.remove();
             }
           } else {
-            removeToken();
+            removeToken("accessToken");
             dispatch("/");
           }
         } else {

@@ -1,4 +1,4 @@
-export const TotalAmount = (totalAmount: number) => {
+export const TotalAmountView = (totalAmount: number) => {
   return `
         <div class="flex flex-col justify-end items-center mt-4 gap-2">
           <h1 class="text-lg font-bold">Subtotal: Rs.${totalAmount}</h1>

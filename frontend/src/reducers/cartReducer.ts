@@ -1,5 +1,6 @@
 import { Reducer } from "redux";
 import { cartStore, counterStore } from "../store";
+import { removeToken } from "../utils/auth";
 
 export const cartReducer: Reducer<any, any> = (state = [], action) => {
   switch (action.type) {
@@ -45,7 +46,7 @@ export const cartReducer: Reducer<any, any> = (state = [], action) => {
     }
     case "RESET": {
       state = [];
-      localStorage.removeItem("cart");
+      removeToken("cart");
       counterStore.dispatch({ type: "RESET" });
       return state;
     }

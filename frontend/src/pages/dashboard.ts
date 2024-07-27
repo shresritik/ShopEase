@@ -90,7 +90,7 @@ export const render = () => {
     } catch (error: any) {
       console.error("Error fetching sidebar:", error);
       alert(error.response.data.error);
-      removeToken();
+      removeToken("accessToken");
       dispatch("/login");
     }
   };
@@ -98,7 +98,7 @@ export const render = () => {
   renderSidebar();
 
   logoutButton.addEventListener("click", () => {
-    removeToken();
+    removeToken("accessToken");
     dispatch("/login");
   });
 

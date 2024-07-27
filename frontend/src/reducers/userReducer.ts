@@ -13,8 +13,8 @@ export const userProfileReducer: Reducer<any, CounterAction> = (
     }
     case "RESET": {
       state = {};
-      removeToken();
-      localStorage.removeItem("user-profile");
+      removeToken("accessToken");
+      removeToken("user-profile");
       return state;
     }
     default:

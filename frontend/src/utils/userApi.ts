@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, refreshToken } from "./auth.ts";
+import { getToken, refreshToken, saveToken } from "./auth.ts";
 import { BASE_URL } from "../constants/index.ts";
 
 export const login = async (email: string, password: string) => {
@@ -8,8 +8,8 @@ export const login = async (email: string, password: string) => {
       email,
       password,
     });
-    localStorage.setItem("accessToken", response.data.accessToken);
-    localStorage.setItem("refreshToken", response.data.refreshToken);
+    saveToken("accessToken", response.data.accessToken);
+    // localStorage.setItem("refreshToken", response.data.refreshToken);
   } catch (error: any) {
     throw new Error(error.response.data.error);
   }
@@ -22,7 +22,7 @@ export const update = async (
   password: string,
   roleId: number
 ) => {
-  const token = getToken();
+  const token = getToken("accessToken");
   try {
     return await axios.put(
       BASE_URL + "/api/users/" + id,
@@ -45,7 +45,8 @@ export const update = async (
 };
 export const register = async (data: FormData): Promise<void> => {
   try {
-    const token = getToken();
+    const token = getToken("accessToken");
+
     await axios.post(BASE_URL + "/api/users", data, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -61,7 +62,7 @@ export const fetchWithAuth = async (
   url: string,
   options: RequestInit = {}
 ): Promise<Response> => {
-  const token = getToken();
+  const token = getToken("accessToken");
 
   if (token) {
     options.headers = {
@@ -77,7 +78,8 @@ export const fetchWithAuth = async (
       // Handle token expiration
       await refreshToken();
       // Retry the request with a new token
-      const newToken = getToken();
+      const newToken = getToken("accessToken");
+
       if (newToken) {
         options.headers = {
           ...options.headers,
@@ -94,7 +96,7 @@ export const fetchWithAuth = async (
   }
 };
 export const fetchUserProfile = async () => {
-  const token = getToken();
+  const token = getToken("accessToken");
 
   const res = await axios.get(BASE_URL + "/api/users/me", {
     headers: {
@@ -104,7 +106,7 @@ export const fetchUserProfile = async () => {
   return res.data;
 };
 export const deleteUser = async (id: string) => {
-  const token = getToken();
+  const token = getToken("accessToken");
 
   const res = await axios.delete(BASE_URL + `/api/users/${id}`, {
     headers: {
@@ -114,7 +116,7 @@ export const deleteUser = async (id: string) => {
   return res.data;
 };
 export const getAllUsers = async () => {
-  const token = getToken();
+  const token = getToken("accessToken");
 
   const res = await axios.get(BASE_URL + `/api/users`, {
     headers: {

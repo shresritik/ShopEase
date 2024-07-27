@@ -1,3 +1,5 @@
+import { removeToken } from "../utils/auth";
+
 export const counterReducer = (state: any, action: any) => {
   switch (action.type) {
     case "INCREMENT": {
@@ -17,7 +19,7 @@ export const counterReducer = (state: any, action: any) => {
     }
     case "RESET": {
       state = [];
-      localStorage.removeItem("counter");
+      removeToken("counter");
       return state;
     }
     default:

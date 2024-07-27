@@ -1,25 +1,24 @@
-export const saveToken = (token: string) => {
-  localStorage.setItem("accessToken", token);
+export const saveToken = (name: string, token: string) => {
+  localStorage.setItem(name, token);
 };
 
-export const getToken = (): string | null => {
-  return localStorage.getItem("accessToken");
+export const getToken = (name: string): string | null => {
+  return localStorage.getItem(name);
 };
 
-export const removeToken = () => {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+export const removeToken = (name: string) => {
+  localStorage.removeItem(name);
 };
 
 export const isAuthenticated = (): boolean => {
-  return !!getToken(); // Checks if there's an access token
+  return !!getToken("accessToken");
 };
 
 export const refreshToken = async (): Promise<void> => {
-  const refreshToken = localStorage.getItem("refreshToken"); // Assuming you store refresh token as well
+  const refreshToken = getToken("refreshToken");
 
   if (!refreshToken) {
-    removeToken();
+    removeToken("accessToken");
     window.history.pushState(null, "", "/login");
     return;
   }
@@ -33,14 +32,14 @@ export const refreshToken = async (): Promise<void> => {
 
     if (response.ok) {
       const { accessToken } = await response.json();
-      saveToken(accessToken); // Update access token
+      saveToken("accessToken", accessToken);
     } else {
-      removeToken();
+      removeToken("accessToken");
       window.history.pushState(null, "", "/login");
     }
   } catch (error) {
     console.error("Token refresh failed:", error);
-    removeToken();
+    removeToken("accessToken");
     window.history.pushState(null, "", "/login");
   }
 };
