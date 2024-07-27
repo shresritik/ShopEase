@@ -1,4 +1,4 @@
-import { navbarRender } from "../components/utils/header.ts";
+import { navbarRender } from "../components/header/header.ts";
 import { navigate } from "./utils.ts";
 export const router = () => {
   const app = document.getElementById("app") as HTMLElement;

@@ -1,12 +1,7 @@
-import Card from "../components/utils/BaseCard";
-import { getProductsArray } from "../components/products/render-products";
 import { createElement } from "../utils/createElement";
-import { dispatch } from "../utils/dispatch";
-import { cartStore, counterStore } from "../store";
 import { getAllProducts, getProductsByCategories } from "../utils/productApi";
 import { IProduct } from "../interface/product";
-import { CardFunction } from "../types/card";
-import { CardWrapper } from "../components/utils/CardWrapper";
+import { CardWrapper } from "../components/card/CardWrapper";
 
 // Define interfaces for your data structures
 

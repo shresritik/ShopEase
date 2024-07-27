@@ -1,36 +1,12 @@
-import Card from "../components/utils/BaseCard";
 import { getProductsArray } from "../components/products/render-products";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
-import { cartStore, counterStore } from "../store";
-import { CardWrapper } from "../components/utils/CardWrapper";
+import { CardWrapper } from "../components/card/CardWrapper";
 import { IProduct } from "../interface/product";
 
-// Define interfaces for your data structures
-interface Product {
-  id: number;
-  pic: string;
-  selling_price: number;
-  product_name: string;
-  stock: number;
-  category: {
-    category_name: string;
-  };
-}
-
 interface CategorizedProducts {
-  [category: string]: Product[];
+  [category: string]: IProduct[];
 }
-
-// Define the type for the Card function
-type CardFunction = (props: {
-  img: string;
-  price: number;
-  title: string;
-  qty: number;
-  category: string;
-}) => string;
-
 export const render = async (): Promise<HTMLElement> => {
   const container = createElement("div", {
     className: "flex flex-col justify-center gap-2  w-max mx-auto",

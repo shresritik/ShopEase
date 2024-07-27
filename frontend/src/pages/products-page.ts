@@ -1,4 +1,4 @@
-import Card from "../components/utils/BaseCard";
+import Card from "../components/card/BaseCard";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import { getProductsByCategories } from "../utils/productApi";

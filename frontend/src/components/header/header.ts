@@ -1,8 +1,9 @@
 import { cartStore, counterStore } from "../../store";
 import { Cart } from "../cart/Cart";
-import { Navbar } from "./Navbar";
 import { IProduct } from "../../interface/product";
 import { BaseCart } from "../cart/BaseCart";
+import { Navbar } from "./Navbar";
+import { TotalAmount } from "../utils/subview";
 export const navbarRender = async () => {
   document.getElementById("navbar")!.innerHTML = Navbar();
   document.getElementById("navbar")!.innerHTML += Cart();
@@ -25,14 +26,7 @@ export const navbarRender = async () => {
         sidebarContent!.innerHTML += BaseCart(prod, quantity, prodTotal);
       });
 
-      sidebarContent!.innerHTML += `
-        <div class="flex flex-col justify-end items-center mt-4 gap-2">
-          <h1 class="text-lg font-bold">Subtotal: Rs.${totalAmount}</h1>
-        <button id="order" class=" block w-full select-none rounded-lg bg-orange-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-orange-900/10 transition-all hover:shadow-lg hover:shadow-orange-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">Order</button>
-        <button id="reset" class="  block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-    >Reset</button>
-          '
-        </div>`;
+      sidebarContent!.innerHTML += TotalAmount(totalAmount);
       sidebarContent!
         .querySelector("#reset")!
         .addEventListener("click", (e) => {
@@ -79,7 +73,6 @@ export const navbarRender = async () => {
       sidebarContent!.innerHTML = "<h1>Cart is empty</h1>";
     }
   }
-
   // Updating quantities and total amount when counterStore changes
   counterStore.subscribe(() => {
     updateSidebarContent();
