@@ -1,6 +1,6 @@
+import { cartStore, counterStore } from "../store";
 import { isAuthenticated } from "../utils/auth";
 import { createElement } from "../utils/createElement";
-import { fetchHtml } from "../utils/fetchHtml";
 import { getProductDetails } from "../utils/productApi";
 
 export const render = async ({
@@ -14,9 +14,12 @@ export const render = async ({
     className: "flex flex-col justify-center gap-2   mx-auto",
   });
   const details = await getProductDetails(category, id);
-  if (!details) container.innerHTML += "Error";
-  else {
-    container.innerHTML += `<div class="bg-gray-100 h-screen py-8">
+  function updateContent(state: any) {
+    const counterState = state;
+    if (!details) container.innerHTML += "Error";
+    else {
+      const quantity = counterState[details.id!] || 0;
+      container.innerHTML = `<div class="bg-gray-100 h-screen py-8">
   <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row -mx-4">
       <div class="px-4  md:flex-1">
@@ -30,11 +33,20 @@ export const render = async ({
         <div class="flex -mx-2 mb-4 justify-center w-[30rem] ">
           <div class="w-max px-2">
             <button
-              class="w-full bg-gray-900 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
+              class="cart w-full bg-gray-900 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
             >
               Add to Cart
             </button>
           </div>
+          <div class="flex justify-center items-center gap-1">
+          <button data-prod="${details.id}" data-qty="${
+        details.stock
+      }" class="plus bg-gray-900 block w-maxselect-none text-white m-1 w-8 text-xl">+</button>
+          <p class="quantity" data-id="${details.id}">${quantity}</p>
+          <button data-prod="${
+            details.id
+          }" class="minus bg-gray-900 block w-maxselect-none text-white m-1 w-8 text-xl">-</button>
+        </div>
         </div>
       </div>
       <div class="md:flex-1 px-4">
@@ -103,27 +115,58 @@ export const render = async ({
   </div>
 </div>
 `;
+    }
     const res = container.querySelector(".star");
     for (let i = 0; i < details.avg_rating; i++) {
       if (container) {
         res!.innerHTML += `
 
-            <span
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                class="w-6 h-6 text-yellow-700 cursor-pointer"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                  clip-rule="evenodd"
-                ></path></svg></span
-            >
-          </div>`;
+      <span
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="w-6 h-6 text-yellow-700 cursor-pointer"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+            clip-rule="evenodd"
+          ></path></svg></span
+      >
+    </div>`;
       }
     }
+
+    container.querySelector(".plus")!.addEventListener("click", function (e) {
+      e.preventDefault();
+      counterStore.dispatch({
+        type: "INCREMENT",
+        payload: { id: details.id, qty: details.stock },
+      });
+    });
+
+    container.querySelector(".minus")!.addEventListener("click", function (e) {
+      e.preventDefault();
+      counterStore.dispatch({
+        type: "DECREMENT",
+        payload: { id: details.id },
+      });
+    });
+    container.querySelector(".cart")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      const quantity = counterStore.getState();
+      cartStore.dispatch({
+        type: "INCREMENT",
+        payload: {
+          ...details,
+          qty: quantity[details.id!],
+          stock: details.stock,
+        },
+      });
+    });
   }
+  counterStore.subscribe(updateContent);
+
   return container;
 };
