@@ -1,7 +1,6 @@
 import { cartStore, counterStore } from "../../store";
 import { Cart } from "../cart/Cart";
 import { Navbar } from "./Navbar";
-import { updateSidebarContent } from "../cart/CartContent";
 import { IProduct } from "../../interface/product";
 import { BaseCart } from "../cart/BaseCart";
 export const navbarRender = async () => {
