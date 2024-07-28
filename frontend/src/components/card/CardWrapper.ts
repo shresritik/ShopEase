@@ -9,7 +9,6 @@ export function CardWrapper(prod: IProduct) {
   const productElement = createElement("div", {
     className: "products",
   });
-
   const card = (Card as CardFunction)({
     img: prod.pic,
     price: prod.selling_price,
@@ -48,7 +47,12 @@ export function CardWrapper(prod: IProduct) {
     const quantity = counterStore.getState();
     cartStore.dispatch({
       type: "INCREMENT",
-      payload: { ...prod, qty: quantity[prod.id!], stock: prod.stock },
+      payload: {
+        ...prod,
+        qty: quantity[prod.id!],
+        stock: prod.stock,
+        category: prod.category.category_name,
+      },
     });
   });
   return productElement;

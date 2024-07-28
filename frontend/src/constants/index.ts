@@ -6,6 +6,7 @@ export const routes: RouteDefinition[] = [
   { path: "/products", load: () => import("../pages/products.ts") },
   { path: "/login", load: () => authenticate("dashboard", "login") },
   { path: "/register", load: () => authenticate("dashboard", "register") },
+  { path: "/checkout", load: () => authenticate("checkout", "login") },
   {
     path: "/products/:category/:id",
     load: () => import("../pages/product-details.ts"),

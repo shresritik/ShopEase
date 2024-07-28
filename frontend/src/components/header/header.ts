@@ -4,6 +4,7 @@ import { IProduct } from "../../interface/product";
 import { BaseCart } from "../cart/BaseCart";
 import { Navbar } from "./Navbar";
 import { TotalAmountView } from "../utils/subview";
+import { dispatch } from "../../utils/dispatch";
 export const navbarRender = async () => {
   document.getElementById("navbar")!.innerHTML = Navbar();
   document.getElementById("navbar")!.innerHTML += Cart();
@@ -76,14 +77,32 @@ export const navbarRender = async () => {
             }
           });
         });
+      sidebarContent
+        .querySelector(".checkout")
+        ?.addEventListener("click", (e) => {
+          e.preventDefault();
+          const cartState = cartStore.getState();
+          const counterState = counterStore.getState();
+          const checkoutData = cartState.map((prod: IProduct) => ({
+            ...prod,
+            qty: counterState[prod.id!] || 0,
+          }));
+          cartStore.dispatch({
+            type: "CHECKOUT",
+            payload: checkoutData,
+          });
+          dispatch("/checkout");
+        });
     } else {
       sidebarContent!.innerHTML = "<h1>Cart is empty</h1>";
     }
   }
+
   // Updating quantities and total amount when counterStore changes
   counterStore.subscribe(() => {
     updateSidebarContent();
   });
+
   // Toggle sidebar visibility on cart icon click
   cartIcon?.addEventListener("click", (e) => {
     e.preventDefault();
