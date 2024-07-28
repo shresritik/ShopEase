@@ -14,7 +14,7 @@
       "cwd": "${workspaceFolder}",
       "outputCapture": "std",
 
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "outFiles": ["${workspaceFolder}/**/*.ts"]
     }
   ]
 }

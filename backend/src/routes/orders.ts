@@ -5,11 +5,12 @@ import {
   getAllOrders,
   getOrdersByUser,
 } from "../controller/orders";
-import { handleEsewaSuccess } from "../controller/esewa";
+import { handleEsewaSuccess } from "../middleware/payment";
+import { updateProductAfterPayment } from "../controller/payment";
 const router = express();
 router.post("/", createOrder);
 router.get("/", getAllOrders);
-router.get("/success", handleEsewaSuccess);
+router.post("/success", handleEsewaSuccess, updateProductAfterPayment);
 router.get("/:id", getOrdersByUser);
 router.delete("/:id", deleteOrderById);
 export default router;

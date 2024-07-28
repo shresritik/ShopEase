@@ -2,7 +2,6 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 
 export const esewaCall = (formData: any) => {
-  console.log(formData);
   var path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
 
   var form = document.createElement("form");
@@ -21,5 +20,8 @@ export const esewaCall = (formData: any) => {
   form.submit();
 };
 export const successEsewa = async (query: string) => {
-  return await axios.get(BASE_URL + `/api/orders/success?data=${query}`);
+  const data = await axios.post(BASE_URL + `/api/orders/success`, {
+    data: query,
+  });
+  return data;
 };

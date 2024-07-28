@@ -1,3 +1,4 @@
+import { BadRequest, NotFound } from "../error";
 import { IOrder } from "../interface/order";
 import * as OrderModel from "../model/order";
 import { createSignature } from "./auth";
@@ -39,4 +40,36 @@ export const getUserOrders = async (userId: number) => {
 };
 export const deleteOrder = async (id: number) => {
   return await OrderModel.deleteOrder(id);
+};
+
+export const getAProduct = async (orderId: string) => {
+  const order = await OrderModel.getProductById(orderId);
+  if (!order) throw new NotFound("No Order Found by id " + orderId);
+  return order;
+};
+
+export const updateProductFromPayment = async (orderId: string) => {
+  const order = await getAProduct(orderId);
+  const updatePromises = order.Order_Product.map(async (orderProduct: any) => {
+    const newStock = orderProduct.product!.stock - orderProduct.quantity;
+    if (newStock < 0) {
+      throw new BadRequest(
+        `Insufficient stock for product ${orderProduct.product_id}`
+      );
+    }
+
+    const updatedOrder = await OrderModel.updateProductStockFromOrder(
+      orderProduct.product_id,
+      newStock
+    );
+
+    if (!updatedOrder) {
+      throw new BadRequest("Something went wrong");
+    }
+    return { updatedOrder, status: "COMPLETE" };
+  });
+
+  // Wait for all updates to complete
+  const results = await Promise.all(updatePromises);
+  return results;
 };
