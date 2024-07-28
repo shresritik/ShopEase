@@ -52,7 +52,14 @@ export const deleteOrder = async (id: number) => {
 };
 export const getAllOrders = async () => {
   return await prisma.order.findMany({
-    include: { Order_Product: true },
+    include: {
+      Order_Product: {
+        include: {
+          category: true,
+          product: true,
+        },
+      },
+    },
   });
 };
 export const getOrderByUser = async (userId: number) => {
@@ -60,7 +67,15 @@ export const getOrderByUser = async (userId: number) => {
     where: {
       user_id: userId,
     },
-    include: { Order_Product: true },
+
+    include: {
+      Order_Product: {
+        include: {
+          category: true,
+          product: true,
+        },
+      },
+    },
   });
 };
 export const getProductById = async (orderId: string) => {

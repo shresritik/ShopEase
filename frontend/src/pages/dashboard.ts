@@ -6,9 +6,11 @@ import * as Update from "../components/users/update-user";
 import * as Delete from "../components/users/deleteUser";
 import * as User from "./register";
 import * as Product from "../components/products/create-products";
+import * as Order from "../components/orders/orders";
 import { fetchUserProfile } from "../utils/userApi";
+import { userProfileStore } from "../store";
 
-export const render = () => {
+export const render = async () => {
   const container = createElement("div", { className: "p-6" });
   const divElement = createElement("div", { className: "flex item-center" });
   const leftElement = createElement("div", {
@@ -28,7 +30,6 @@ export const render = () => {
     "Logout"
   );
   container.appendChild(heading);
-
   const renderSidebar = async () => {
     try {
       const user = await fetchUserProfile();
@@ -40,6 +41,7 @@ export const render = () => {
         document.querySelector("#update-product")?.classList.toggle("hidden");
         document.querySelector("#delete-product")?.classList.toggle("hidden");
       }
+      rightElement.appendChild(await Order.render());
       const handleSidebarClick = async (event: Event) => {
         const target = event.target as HTMLElement;
         const classArray = [...target.classList];
@@ -47,6 +49,9 @@ export const render = () => {
         rightElement.innerHTML = ""; // Clear right element
 
         if (classArray.includes("orders")) {
+          const createOrders = await Order.render();
+          createOrders.classList.add("create-orders");
+          rightElement.appendChild(createOrders);
           // Add orders related content here
         } else if (classArray.includes("profile")) {
           const update = await Update.render();
@@ -91,6 +96,7 @@ export const render = () => {
       console.error("Error fetching sidebar:", error);
       alert(error.response.data.error);
       removeToken("accessToken");
+      userProfileStore.dispatch({ type: "RESET" });
       dispatch("/login");
     }
   };
@@ -99,6 +105,7 @@ export const render = () => {
 
   logoutButton.addEventListener("click", () => {
     removeToken("accessToken");
+    userProfileStore.dispatch({ type: "RESET" });
     dispatch("/login");
   });
 

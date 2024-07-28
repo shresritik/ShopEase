@@ -18,3 +18,40 @@ export async function createOrders(data: IFormCheckout) {
     );
   }
 }
+export async function getOrdersByUsers(data: number) {
+  try {
+    console.log(data);
+    const orders = await axios.get(BASE_URL + "/api/orders/" + data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (orders.status == 200) {
+      return orders.data;
+    }
+  } catch (error: any) {
+    throw new Error(
+      error.response.data.error
+        ? error.response.data.error
+        : error.response.data.message
+    );
+  }
+}
+export async function getAllOrders() {
+  try {
+    const orders = await axios.get(BASE_URL + "/api/orders", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (orders.status == 200) {
+      return orders.data;
+    }
+  } catch (error: any) {
+    throw new Error(
+      error.response.data.error
+        ? error.response.data.error
+        : error.response.data.message
+    );
+  }
+}
