@@ -51,7 +51,7 @@ export function CardWrapper(prod: IProduct) {
         ...prod,
         qty: quantity[prod.id!],
         stock: prod.stock,
-        category: prod.category.category_name,
+        category: prod.category,
       },
     });
   });

@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs";
 import * as UserModel from "../model/user";
 import { PERMISSION } from "@prisma/client";
 import { signUser } from "../utils/auth";
+import crypto from "crypto";
+import config from "../config";
 export const login = async (user: IUser) => {
   const existingUser = await getUserByEmail(user.email, { email: user.email });
   if (!existingUser) {
@@ -29,4 +31,14 @@ export const login = async (user: IUser) => {
   // //   logger.info("sign user");
   const { accessToken, refreshToken } = signUser(payload);
   return { accessToken, refreshToken };
+};
+export const createSignature = (message: string) => {
+  const secret = config.esewaSecret!; //different in production
+  // Create an HMAC-SHA256 hash
+  const hmac = crypto.createHmac("sha256", secret);
+  hmac.update(message);
+
+  // Get the digest in base64 format
+  const hashInBase64 = hmac.digest("base64");
+  return hashInBase64;
 };

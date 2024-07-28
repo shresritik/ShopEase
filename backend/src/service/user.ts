@@ -52,7 +52,9 @@ export const updateAUser = async (id: number, body: IUser, userId: number) => {
     id,
     {
       ...body,
-      profile: `http://localhost:8000/static/profile/` + body.profile,
+      profile: body.profile
+        ? `http://localhost:8000/static/profile/` + body.profile
+        : `http://localhost:8000/static/profile/default.png`,
       password: hashedPassword,
     },
     userId

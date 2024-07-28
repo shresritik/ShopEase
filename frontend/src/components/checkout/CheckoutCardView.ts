@@ -11,7 +11,7 @@ export const CheckoutCardView = (prod: CheckoutCard) => {
             <div class="flex justify-between items-center">
             <div class="flex flex-col">
             <p  text-gray-800">Quantity: ${prod.qty}</p>
-            <p  text-gray-800">Category: ${prod.category}</p>
+            <p  text-gray-800">Category: ${prod.category.category_name}</p>
             </div>
             <div class="flex flex-col">
             <p class=" font-bold">Price: Rs. ${prod.selling_price}</p>

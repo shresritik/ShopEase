@@ -14,6 +14,11 @@ enum ROLE {
   USER        @map("user")
 }
 
+enum STATUS {
+  PENDING  @map("pending")
+  COMPLETE @map("complete")
+}
+
 enum PERMISSION {
   SUPER_ADMIN_GET    @map("super-admin.get")
   SUPER_ADMIN_PUT    @map("super-admin.put")
@@ -110,19 +115,35 @@ model Product {
 }
 
 model Category {
-  id            Int       @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   category_name String
   Product       Product[]
+  Order_Product Order_Product[]
+}
+
+model Status {
+  id     Int            @id @default(autoincrement())
+  status STATUS         @default(PENDING)
+  order  Order_Status[] @relation("order")
 }
 
 model Order {
-  id            Int             @id @default(autoincrement())
+  id            String          @id @default(uuid())
   user          User            @relation("order", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id       Int
   total_amount  Decimal         @db.Decimal(10, 2)
   location      String
   createdAt     DateTime        @default(now())
   Order_Product Order_Product[] @relation("order_product")
+  status        Order_Status[]  @relation("order")
+}
+
+model Order_Status {
+  id        Int     @id @default(autoincrement())
+  status    Status? @relation("order", fields: [status_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  status_id Int?
+  order     Order?  @relation("order", fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  order_id  String?
 }
 
 model User_Product {
@@ -137,11 +158,13 @@ model User_Product {
 }
 
 model Order_Product {
-  id         Int      @id @default(autoincrement())
-  order      Order    @relation("order_product", fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  order_id   Int
-  product    Product? @relation("order_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  product_id Int
-  quantity   Int      @default(0)
-  net_amount Decimal  @db.Decimal(10, 2)
+  id          Int      @id @default(autoincrement())
+  order       Order    @relation("order_product", fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  order_id    String
+  product     Product? @relation("order_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product_id  Int
+  quantity    Int      @default(0)
+  net_amount  Decimal  @db.Decimal(10, 2)
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  category_id Int
 }

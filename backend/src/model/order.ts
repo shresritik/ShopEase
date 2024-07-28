@@ -17,6 +17,7 @@ export const createOrder = async (
           product_id: product.id,
           quantity: product.quantity,
           net_amount: product.quantity * product.selling_price,
+          category_id: product.category_id,
         })),
       },
     },
@@ -28,7 +29,7 @@ export const createOrder = async (
 export const deleteOrder = async (id: number) => {
   return await prisma.order.delete({
     where: {
-      id,
+      id: "" + id,
     },
   });
 };

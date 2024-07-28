@@ -43,10 +43,8 @@ export async function getCategories() {
   }
 }
 export async function getProductsByCategories(category: string, size?: string) {
-  console.log(size);
   try {
     const sizeCheck = size ? `?size=${size}` : "";
-    console.log(sizeCheck);
     const res = await axios.get(
       BASE_URL + "/api/products/" + category + sizeCheck
     );

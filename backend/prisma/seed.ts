@@ -121,6 +121,16 @@ async function main() {
       data: productData[i],
     });
   }
+  await prisma.status.createMany({
+    data: [
+      {
+        status: "COMPLETE",
+      },
+      {
+        status: "PENDING",
+      },
+    ],
+  });
 }
 main()
   .then(async () => {

@@ -43,6 +43,7 @@ export const getProductById = async (id: number) => {
       category: {
         select: {
           category_name: true,
+          id: true,
         },
       },
     },
@@ -71,6 +72,7 @@ export const getProductsByCategory = async (
       category: {
         select: {
           category_name: true,
+          id: true,
         },
       },
     },
