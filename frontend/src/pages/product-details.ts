@@ -14,7 +14,7 @@ export const render = async ({
     className: "flex flex-col justify-center gap-2   mx-auto",
   });
   const details = await getProductDetails(category, id);
-  function updateContent(state: any) {
+  function updateContent(state: [key: number]) {
     const counterState = state;
     if (!details) container.innerHTML += "Error";
     else {

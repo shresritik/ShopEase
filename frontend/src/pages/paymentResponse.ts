@@ -1,3 +1,4 @@
+import axios from "axios";
 import { cartStore } from "../store";
 import { createElement } from "../utils/createElement";
 import { successEsewa } from "../utils/paymentApi";
@@ -17,8 +18,8 @@ export const render = async () => {
       container.innerHTML = "Order failed";
     }
     cartStore.dispatch({ type: "RESET" });
-  } catch (error: any) {
-    toast(error.response.data.error, "danger");
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) toast(error.response!.data.error, "danger");
   }
   return container;
 };

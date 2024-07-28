@@ -11,3 +11,13 @@ export interface IProduct {
   createdBy: number;
   stock: number;
 }
+export interface ProductFilter {
+  search?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  category?: number;
+  inStock?: boolean;
+  minRating?: number;
+  size?: number;
+  page?: number;
+}

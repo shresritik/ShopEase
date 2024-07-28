@@ -56,10 +56,11 @@ export const Navbar = () => {
         }
       });
 
-      document.addEventListener("click", (e: any) => {
+      document.addEventListener("click", (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
         if (
-          !profileAvatar!.contains(e.target) &&
-          !profileDropdown!.contains(e.target)
+          !profileAvatar!.contains(target) &&
+          !profileDropdown!.contains(target)
         ) {
           if (checkOpacity.contains("opacity-100")) {
             profileDropdown!.classList.add("opacity-0");

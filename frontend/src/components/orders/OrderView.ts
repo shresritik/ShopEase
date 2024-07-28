@@ -1,4 +1,6 @@
-const OrderView = (order: any, index: number) => {
+import { IOrderView } from "../../interface/order";
+
+const OrderView = (order: IOrderView, index: number) => {
   return `<div class="w-full md:w-1/2 px-4 sm:px-6 lg:px-8">
 
 
@@ -52,7 +54,7 @@ const OrderView = (order: any, index: number) => {
                     <p
                       class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-left"
                     >
-                      Created At: ${order.createdAt}
+                      Purchased At: ${order.createdAt}
                     </p>
                   </div>
                 </div>

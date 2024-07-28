@@ -1,4 +1,5 @@
-import { IProduct } from "../interface/product";
+import { Prisma } from "@prisma/client";
+import { IProduct, ProductFilter } from "../interface/product";
 import { IQuery } from "../interface/utils";
 import prisma from "../utils/prisma";
 export const getAllCategories = async () => {
@@ -9,11 +10,45 @@ export const getAllCategories = async () => {
     },
   });
 };
-export const getAllProducts = async (query: IQuery) => {
-  const { size, page } = query;
+
+export const getAllProducts = async (query: ProductFilter) => {
+  const filters: ProductFilter = query;
+  const where: Prisma.ProductWhereInput = {};
+  console.log("first", query);
+
+  if (filters.search) {
+    where.OR = [
+      { product_name: { contains: filters.search, mode: "insensitive" } },
+      { description: { contains: filters.search, mode: "insensitive" } },
+    ];
+  }
+
+  if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
+    where.selling_price = {};
+    if (filters.minPrice !== undefined) {
+      where.selling_price.gte = filters.minPrice;
+    }
+    if (filters.maxPrice !== undefined) {
+      where.selling_price.lte = filters.maxPrice;
+    }
+  }
+
+  if (filters.category) {
+    where.category_id = filters.category;
+  }
+
+  if (filters.inStock !== undefined) {
+    where.stock = filters.inStock ? { gt: 0 } : { equals: 0 };
+  }
+
+  if (filters.minRating) {
+    where.avg_rating = { gte: filters.minRating };
+  }
+
   const products = await prisma.product.findMany({
-    take: size,
-    skip: (page! - 1) * size!,
+    where,
+    // take: size,
+    // skip: (page! - 1) * size!,
     include: {
       category: {
         select: {
@@ -23,6 +58,13 @@ export const getAllProducts = async (query: IQuery) => {
     },
   });
   return products;
+};
+export const count = async (query: IQuery) => {
+  const { q } = query;
+  const count = await prisma.product.count({
+    where: q ? { product_name: { contains: q, mode: "insensitive" } } : {},
+  });
+  return { count };
 };
 export const getProductByName = async (product_name: string) => {
   return await prisma.product.findFirst({
@@ -153,4 +195,13 @@ export const updateProduct = async (
     },
   });
   return prod;
+};
+export const updateProductStockFromOrder = async (
+  product_id: number,
+  newStock: number
+) => {
+  return await prisma.product.update({
+    where: { id: product_id },
+    data: { stock: newStock },
+  });
 };

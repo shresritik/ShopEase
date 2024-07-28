@@ -1,16 +1,22 @@
-import { Order, Order_Product, Product } from "@prisma/client";
+import { Order, Order_Product, Prisma, Product } from "@prisma/client";
 import { IOrder_Product } from "../interface/order";
 import prisma from "../utils/prisma";
 import { IProduct } from "../interface/product";
 import { BadRequest } from "../error";
+// Define an interface for the product in the order
+export interface IOrderProduct {
+  id: number;
+  quantity: number;
+  selling_price: number;
+  category_id: number;
+}
 
 export const createOrder = async (
   userId: number,
   totalAmount: number,
   address: string,
-  products: any
+  products: IOrderProduct[]
 ) => {
-  // Get the PENDING status
   const pendingStatus = await prisma.status.findFirst({
     where: { status: "PENDING" },
   });
@@ -88,16 +94,5 @@ export const getProductById = async (orderId: string) => {
         },
       },
     },
-  });
-};
-export const updateProductStockFromOrder = async (
-  product_id: number,
-  newStock: number
-) => {
-  // Update stock for each product in the order
-
-  return await prisma.product.update({
-    where: { id: product_id },
-    data: { stock: newStock },
   });
 };

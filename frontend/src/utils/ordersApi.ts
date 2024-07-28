@@ -10,12 +10,13 @@ export async function createOrders(data: IFormCheckout) {
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error: any) {
-    throw new Error(
-      error.response.data.error
-        ? error.response.data.error
-        : error.response.data.message
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error))
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
   }
 }
 export async function getOrdersByUsers(data: number) {
@@ -29,12 +30,13 @@ export async function getOrdersByUsers(data: number) {
     if (orders.status == 200) {
       return orders.data;
     }
-  } catch (error: any) {
-    throw new Error(
-      error.response.data.error
-        ? error.response.data.error
-        : error.response.data.message
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error))
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
   }
 }
 export async function getAllOrders() {
@@ -47,11 +49,12 @@ export async function getAllOrders() {
     if (orders.status == 200) {
       return orders.data;
     }
-  } catch (error: any) {
-    throw new Error(
-      error.response.data.error
-        ? error.response.data.error
-        : error.response.data.message
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error))
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
   }
 }

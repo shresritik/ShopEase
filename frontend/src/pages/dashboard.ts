@@ -9,6 +9,7 @@ import * as Product from "../components/products/create-products";
 import * as Order from "../components/orders/orders";
 import { fetchUserProfile } from "../utils/userApi";
 import { userProfileStore } from "../store";
+import axios from "axios";
 
 export const render = async () => {
   const container = createElement("div", { className: "p-6" });
@@ -92,9 +93,9 @@ export const render = async () => {
         .forEach((element) =>
           element.addEventListener("click", handleSidebarClick)
         );
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error fetching sidebar:", error);
-      alert(error.response.data.error);
+      if (axios.isAxiosError(error)) alert(error.response?.data.error);
       removeToken("accessToken");
       userProfileStore.dispatch({ type: "RESET" });
       dispatch("/login");

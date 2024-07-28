@@ -9,13 +9,18 @@ import { dispatch } from "../../utils/dispatch.ts";
 import { fetchHtml } from "../../utils/fetchHtml.ts";
 import { deleteProduct, getAllProducts } from "../../utils/productApi.ts";
 
-const populateDropdown = (container: HTMLSelectElement, options: any) => {
-  options.forEach((option: any) => {
-    const opt = document.createElement("option");
-    opt.value = option.id.toString();
-    opt.text = option.email || option.product_name;
-    container.appendChild(opt);
-  });
+const populateDropdown = (
+  container: HTMLSelectElement,
+  options: { id: number; email: string; product_name: string }[]
+) => {
+  options.forEach(
+    (option: { id: number; email: string; product_name: string }) => {
+      const opt = document.createElement("option");
+      opt.value = option.id.toString();
+      opt.text = option.email || option.product_name;
+      container.appendChild(opt);
+    }
+  );
 };
 
 export const render = async (prod = false, forUsers: boolean = true) => {
@@ -90,8 +95,9 @@ export const render = async (prod = false, forUsers: boolean = true) => {
         }
       });
     }
-  } catch (error: any) {
-    console.error("Error rendering delete notification:", error);
+  } catch (error: unknown) {
+    if (error instanceof Error)
+      console.error("Error rendering delete notification:", error);
   }
 
   return container;

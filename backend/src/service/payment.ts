@@ -11,7 +11,7 @@ export const paymentResponse = async (data: string) => {
   }
   const message = decodedData.signed_field_names
     .split(",")
-    .map((field: any) => `${field}=${decodedData[field] || ""}`)
+    .map((field: string) => `${field}=${decodedData[field] || ""}`)
     .join(",");
   const signature = createSignature(message);
 

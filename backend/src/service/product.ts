@@ -4,7 +4,17 @@ import { IQuery } from "../interface/utils";
 import * as ProductModel from "../model/product";
 export const getProducts = async (query: IQuery) => {
   const products = await ProductModel.getAllProducts(query);
-  return products;
+  const count = await ProductModel.count(query);
+
+  if (products.length == 0) {
+    return { message: "Product is empty" };
+  }
+  const meta = {
+    page: query.page,
+    size: products.length,
+    total: +count.count,
+  };
+  return { ...products, meta };
 };
 export const getCategories = async () => {
   const products = await ProductModel.getAllCategories();

@@ -1,7 +1,11 @@
+type Props = {
+  [key: string]: any;
+};
+
 export const createElement = (
   tag: string,
-  props: any = {},
-  ...children: any[]
+  props: Props = {},
+  ...children: (HTMLElement | string)[]
 ) => {
   const element: HTMLElement = document.createElement(tag);
   Object.entries(props).forEach(([key, value]) => {

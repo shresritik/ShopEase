@@ -10,12 +10,13 @@ export async function createProduct(data: FormData) {
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error: any) {
-    throw new Error(
-      error.response.data.error
-        ? error.response.data.error
-        : error.response.data.message
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error))
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
   }
 }
 export async function updateProduct(id: number, data: FormData) {
@@ -25,12 +26,13 @@ export async function updateProduct(id: number, data: FormData) {
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error: any) {
-    throw new Error(
-      error.response.data.error
-        ? error.response.data.error
-        : error.response.data.message
-    );
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error))
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
   }
 }
 
@@ -38,8 +40,8 @@ export async function getCategories() {
   try {
     const res = await axios.get(BASE_URL + "/api/products/categories");
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }
 export async function getProductsByCategories(category: string, size?: string) {
@@ -49,16 +51,16 @@ export async function getProductsByCategories(category: string, size?: string) {
       BASE_URL + "/api/products/" + category + sizeCheck
     );
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }
 export async function getProductDetails(category: string, id: string) {
   try {
     const res = await axios.get(BASE_URL + `/api/products/${category}/${id}`);
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }
 export async function getProductByName(name: string) {
@@ -67,16 +69,16 @@ export async function getProductByName(name: string) {
       product_name: name,
     });
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }
 export async function getAllProducts() {
   try {
     const res = await axios.get(BASE_URL + "/api/products");
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }
 export async function deleteProduct(id: number) {
@@ -87,7 +89,7 @@ export async function deleteProduct(id: number) {
       },
     });
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }

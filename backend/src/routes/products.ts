@@ -14,7 +14,7 @@ import { uploadProduct } from "../utils/fileUpload";
 import { validateReqQuery } from "../middleware/validator";
 import { getProductByQuerySchema } from "../schema/products";
 const router = express();
-router.get("/", validateReqQuery(getProductByQuerySchema), getAllProducts);
+router.get("/", getAllProducts);
 router.get("/categories", getAllCategories);
 router.post(
   "/",

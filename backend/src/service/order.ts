@@ -1,6 +1,8 @@
+import { Decimal } from "@prisma/client/runtime/library";
 import { BadRequest, NotFound } from "../error";
 import { IOrder } from "../interface/order";
 import * as OrderModel from "../model/order";
+import * as ProductModel from "../model/product";
 import { createSignature } from "./auth";
 export const createOrderProduct = async ({
   userId,
@@ -47,29 +49,91 @@ export const getAProduct = async (orderId: string) => {
   if (!order) throw new NotFound("No Order Found by id " + orderId);
   return order;
 };
+type Product = {
+  id: number;
+  product_name: string;
+  description: string | null;
+  pic: string | null;
+  cost_price: Decimal;
+  stock: number;
+  selling_price: Decimal;
+  category_id: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
-export const updateProductFromPayment = async (orderId: string) => {
-  const order = await getAProduct(orderId);
-  const updatePromises = order.Order_Product.map(async (orderProduct: any) => {
-    const newStock = orderProduct.product!.stock - orderProduct.quantity;
-    if (newStock < 0) {
-      throw new BadRequest(
-        `Insufficient stock for product ${orderProduct.product_id}`
-      );
+type OrderProduct = {
+  product_id: number;
+  quantity: number;
+  product: Product | null;
+};
+
+type Order = {
+  Order_Product: OrderProduct[];
+};
+
+type UpdateResult = {
+  updatedOrder: Product;
+  status: "COMPLETE";
+};
+export const updateProductFromPayment = async (
+  orderId: string
+): Promise<UpdateResult[]> => {
+  try {
+    // Ensure the returned order has the expected structure
+    const order: Order = await getAProduct(orderId);
+
+    // Check if order and its products exist
+    if (!order || !order.Order_Product) {
+      throw new BadRequest(`Order not found or has no products: ${orderId}`);
     }
 
-    const updatedOrder = await OrderModel.updateProductStockFromOrder(
-      orderProduct.product_id,
-      newStock
+    // Create an array of promises to update each product's stock
+    const updatePromises = order.Order_Product.map(
+      async (orderProduct: OrderProduct): Promise<UpdateResult> => {
+        if (!orderProduct.product) {
+          throw new BadRequest(
+            `Product not found for order product ${orderProduct.product_id}`
+          );
+        }
+
+        const newStock = orderProduct.product.stock - orderProduct.quantity;
+
+        if (newStock < 0) {
+          throw new BadRequest(
+            `Insufficient stock for product ${orderProduct.product_id}`
+          );
+        }
+
+        const updatedOrder = await ProductModel.updateProductStockFromOrder(
+          orderProduct.product_id,
+          newStock
+        );
+
+        if (!updatedOrder) {
+          throw new BadRequest(
+            `Failed to update stock for product ${orderProduct.product_id}`
+          );
+        }
+
+        return { updatedOrder, status: "COMPLETE" };
+      }
     );
 
-    if (!updatedOrder) {
-      throw new BadRequest("Something went wrong");
-    }
-    return { updatedOrder, status: "COMPLETE" };
-  });
+    // Wait for all updates to complete
+    const results = await Promise.all(updatePromises);
+    return results;
+  } catch (error) {
+    // Log the error for debugging
+    console.error("Error in updateProductFromPayment:", error);
 
-  // Wait for all updates to complete
-  const results = await Promise.all(updatePromises);
-  return results;
+    // Rethrow the error or handle it as needed
+    if (error instanceof BadRequest || error instanceof NotFound) {
+      throw error;
+    } else {
+      throw new BadRequest(
+        "An unexpected error occurred while updating product stock"
+      );
+    }
+  }
 };

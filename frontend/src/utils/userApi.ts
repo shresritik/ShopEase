@@ -10,8 +10,8 @@ export const login = async (email: string, password: string) => {
     });
     saveToken("accessToken", response.data.accessToken);
     // localStorage.setItem("refreshToken", response.data.refreshToken);
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 };
 
@@ -39,8 +39,8 @@ export const update = async (
         },
       }
     );
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 };
 export const register = async (data: FormData): Promise<void> => {
@@ -53,8 +53,8 @@ export const register = async (data: FormData): Promise<void> => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
-  } catch (error: any) {
-    throw new Error(error.response.data.error);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 };
 

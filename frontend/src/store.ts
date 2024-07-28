@@ -1,4 +1,11 @@
-import { Action, Listener, Reducer } from "./interface/store";
+import {
+  Action,
+  CartState,
+  CounterState,
+  Listener,
+  Reducer,
+  UserProfileState,
+} from "./interface/store";
 import { cartReducer } from "./reducers/cartReducer";
 import { counterReducer } from "./reducers/counterReducer";
 import { updateProdReducer, userProfileReducer } from "./reducers/userReducer";
@@ -36,18 +43,22 @@ function createStore<S, A extends Action>(
   return { getState, dispatch, subscribe };
 }
 
-export const cartStore = createStore<any, any>("cart", [], cartReducer);
-export const counterStore = createStore<any, any>(
+export const cartStore = createStore<CartState, Action>(
+  "cart",
+  [],
+  cartReducer
+);
+export const counterStore = createStore<CounterState, Action>(
   "counter",
   {},
   counterReducer
 );
-export const updateStore = createStore<any, any>(
+export const updateStore = createStore<UserProfileState, Action>(
   "profile",
   {},
   updateProdReducer
 );
-export const userProfileStore = createStore<any, any>(
+export const userProfileStore = createStore<UserProfileState, Action>(
   "user-profile",
   {},
   userProfileReducer

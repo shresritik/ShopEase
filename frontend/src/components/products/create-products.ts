@@ -7,9 +7,13 @@ import {
   updateProduct,
 } from "../../utils/productApi";
 import { updateStore } from "../../store";
+import { IUser } from "../../interface/user";
 
-const populateDropdown = (container: HTMLSelectElement, options: any) => {
-  options.forEach((option: any) => {
+const populateDropdown = (
+  container: HTMLSelectElement,
+  options: { id: number; category_name: string }[]
+) => {
+  options.forEach((option: { id: number; category_name: string }) => {
     const opt = document.createElement("option");
     opt.value = option.id.toString();
     opt.text = option.category_name;
@@ -71,7 +75,7 @@ export const render = async (create: boolean = true) => {
     });
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const state = updateStore.getState();
+      const state = updateStore.getState() as IUser;
       const formData = new FormData();
       formData.append("product_name", productName.value);
       formData.append("description", description.value);
@@ -91,7 +95,7 @@ export const render = async (create: boolean = true) => {
           const created = await createProduct(formData);
           console.log(created);
         } else {
-          const updated = await updateProduct(state.id, formData);
+          const updated = await updateProduct(state.id!, formData);
           console.log(updated);
         }
         const successElement = form?.querySelector(".success") as HTMLElement;

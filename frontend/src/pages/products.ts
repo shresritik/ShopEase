@@ -3,14 +3,6 @@ import { getAllProducts, getProductsByCategories } from "../utils/productApi";
 import { IProduct } from "../interface/product";
 import { CardWrapper } from "../components/card/CardWrapper";
 
-// Define interfaces for your data structures
-
-interface CategorizedProducts {
-  [category: string]: IProduct[];
-}
-
-// Define the type for the Card function
-
 export const render = async (params: {
   category: string;
 }): Promise<HTMLElement> => {
@@ -29,7 +21,7 @@ export const render = async (params: {
   });
 
   try {
-    let products: any;
+    let products: IProduct[];
     if (pathname[pathname.length - 1] == "products") {
       products = await getAllProducts();
     } else {

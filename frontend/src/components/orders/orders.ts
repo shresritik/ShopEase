@@ -1,3 +1,5 @@
+import { IOrderView, Order, OrderProduct } from "../../interface/order";
+import { IUser } from "../../interface/user";
 import { userProfileStore } from "../../store";
 import { createElement } from "../../utils/createElement";
 import { getAllOrders, getOrdersByUsers } from "../../utils/ordersApi";
@@ -7,20 +9,21 @@ export const render = async () => {
   const container = createElement("div", {
     className: "flex flex-col justify-center items-center",
   });
-  const user = userProfileStore.getState();
+  const user = userProfileStore.getState() as IUser;
   let allOrders = [];
   if (user.roleId == 1 || user.roleId == 2) {
     allOrders = await getAllOrders();
   } else {
-    allOrders = await getOrdersByUsers(user.id);
+    allOrders = await getOrdersByUsers(user.id!);
     if (!allOrders || allOrders.length == 0) {
       container.innerHTML += "<h1>You have not bought any products yet</h1>";
     }
   }
+
   if (allOrders || allOrders.length > 0) {
     console.log(allOrders);
-    const orderData = allOrders.flatMap((order) => {
-      return order.Order_Product.map((e) => {
+    const orderData = allOrders.flatMap((order: Order) => {
+      return order.Order_Product.map((e: OrderProduct) => {
         return {
           id: order.id,
           createdAt: order.createdAt,
@@ -33,7 +36,7 @@ export const render = async () => {
         };
       });
     });
-    orderData.forEach((data, i) => {
+    orderData.forEach((data: IOrderView, i: number) => {
       container.innerHTML += OrderView(data, i);
     });
   }

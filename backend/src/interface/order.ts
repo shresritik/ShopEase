@@ -10,5 +10,5 @@ export interface IOrder {
   userId: number;
   totalAmount: number;
   location: string;
-  products: IProduct[];
+  products: IOrder_Product[];
 }

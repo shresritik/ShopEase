@@ -1,7 +1,8 @@
+import { IProduct } from "../../interface/product";
 import { getCategories, getProductsByCategories } from "../../utils/productApi";
 
 export const getProductsArray = async () => {
-  const categorizedProducts: any = {};
+  const categorizedProducts: { [key: string]: IProduct[] } = {};
   try {
     const categories = await getCategories();
     for (const category of categories) {
