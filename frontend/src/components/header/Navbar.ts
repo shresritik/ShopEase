@@ -46,7 +46,6 @@ export const Navbar = () => {
 
       profileAvatar!.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("first");
         if (checkOpacity.contains("opacity-0")) {
           profileDropdown!.classList.add("opacity-100");
           profileDropdown!.classList.remove("opacity-0");

@@ -14,11 +14,6 @@ enum ROLE {
   USER        @map("user")
 }
 
-enum STATUS {
-  PENDING  @map("pending")
-  COMPLETE @map("complete")
-}
-
 enum PERMISSION {
   SUPER_ADMIN_GET    @map("super-admin.get")
   SUPER_ADMIN_PUT    @map("super-admin.put")
@@ -32,34 +27,30 @@ enum PERMISSION {
   USER_PUT           @map("user.put")
   USER_DELETE        @map("user.delete")
   USER_POST          @map("user.post")
-  PRODUCT_GET        @map("product.get")
-  PRODUCT_POST       @map("product.post")
-  PRODUCT_PUT        @map("product.put")
-  PRODUCT_DELETE     @map("product.delete")
   REPORT_GET         @map("report.get")
 }
 
 // USERS
 model User {
-  id             Int            @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   name           String
   email          String
-  pic            String?        @default("http://localhost:8000/static/profile/default.png")
+  pic            String?   @default("http://localhost:8000/static/profile/default.png")
   password       String
-  createdAt      DateTime       @default(now())
-  create         User?          @relation("user", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdBy      Int?           @unique
-  update         User?          @relation("update_user", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  updatedBy      Int?           @unique
-  updatedAt      DateTime?      @updatedAt
-  createUser     User?          @relation("user")
-  updatedUser    User?          @relation("update_user")
-  order          Order[]        @relation("order")
-  userProd       User_Product[] @relation("user_product")
-  role           Role?          @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt      DateTime  @default(now())
+  create         User?     @relation("user", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy      Int?      @unique
+  update         User?     @relation("update_user", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  updatedBy      Int?      @unique
+  updatedAt      DateTime? @updatedAt
+  createUser     User?     @relation("user")
+  updatedUser    User?     @relation("update_user")
+  order          Order[]   @relation("order")
+  userProd       Review[]  @relation("Review")
+  role           Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   roleId         Int?
-  ProductCreator Product[]      @relation("product_creator")
-  ProductUpdator Product[]      @relation("product_updator")
+  ProductCreator Product[] @relation("product_creator")
+  ProductUpdator Product[] @relation("product_updator")
 }
 
 model Role {
@@ -84,13 +75,6 @@ model Roles_Permissions {
   permissionId Int
 }
 
-// model Users_Roles {
-//   id      Int  @id @default(autoincrement())
-//   user_id Int
-//   user    User @relation("user_roles", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-//   roles   Role @relation("user_roles", fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-//   role_id Int
-// }
 model Product {
   id             Int             @id @default(autoincrement())
   product_name   String
@@ -103,15 +87,14 @@ model Product {
   category_id    Int // Foreign key for Category
   avg_rating     Decimal?        @db.Decimal(10, 2)
   total_review   Decimal?        @db.Decimal(10, 2)
-  User_Product   User_Product[]  @relation("user_product")
+  Review         Review[]        @relation("Review")
   Order_Product  Order_Product[] @relation("order_product")
   productCreator User?           @relation("product_creator", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdBy      Int
   productUpdator User?           @relation("product_updator", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   updatedBy      Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Category {
@@ -119,12 +102,6 @@ model Category {
   category_name String
   Product       Product[]
   Order_Product Order_Product[]
-}
-
-model Status {
-  id     Int            @id @default(autoincrement())
-  status STATUS         @default(PENDING)
-  order  Order_Status[] @relation("order")
 }
 
 model Order {
@@ -135,22 +112,13 @@ model Order {
   location      String
   createdAt     DateTime        @default(now())
   Order_Product Order_Product[] @relation("order_product")
-  status        Order_Status[]  @relation("order")
 }
 
-model Order_Status {
-  id        Int     @id @default(autoincrement())
-  status    Status? @relation("order", fields: [status_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  status_id Int?
-  order     Order?  @relation("order", fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  order_id  String?
-}
-
-model User_Product {
+model Review {
   id         Int      @id @default(autoincrement())
-  user       User     @relation("user_product", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user       User     @relation("Review", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user_id    Int
-  product    Product? @relation("user_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product    Product? @relation("Review", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   product_id Int
   rating     Int?
   review     String?

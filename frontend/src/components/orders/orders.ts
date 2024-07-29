@@ -4,6 +4,7 @@ import { userProfileStore } from "../../store";
 import { createElement } from "../../utils/createElement";
 import { getAllOrders, getOrdersByUsers } from "../../utils/ordersApi";
 import OrderView from "./OrderView";
+import * as Review from "../reviews/review";
 
 export const render = async () => {
   const container = createElement("div", {
@@ -32,18 +33,55 @@ export const render = async () => {
           name: e.product.product_name,
           pic: e.product.pic,
           quantity: e.quantity,
+          user: order.user ? order.user.name : "",
         };
       });
     });
     orderData.forEach((data: IOrderView, i: number) => {
       container.innerHTML += OrderView(data, i, user.roleId);
     });
+
+    const reviewModal = (await Review.render()) as HTMLElement;
+
+    const closeReviewModal = () => {
+      reviewModal.style.display = "none";
+    };
+
+    const openReviewModal = () => {
+      reviewModal.style.display = "block";
+    };
+
+    // Event listener for clicking outside the modal
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.id === "review") {
+        closeReviewModal();
+      }
+    };
+
     container.querySelectorAll(".btn")?.forEach((rate) =>
       rate.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log("first", e.target);
+        openReviewModal();
       })
     );
+
+    const closeButton = reviewModal.querySelector(".close") as HTMLDivElement;
+    closeButton.addEventListener("click", closeReviewModal);
+
+    // Add event listener when opening the modal
+    reviewModal.addEventListener("click", handleOutsideClick);
+
+    // Prevent clicks within the modal content from closing it
+    const modalContent = reviewModal.querySelector(".relative") as HTMLElement;
+    if (modalContent) {
+      modalContent.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    // Append the modal to the body (or another appropriate container)
+    document.body.appendChild(reviewModal);
   }
 
   return container;

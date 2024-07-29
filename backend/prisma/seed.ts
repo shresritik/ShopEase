@@ -51,10 +51,6 @@ const permissionData = [
   { permission: PERMISSION.USER_PUT },
   { permission: PERMISSION.USER_POST },
   { permission: PERMISSION.USER_DELETE },
-  { permission: PERMISSION.PRODUCT_GET },
-  { permission: PERMISSION.PRODUCT_PUT },
-  { permission: PERMISSION.PRODUCT_POST },
-  { permission: PERMISSION.PRODUCT_DELETE },
   { permission: PERMISSION.REPORT_GET },
 ];
 async function main() {
@@ -84,7 +80,7 @@ async function main() {
     },
   });
   //superadmin
-  for (let i = 1; i <= 17; i++)
+  for (let i = 1; i <= 13; i++)
     await prisma.roles_Permissions.create({
       data: {
         roleId: 1,
@@ -92,7 +88,7 @@ async function main() {
       },
     });
   //admin
-  for (let i = 5; i <= 16; i++)
+  for (let i = 5; i <= 12; i++)
     await prisma.roles_Permissions.create({
       data: {
         roleId: 2,
@@ -121,16 +117,6 @@ async function main() {
       data: productData[i],
     });
   }
-  await prisma.status.createMany({
-    data: [
-      {
-        status: "COMPLETE",
-      },
-      {
-        status: "PENDING",
-      },
-    ],
-  });
 }
 main()
   .then(async () => {

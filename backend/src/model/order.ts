@@ -1,8 +1,6 @@
-import { Order, Order_Product, Prisma, Product } from "@prisma/client";
 import { IOrder_Product } from "../interface/order";
 import prisma from "../utils/prisma";
-import { IProduct } from "../interface/product";
-import { BadRequest } from "../error";
+
 // Define an interface for the product in the order
 export interface IOrderProduct {
   id: number;
@@ -17,19 +15,11 @@ export const createOrder = async (
   address: string,
   products: IOrderProduct[]
 ) => {
-  const pendingStatus = await prisma.status.findFirst({
-    where: { status: "PENDING" },
-  });
   return await prisma.order.create({
     data: {
       user_id: userId,
       total_amount: totalAmount,
       location: address,
-      status: {
-        create: {
-          status_id: pendingStatus!.id,
-        },
-      },
       Order_Product: {
         create: products.map((product: IOrder_Product) => ({
           product_id: product.id,
@@ -41,11 +31,6 @@ export const createOrder = async (
     },
     include: {
       Order_Product: true,
-      status: {
-        include: {
-          status: true,
-        },
-      },
     },
   });
 };
@@ -59,6 +44,11 @@ export const deleteOrder = async (id: number) => {
 export const getAllOrders = async () => {
   return await prisma.order.findMany({
     include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
       Order_Product: {
         include: {
           category: true,

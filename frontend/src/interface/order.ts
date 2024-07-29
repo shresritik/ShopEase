@@ -17,6 +17,7 @@ export interface Order {
   createdAt: Date;
   total_amount: number;
   Order_Product: OrderProduct[];
+  user?: { name: string };
 }
 export interface IOrderView extends IProduct {
   name: string;
@@ -24,4 +25,5 @@ export interface IOrderView extends IProduct {
   totalAmount: number;
   subtotal: number;
   createdAt: Date;
+  user?: string;
 }
