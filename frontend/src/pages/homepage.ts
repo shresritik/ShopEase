@@ -14,8 +14,7 @@ export const render = async (): Promise<HTMLElement> => {
 
   try {
     const categorizedProducts: CategorizedProducts = await getProductsArray();
-
-    for (const [category, products] of Object.entries(categorizedProducts)) {
+    for (const [category, productsObj] of Object.entries(categorizedProducts)) {
       const categoryDiv = createElement("div", {
         className: "category p-10 ",
       });
@@ -39,7 +38,12 @@ export const render = async (): Promise<HTMLElement> => {
       const productsList = createElement("div", {
         className: "products-list flex gap-4",
       });
-
+      let products: unknown[] = [];
+      if ("meta" in productsObj) {
+        products = Object.entries(productsObj)
+          .filter(([key, value]) => key !== "meta" && typeof value === "object")
+          .map(([_, product]) => product as IProduct);
+      }
       products.forEach((prod: IProduct) => {
         const productElement = CardWrapper(prod);
         productsList.appendChild(productElement);

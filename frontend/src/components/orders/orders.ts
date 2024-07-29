@@ -52,7 +52,7 @@ export const render = async () => {
       if (reviewModal.classList.contains("hidden")) {
         reviewModal.classList.remove("hidden");
         reviewModal.classList.add("block");
-        reviewModal.setAttribute("data-prod", product);
+        reviewModal.setAttribute("data-review", product);
       }
     }
     const handleOutsideClick = (event: MouseEvent) => {
@@ -61,10 +61,10 @@ export const render = async () => {
         closeReviewModal();
       }
     };
-    container.querySelectorAll(".btn")?.forEach((rate) =>
+    container.querySelectorAll<HTMLElement>(".btn").forEach((rate) =>
       rate.addEventListener("click", function (e) {
         e.preventDefault();
-        openReviewModal(this.dataset.id);
+        openReviewModal(this.dataset.id!);
       })
     );
     const closeButton = reviewModal.querySelector(".close") as HTMLDivElement;

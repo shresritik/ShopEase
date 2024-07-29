@@ -11,4 +11,9 @@ export interface IProduct {
   category: {
     category_name: string;
   };
+  meta: {
+    total: number;
+    size: number;
+    page: number;
+  };
 }

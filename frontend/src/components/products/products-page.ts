@@ -2,28 +2,56 @@ import { IProduct } from "../../interface/product";
 import { createElement } from "../../utils/createElement";
 import { CardWrapper } from "../card/CardWrapper";
 
-export const renderProducts = (
-  products: any,
-  productList: any,
-  divSection: any,
-  page: any,
-  container: any,
-  filter: boolean = false
-) => {
+interface ProductsResponse {
+  [key: string]: IProduct | { page: number; size: number; total: number };
+  meta: { page: number; size: number; total: number };
+}
+
+interface RenderProductsParams {
+  products: ProductsResponse | { message: string };
+  productList: HTMLElement;
+  divSection: HTMLElement;
+  page: HTMLElement;
+  container: HTMLElement;
+}
+
+export const renderProducts = ({
+  products,
+  productList,
+  divSection,
+  page,
+  container,
+}: RenderProductsParams): void => {
   productList.innerHTML = "";
-  if (products.message == "Product is empty") {
-    page.innerHTML = "";
-    divSection.innerHTML += "Product is empty";
+  if ("message" in products && products.message === "Product is empty") {
+    productList.innerHTML = "<div>Product is empty</div>";
+  } else if ("meta" in products) {
+    const productArray = Object.entries(products)
+      .filter(([key, value]) => key !== "meta" && typeof value === "object")
+      .map(([_, product]) => product as IProduct);
+
+    if (productArray.length === 0) {
+      productList.innerHTML =
+        "<div>No products found matching your criteria.</div>";
+    } else {
+      productArray.forEach((prod: IProduct) => {
+        const productElement = CardWrapper(prod);
+        productList.appendChild(productElement);
+      });
+
+      //   let paginationInfo = page.querySelector(".pagination-info");
+      //   if (!paginationInfo) {
+      //     paginationInfo = createElement("div", { className: "pagination-info" });
+      //     page.appendChild(paginationInfo);
+      //   }
+      //   const meta = products.meta;
+      //   paginationInfo.textContent = `Page ${meta.page} of ${Math.ceil(
+      //     meta.total / meta.size
+      //   )}`;
+    }
   } else {
-    const productArray = Object.values(products).filter(
-      (item) => !item.hasOwnProperty("size")
-    );
-    productArray.forEach((prod: IProduct) => {
-      const productElement = CardWrapper(prod);
-      productList.appendChild(productElement);
-      divSection.appendChild(page);
-    });
+    console.error("Invalid products data:", products);
+    productList.innerHTML =
+      "<div>An error occurred while loading products.</div>";
   }
-  page.appendChild(productList);
-  container.appendChild(divSection);
 };

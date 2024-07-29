@@ -52,11 +52,12 @@ export const render = async () => {
   }
   reviewBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
-    const product = document.querySelector("[data-prod]") as HTMLElement;
+    const product = document.querySelector("[data-review]") as HTMLElement;
+    console.log(product);
     const data: IReview = {
       name: reviewText.value,
       userId: userProfile.id,
-      product_name: product.dataset.prod!,
+      product_name: product.dataset.review!,
       rating: active,
     };
     try {
@@ -65,8 +66,8 @@ export const render = async () => {
         toast("Review Successfully Posted", "");
       }
     } catch (error) {
-      console.log(error as unknown);
-      if (error instanceof AxiosError) toast(error.message, "danger");
+      if (error instanceof AxiosError)
+        toast(error.response!.data.error, "danger");
     }
   });
   return container;

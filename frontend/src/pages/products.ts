@@ -36,15 +36,16 @@ export const render = async (params: {
         container
       );
       products = await getAllProducts();
-
       divSection.appendChild(filterSection);
-      renderProducts(products, productList, divSection, page, container);
+      divSection.appendChild(productList);
+      container.appendChild(divSection);
+      renderProducts({ products, productList, divSection, page, container });
     } else {
-      categoryTitle.innerHTML += `
-       ${params.category}`;
-      page.appendChild(categoryTitle);
       products = await getProductsByCategories(params.category);
-      renderProducts(products, productList, divSection, page, container);
+      categoryTitle.textContent += `
+       ${products[0].category.category_name}`;
+      page.appendChild(categoryTitle);
+      renderProducts({ products, productList, divSection, page, container });
     }
   } catch (error) {
     console.error("Error in renderProducts:", error);

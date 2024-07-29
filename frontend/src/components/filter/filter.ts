@@ -2,70 +2,99 @@ import { createElement } from "../../utils/createElement";
 import { fetchHtml } from "../../utils/fetchHtml";
 import { getAllProducts, getCategories } from "../../utils/productApi";
 import { renderProducts } from "../products/products-page";
+
+interface FilterState {
+  categoryId: string;
+  price: string;
+  rating: string;
+  search: string;
+}
+
 const populateDropdown = (
   container: HTMLSelectElement,
   options: { id: number; category_name: string }[]
 ) => {
-  options.forEach((option: { id: number; category_name: string }) => {
+  const allOption = document.createElement("option");
+  (allOption.value = ""), (allOption.text = "All");
+  container.appendChild(allOption);
+  options.forEach((option) => {
     const opt = document.createElement("option");
     opt.value = option.id.toString();
     opt.text = option.category_name;
     container.appendChild(opt);
   });
 };
-export const render = async (
-  productList: any,
-  divSection: any,
-  page: any,
-  container: any
-) => {
-  let selectedCategoryId = "1";
-  let selectedPriceValue = "0";
-  let selectedInputValue = "1";
 
-  const containerContent = createElement("div", {
+export const render = async (
+  productList: HTMLElement,
+  divSection: HTMLElement,
+  page: HTMLElement,
+  container: HTMLElement
+) => {
+  const filterState: FilterState = {
+    categoryId: "1",
+    price: "0",
+    rating: "1",
+    search: "",
+  };
+
+  const filterContent = createElement("div", {
     className: "flex flex-col justify-center items-center",
   });
-  containerContent.innerHTML += await fetchHtml("filter");
-  const priceValue = containerContent.querySelector("#priceValue");
-  const priceRange = containerContent.querySelector("#priceRange");
-  const filterBtn = containerContent.querySelector("#filterBtn");
-  const search = containerContent.querySelector("#search") as HTMLInputElement;
+  filterContent.innerHTML = await fetchHtml("filter");
+
+  const priceValue = filterContent.querySelector("#priceValue");
+  const priceRange = filterContent.querySelector(
+    "#priceRange"
+  ) as HTMLInputElement;
+  const filterBtn = filterContent.querySelector("#filterBtn");
+  const search = filterContent.querySelector("#search") as HTMLInputElement;
+  const dropdown = filterContent.querySelector(
+    "#category-dropdown"
+  ) as HTMLSelectElement;
+
   if (priceRange && priceValue) {
-    priceRange.addEventListener("input", (e: any) => {
-      selectedPriceValue = e.target.value;
-      priceValue.textContent = `Rs. ${selectedPriceValue}`;
+    priceRange.addEventListener("input", (e: Event) => {
+      filterState.price = (e.target as HTMLInputElement).value;
+      priceValue.textContent = `Rs. ${filterState.price}`;
     });
+
     const categories = await getCategories();
-    const dropdown = containerContent.querySelector(
-      "#category-dropdown"
-    ) as HTMLSelectElement;
-    dropdown.addEventListener("change", (event) => {
-      const target = event.target as HTMLSelectElement;
-      selectedCategoryId = target.value;
-    });
     populateDropdown(dropdown, categories);
   }
-  const ratingRadios = containerContent.querySelectorAll(
+
+  dropdown.addEventListener("change", (event: Event) => {
+    filterState.categoryId = (event.target as HTMLSelectElement).value;
+  });
+
+  const ratingRadios = filterContent.querySelectorAll<HTMLInputElement>(
     'input[name="rating"]'
   );
 
   ratingRadios.forEach((radio) => {
-    radio.addEventListener("change", (e: any) => {
-      selectedInputValue = e.target.value;
+    radio.addEventListener("change", (e: Event) => {
+      filterState.rating = (e.target as HTMLInputElement).value;
     });
   });
 
-  filterBtn?.addEventListener("click", async (e) => {
-    e.preventDefault();
+  const applyFilters = async () => {
     const query = {
       name: search.value,
-      category: selectedCategoryId,
-      price: selectedPriceValue,
-      rating: "" + selectedInputValue,
+      category: filterState.categoryId,
+      price: filterState.price,
+      rating: filterState.rating,
     };
     const products = await getAllProducts(query);
-    renderProducts(products, productList, divSection, page, container);
+    renderProducts({ products, productList, divSection, page, container });
+  };
+
+  filterBtn?.addEventListener("click", (e: Event) => {
+    e.preventDefault();
+    applyFilters();
   });
-  return containerContent;
+
+  // Initial render
+  await applyFilters();
+
+  return filterContent;
 };

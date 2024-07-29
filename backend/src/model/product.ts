@@ -194,6 +194,7 @@ export const updateProductStockFromOrder = async (
   });
 };
 export const getProductWithReview = async (review: IReviews) => {
+  console.log(review);
   return await prisma.product.findFirst({
     where: {
       product_name: review.product_name,
