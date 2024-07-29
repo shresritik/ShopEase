@@ -112,7 +112,7 @@ export const Navbar = () => {
             <img id="profileImg" src="https://i.pravatar.cc/40?img=35" alt="user name" title="user name" width="40" height="40" class="max-w-full rounded-full inline cursor-pointer"/>
           </a>
           <!-- Dropdown menu -->
-          <div id="profileDropdown" class="absolute  opacity-0  -right-20 top-16 w-48 mt-2 bg-white  border border-gray-300 rounded-lg shadow-lg transition-opacity duration-150 ease-in-out group-hover:opacity-100">
+          <div id="profileDropdown" class="absolute  opacity-0  -right-20 top-16 w-48 mt-2 z-[1000] bg-white  border border-gray-300 rounded-lg shadow-lg transition-opacity duration-150 ease-in-out group-hover:opacity-100">
             <a href="/dashboard" data-link class="block px-4 py-2 text-gray-800 hover:bg-gray-100 border-b-2">Dashboard</a>
             <p id="logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Logout</p>
           </div>

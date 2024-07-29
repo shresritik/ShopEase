@@ -22,7 +22,6 @@ export const renderProducts = ({
   page,
   container,
 }: RenderProductsParams): void => {
-  productList.innerHTML = "";
   if ("message" in products && products.message === "Product is empty") {
     productList.innerHTML = "<div>Product is empty</div>";
   } else if ("meta" in products) {
@@ -38,7 +37,6 @@ export const renderProducts = ({
         const productElement = CardWrapper(prod);
         productList.appendChild(productElement);
       });
-
       //   let paginationInfo = page.querySelector(".pagination-info");
       //   if (!paginationInfo) {
       //     paginationInfo = createElement("div", { className: "pagination-info" });

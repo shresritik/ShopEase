@@ -17,7 +17,7 @@ export const render = async (params: {
     className: "  text-xl font-bold px-20 mb-10",
   });
   const categoryTitle = createElement("div", {
-    className: "flex flex-col justify-center gap-2  mb-24 ",
+    className: "flex flex-col justify-center gap-2   ",
   });
   const productList = createElement("div", {
     className: `page grid ${
@@ -45,6 +45,9 @@ export const render = async (params: {
       categoryTitle.textContent += `
        ${products[0].category.category_name}`;
       page.appendChild(categoryTitle);
+      divSection.appendChild(productList);
+      container.appendChild(page);
+      container.appendChild(divSection);
       renderProducts({ products, productList, divSection, page, container });
     }
   } catch (error) {
