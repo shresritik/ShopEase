@@ -13,11 +13,9 @@ export interface IProduct {
 }
 export interface ProductFilter {
   search?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  price?: number;
   category?: number;
-  inStock?: boolean;
-  minRating?: number;
+  rating?: number;
   size?: number;
   page?: number;
 }

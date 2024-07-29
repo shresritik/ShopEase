@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import { getToken } from "./auth";
+import { IQuery } from "../interface/query";
 
 const token = getToken("accessToken");
 export async function createProduct(data: FormData) {
@@ -73,9 +74,15 @@ export async function getProductByName(name: string) {
     if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }
-export async function getAllProducts() {
+export async function getAllProducts(query?: IQuery) {
   try {
-    const res = await axios.get(BASE_URL + "/api/products");
+    const queryValue = new URLSearchParams();
+    if (query && query!.category)
+      queryValue.append("category", query!.category);
+    if (query && query!.name) queryValue.append("search", query!.name);
+    if (query && query!.rating) queryValue.append("rating", query!.rating);
+    if (query && query!.price) queryValue.append("price", query!.price);
+    const res = await axios.get(BASE_URL + "/api/products" + `?${queryValue}`);
     return res.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);

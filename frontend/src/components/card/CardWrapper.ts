@@ -14,7 +14,7 @@ export function CardWrapper(prod: IProduct) {
     price: prod.selling_price,
     title: prod.product_name,
     qty: prod.stock,
-    category: prod.category.category_name,
+    category: prod.category?.category_name,
   });
 
   productElement.innerHTML += card;

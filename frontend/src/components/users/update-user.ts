@@ -42,7 +42,7 @@ export const render = async () => {
           password.value,
           3
         );
-        if (updateRes.status == 200) {
+        if (updateRes!.status == 200) {
           const successElement = form.querySelector(".success") as HTMLElement;
           successElement.classList.remove("hidden");
         }

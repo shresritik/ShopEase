@@ -14,8 +14,6 @@ export const getAllCategories = async () => {
 export const getAllProducts = async (query: ProductFilter) => {
   const filters: ProductFilter = query;
   const where: Prisma.ProductWhereInput = {};
-  console.log("first", query);
-
   if (filters.search) {
     where.OR = [
       { product_name: { contains: filters.search, mode: "insensitive" } },
@@ -23,32 +21,20 @@ export const getAllProducts = async (query: ProductFilter) => {
     ];
   }
 
-  if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-    where.selling_price = {};
-    if (filters.minPrice !== undefined) {
-      where.selling_price.gte = filters.minPrice;
-    }
-    if (filters.maxPrice !== undefined) {
-      where.selling_price.lte = filters.maxPrice;
-    }
-  }
-
   if (filters.category) {
-    where.category_id = filters.category;
+    where.category_id = +filters.category;
   }
-
-  if (filters.inStock !== undefined) {
-    where.stock = filters.inStock ? { gt: 0 } : { equals: 0 };
+  if (filters.price) {
+    where.selling_price = { gte: +filters.price };
   }
-
-  if (filters.minRating) {
-    where.avg_rating = { gte: filters.minRating };
+  if (filters.rating) {
+    where.avg_rating = { gte: +filters.rating };
   }
 
   const products = await prisma.product.findMany({
     where,
-    // take: size,
-    // skip: (page! - 1) * size!,
+    take: filters.size,
+    skip: (filters.page! - 1) * filters.size!,
     include: {
       category: {
         select: {

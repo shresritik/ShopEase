@@ -1,8 +1,17 @@
 import Joi from "joi";
 
 export const getProductByQuerySchema = Joi.object({
-  q: Joi.string().optional().messages({
-    "string.base": "query must start with q and must be string",
+  search: Joi.string().optional().messages({
+    "string.base": "search must start with search and must be string",
+  }),
+  price: Joi.string().optional().messages({
+    "string.base": "price must be string",
+  }),
+  rating: Joi.string().optional().messages({
+    "string.base": "rating must be string",
+  }),
+  category: Joi.string().optional().messages({
+    "string.base": "category must be string",
   }),
   page: Joi.number()
     .min(1)
