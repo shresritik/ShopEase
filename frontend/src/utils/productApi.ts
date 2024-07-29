@@ -3,8 +3,9 @@ import { BASE_URL } from "../constants";
 import { getToken } from "./auth";
 import { IQuery } from "../interface/query";
 
-const token = getToken("accessToken");
 export async function createProduct(data: FormData) {
+  const token = getToken("accessToken");
+
   try {
     return await axios.post(BASE_URL + "/api/products", data, {
       headers: {
@@ -21,6 +22,8 @@ export async function createProduct(data: FormData) {
   }
 }
 export async function updateProduct(id: number, data: FormData) {
+  const token = getToken("accessToken");
+
   try {
     return await axios.put(BASE_URL + "/api/products/" + id, data, {
       headers: {
@@ -89,6 +92,8 @@ export async function getAllProducts(query?: IQuery) {
   }
 }
 export async function deleteProduct(id: number) {
+  const token = getToken("accessToken");
+
   try {
     const res = await axios.delete(BASE_URL + "/api/products/" + id, {
       headers: {

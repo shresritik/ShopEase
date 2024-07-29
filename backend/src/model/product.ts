@@ -38,6 +38,7 @@ export const getAllProducts = async (query: ProductFilter) => {
     include: {
       category: {
         select: {
+          id: true,
           category_name: true,
         },
       },

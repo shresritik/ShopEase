@@ -92,6 +92,7 @@ export const navbarRender = async () => {
             payload: checkoutData,
           });
           dispatch("/checkout");
+          sidebar?.classList.toggle("translate-x-full");
         });
     } else {
       sidebarContent!.innerHTML = "<h1>Cart is empty</h1>";

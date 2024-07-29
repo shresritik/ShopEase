@@ -58,11 +58,15 @@ export const render = () => {
   const payBtn = container.querySelector("#payBtn");
   payBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
+    console.log(form);
     const formResult = await createOrders(form);
-    if (formResult.status == 200) {
+    if (formResult && formResult.status == 200) {
       toast("Order Placed Successfully", "");
       console.log(formResult.data.formData);
       esewaCall(formResult.data.formData);
+    } else {
+      console.log(formResult);
+      toast("Something went wrong", "danger");
     }
   });
 

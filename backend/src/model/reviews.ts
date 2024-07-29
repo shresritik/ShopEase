@@ -46,6 +46,7 @@ export const getAllReview = async (productId: number) => {
     },
     include: {
       product: true,
+      user: true,
     },
   });
 };

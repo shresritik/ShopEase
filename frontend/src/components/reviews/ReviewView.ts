@@ -1,4 +1,5 @@
-<div
+export const ReviewView = () => {
+  return `<div
   class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-[5000]"
   id="review"
 >
@@ -21,7 +22,7 @@
       </div>
       <div class="items-center px-4 py-3">
         <button
-          id="submit"
+          id="review-btn"
           class="px-4 py-2 bg-gray-900 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           Submit Review
@@ -29,4 +30,5 @@
       </div>
     </div>
   </div>
-</div>
+</div>`;
+};
