@@ -21,7 +21,6 @@ export const render = async () => {
   }
 
   if (allOrders || allOrders.length > 0) {
-    console.log(allOrders);
     const orderData = allOrders.flatMap((order: Order) => {
       return order.Order_Product.map((e: OrderProduct) => {
         return {
@@ -37,8 +36,14 @@ export const render = async () => {
       });
     });
     orderData.forEach((data: IOrderView, i: number) => {
-      container.innerHTML += OrderView(data, i);
+      container.innerHTML += OrderView(data, i, user.roleId);
     });
+    container.querySelectorAll(".btn")?.forEach((rate) =>
+      rate.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("first", e.target);
+      })
+    );
   }
 
   return container;

@@ -47,7 +47,7 @@ export const render = async () => {
         const target = event.target as HTMLElement;
         const classArray = [...target.classList];
 
-        rightElement.innerHTML = ""; // Clear right element
+        rightElement.innerHTML = "";
 
         if (classArray.includes("orders")) {
           const createOrders = await Order.render();

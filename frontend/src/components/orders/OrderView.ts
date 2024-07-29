@@ -1,6 +1,6 @@
 import { IOrderView } from "../../interface/order";
 
-const OrderView = (order: IOrderView, index: number) => {
+const OrderView = (order: IOrderView, index: number, userRole: number) => {
   return `<div class="w-full md:w-1/2 px-4 sm:px-6 lg:px-8">
 
 
@@ -55,7 +55,12 @@ const OrderView = (order: IOrderView, index: number) => {
                       class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-left"
                     >
                       Purchased At: ${order.createdAt}
-                    </p>
+                    </p>${
+                      userRole > 1
+                        ? `<button  data-id=${order.id} class="btn shrink-0 text-base px-4 py-1 bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>`
+                        : ""
+                    }
+                  
                   </div>
                 </div>
               </div>
