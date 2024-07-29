@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { IProduct, ProductFilter } from "../interface/product";
 import { IQuery } from "../interface/utils";
 import prisma from "../utils/prisma";
+import { IReviews } from "../interface/reviews";
 export const getAllCategories = async () => {
   return await prisma.category.findMany({
     select: {
@@ -190,5 +191,12 @@ export const updateProductStockFromOrder = async (
   return await prisma.product.update({
     where: { id: product_id },
     data: { stock: newStock },
+  });
+};
+export const getProductWithReview = async (review: IReviews) => {
+  return await prisma.product.findFirst({
+    where: {
+      product_name: review.product_name,
+    },
   });
 };

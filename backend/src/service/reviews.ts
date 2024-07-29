@@ -1,9 +1,20 @@
-import { BadRequest } from "../error";
+import { BadRequest, NotFound } from "../error";
 import { IReviews } from "../interface/reviews";
+import { getProductWithReview } from "../model/product";
 import * as UserProduct from "../model/reviews";
 export const createProductReview = async (review: IReviews) => {
-  console.log(review);
-  const reviewProduct = await UserProduct.createReview(review);
+  const product = await getProductWithReview(review);
+  if (!product) {
+    throw new NotFound("Product not found");
+  }
+  const user = await UserProduct.hasUserReviewedProduct(
+    product.id,
+    review.userId
+  );
+  if (user) {
+    throw new BadRequest("User already reviewed");
+  }
+  const reviewProduct = await UserProduct.createReview(review, product.id);
   if (!reviewProduct) {
     throw new BadRequest("Review or rating cannnot be created");
   }
