@@ -33,7 +33,6 @@ export const render = () => {
   };
   checkoutAmount!.innerHTML += CheckoutAmount(totalAmount);
   const user = userProfileStore.getState();
-
   const email = container.querySelector("#email") as HTMLInputElement;
   email.value = user.email;
   const address = container.querySelector(
@@ -54,19 +53,20 @@ export const render = () => {
     products: checkProducts,
     location: address.value,
   };
-
   const payBtn = container.querySelector("#payBtn");
   payBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
-    console.log(form);
-    const formResult = await createOrders(form);
-    if (formResult && formResult.status == 200) {
-      toast("Order Placed Successfully", "");
-      console.log(formResult.data.formData);
-      esewaCall(formResult.data.formData);
+    if (user.role.role_rank == 1 || user.role.role_rank == 2) {
+      toast("Admin or Super Admin cannot pay", "danger");
     } else {
-      console.log(formResult);
-      toast("Something went wrong", "danger");
+      const formResult = await createOrders(form);
+      if (formResult && formResult.status == 200) {
+        toast("Order Placed Successfully", "");
+        esewaCall(formResult.data.formData);
+      } else {
+        console.log(formResult);
+        toast("Something went wrong", "danger");
+      }
     }
   });
 

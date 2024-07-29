@@ -22,7 +22,9 @@ export const createAUser = async (body: IUser) => {
   const hashedPassword = await bcrypt.hash(body.password, 10);
   const users = await UserModel.createUser({
     ...body,
-    profile: `http://localhost:8000/static/profile/` + body.profile,
+    profile: body.profile
+      ? `http://localhost:8000/static/profile/` + body.profile
+      : `http://localhost:8000/static/profile/default.png`,
     password: hashedPassword,
   });
   logger.info("Get user data");
@@ -52,9 +54,6 @@ export const updateAUser = async (id: number, body: IUser, userId: number) => {
     id,
     {
       ...body,
-      profile: body.profile
-        ? `http://localhost:8000/static/profile/` + body.profile
-        : `http://localhost:8000/static/profile/default.png`,
       password: hashedPassword,
     },
     userId

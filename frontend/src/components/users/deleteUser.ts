@@ -11,13 +11,24 @@ import { deleteProduct, getAllProducts } from "../../utils/productApi.ts";
 
 const populateDropdown = (
   container: HTMLSelectElement,
-  options: { id: number; email: string; product_name: string }[]
+  options: { id: number; email: string; product_name: string; role: string }[],
+  roleId: number
 ) => {
   options.forEach(
-    (option: { id: number; email: string; product_name: string }) => {
+    (option: {
+      id: number;
+      email: string;
+      product_name: string;
+      role: string;
+    }) => {
       const opt = document.createElement("option");
-      opt.value = option.id.toString();
-      opt.text = option.email || option.product_name;
+      if (option.role != "SUPER_ADMIN" && roleId > 1) {
+        opt.value = option.id.toString();
+        opt.text = option.email || option.product_name;
+      } else {
+        opt.value = option.id.toString();
+        opt.text = option.email || option.product_name;
+      }
       container.appendChild(opt);
     }
   );
@@ -38,11 +49,10 @@ export const render = async (prod = false, forUsers: boolean = true) => {
 
     if (!forUsers) {
       const users = await getAllUsers();
-
       const dropdown = container.querySelector(
         "#email-dropdown"
       ) as HTMLSelectElement;
-      populateDropdown(dropdown, users);
+      populateDropdown(dropdown, users, user.roleId);
       container.querySelector(".select")?.classList.toggle("hidden");
 
       dropdown.addEventListener("change", (event) => {
@@ -52,11 +62,14 @@ export const render = async (prod = false, forUsers: boolean = true) => {
       });
     }
     if (prod) {
-      const users = await getAllProducts();
+      const prod = await getAllProducts();
       const dropdown = container.querySelector(
         "#email-dropdown"
       ) as HTMLSelectElement;
-      populateDropdown(dropdown, users);
+      const products = Object.entries(prod)
+        .filter(([key, value]) => key !== "meta" && typeof value === "object")
+        .map(([_, product]) => product);
+      populateDropdown(dropdown, products, 2);
       container.querySelector(".select")?.classList.toggle("hidden");
 
       dropdown.addEventListener("change", (event) => {
