@@ -21,7 +21,7 @@ export const render = async (): Promise<HTMLElement> => {
       className: "products-list flex gap-4 flex-wrap ",
     });
 
-    const topRated: IProduct = await getAllProducts({ rating: "3" });
+    const topRated: IProduct = await getAllProducts({ rating: "2" });
     if (topRated) {
       ratedWrapper.innerHTML +=
         "<h1 class='text-xl font-bold mt-16'>Top Rated Products</h1>";

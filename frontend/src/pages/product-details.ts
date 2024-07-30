@@ -98,7 +98,7 @@ export const render = async ({
   counterStore.subscribe(updateContent);
   updateContent(counterStore.getState());
   const firstProdName = details.product_name.split(" ")[0];
-  const similarDetails = await getAllProducts({
+  const similarDetails = await getProductsByCategories(category, {
     name: firstProdName,
   });
   const similarProdDiv = container.querySelector(

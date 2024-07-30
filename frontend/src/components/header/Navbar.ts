@@ -37,6 +37,7 @@ export const Navbar = () => {
       logoutButton?.addEventListener("click", (e) => {
         e.preventDefault();
         userProfileStore.dispatch({ type: "RESET" });
+        cartStore.dispatch({ type: "RESET" });
         dispatch("/login");
       });
 
