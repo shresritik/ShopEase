@@ -8,6 +8,7 @@ import {
   getAllUsers,
   getAUser,
   getUserByEmail,
+  getUsersEmail,
   updateAUser,
 } from "../service/user";
 import { IUser } from "../interface/users";
@@ -73,11 +74,39 @@ export async function getUser(
   next: NextFunction
 ) {
   try {
-    console.log(req.user?.email, req.body.email);
     const users = await getUserByEmail(req.user?.email!, {
       email: req.body.email || req.user!.email,
     });
     res.status(HttpStatusCode.OK).json(users);
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+}
+export async function getUserFromEmail(
+  req: IRequest,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const users = await getUserByEmail(req.user?.email!, {
+      email: req.body.email || req.user!.email,
+    });
+    res.status(HttpStatusCode.OK).json(users);
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+}
+export async function getUserEmail(
+  req: IRequest,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const users = await req.body;
+    const user = await getUsersEmail(users.email);
+    res.status(HttpStatusCode.OK).json(user);
   } catch (error) {
     logger.error(error);
     next(error);

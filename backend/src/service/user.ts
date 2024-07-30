@@ -42,6 +42,12 @@ export async function getUserByEmail(
   logger.info("Get user by email");
   return result;
 }
+export async function getUsersEmail(userEmail: string) {
+  const result = await UserModel.getUsersEmail(userEmail);
+  if (!result) throw new NotFound("No user found");
+  logger.info("Get user by email");
+  return result;
+}
 export const updateAUser = async (id: number, body: IUser, userId: number) => {
   const user = await UserModel.getUserById(id);
   if (!user) throw new NotFound("No user found with the id " + id);

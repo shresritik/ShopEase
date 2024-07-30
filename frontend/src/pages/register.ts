@@ -1,9 +1,17 @@
-import { register } from "../utils/userApi.ts";
+import {
+  fetchUserProfile,
+  getUserByEmail,
+  register,
+  updateUser,
+} from "../utils/userApi.ts";
 import { createElement } from "../utils/createElement.ts";
 import { dispatch } from "../utils/dispatch.ts";
 import { RegisterView } from "../components/dashboard-view/RegisterView.ts";
+import { toast } from "../utils/toast.ts";
+import { IUser } from "../interface/user.ts";
 
-export const render = (forUsers = true) => {
+export const render = (forUsers = true, update = false) => {
+  console.log(update);
   const container = createElement("div", {
     className: "flex justify-center items-center ",
   });
@@ -13,16 +21,40 @@ export const render = (forUsers = true) => {
       forUsers ? "mt-8" : ""
     }  mb-2 w-80 sm:w-1/3 `,
   });
+
+  let userRoleSelect: HTMLSelectElement;
   let datas;
   if (forUsers) datas = RegisterView();
   else datas = RegisterView(!forUsers);
-
   form.innerHTML = datas;
-
+  let userValue: IUser;
   const name = form.querySelector("#name") as HTMLInputElement;
   const email = form.querySelector("#email") as HTMLInputElement;
   const password = form.querySelector("#password") as HTMLInputElement;
-  let userRoleSelect: HTMLSelectElement;
+  if (update) {
+    form.querySelector(".form")?.classList.add("hidden");
+    form.querySelector(".check-email")?.classList.remove("hidden");
+    const userEmail = form.querySelector("#user") as HTMLInputElement;
+    form.querySelector("#checkName")?.addEventListener("click", async (e) => {
+      e.preventDefault();
+      userValue = await getUserByEmail(userEmail.value);
+      if (userValue) {
+        form.querySelector(".form")?.classList.remove("hidden");
+        form.querySelector(".check-email")?.classList.add("hidden");
+        name.value = userValue.name;
+        email.value = userValue.email;
+        userRoleSelect.value = "" + userValue.roleId;
+      } else {
+        console.log("error");
+        toast("error", "danger");
+      }
+    });
+  } else {
+    console.log("first");
+    form.querySelector(".check-email")?.classList.add("hidden");
+    form.querySelector(".form")?.classList.remove("hidden");
+  }
+
   if (!forUsers) {
     userRoleSelect = document.getElementById("user-role") as HTMLSelectElement;
   }
@@ -49,7 +81,11 @@ export const render = (forUsers = true) => {
       if (fileInput?.files?.[0]) {
         formData.append("profile-pic", fileInput.files[0]);
       }
-      await register(formData);
+      if (update) {
+        await updateUser("" + userValue.id, formData);
+      } else {
+        await register(formData);
+      }
       if (!forUsers) {
         const successElement = form?.querySelector(".success") as HTMLElement;
         successElement?.classList.remove("hidden");

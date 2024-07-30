@@ -10,6 +10,7 @@ import { fetchHtml } from "../../utils/fetchHtml.ts";
 import { deleteProduct, getAllProducts } from "../../utils/productApi.ts";
 import { DeleteView } from "../dashboard-view/DeleteView.ts";
 import { toast } from "../../utils/toast.ts";
+import { userProfileStore } from "../../store.ts";
 
 const populateDropdown = (
   container: HTMLSelectElement,
@@ -92,6 +93,7 @@ export const render = async (prod = false, forUsers: boolean = true) => {
             }
           } else {
             removeToken("accessToken");
+            userProfileStore.dispatch({ type: "RESET" });
             dispatch("/");
           }
         } else {

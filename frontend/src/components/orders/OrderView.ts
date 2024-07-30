@@ -40,7 +40,7 @@ export default function OrderView(orderData: any, userRoleId: number): string {
                 product[0].selling_price
               }</p>
               ${
-                userRoleId === 1
+                userRoleId == 1
                   ? `<p class="text-sm text-gray-600">Cost Price: Rs. ${product[0].cost_price.toFixed(
                       2
                     )}</p>`
@@ -51,10 +51,13 @@ export default function OrderView(orderData: any, userRoleId: number): string {
               }</p>
               
             </div>
-            <button  data-review= "${
-              product[0].productName
-            }" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-8  bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>
-          </li>
+        ${
+          userRoleId == 3
+            ? ` <button  data-review= "${product[0].productName}" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-8  bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>
+          </li>`
+            : ""
+        }
+           
         `
         )}
         </ul>
@@ -62,9 +65,9 @@ export default function OrderView(orderData: any, userRoleId: number): string {
 
         <div class="flex flex-col space-y-1 ">
 
-           <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${
+           <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${Math.round(
              order.total_amount - Math.floor(order.total_amount / 1.13)
-           } </span></p>
+           )} </span></p>
       <p class="text-gray-600">Total Amount: <span class="font-medium">Rs. ${
         order.total_amount
       } </span></p>

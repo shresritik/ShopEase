@@ -6,6 +6,7 @@ import {
   updateUser,
   deleteUser,
   getUser,
+  getUserEmail,
 } from "../controller/users";
 import { uploadProfile } from "../utils/fileUpload";
 import { authenticate, authorize } from "../middleware/auth";
@@ -87,6 +88,16 @@ router.get(
     PERMISSION.USER_GET,
   ]),
   getUser
+);
+router.post(
+  "/email",
+  authenticate(),
+  authorize([
+    PERMISSION.SUPER_ADMIN_GET,
+    PERMISSION.ADMIN_GET,
+    PERMISSION.USER_GET,
+  ]),
+  getUserEmail
 );
 
 /**

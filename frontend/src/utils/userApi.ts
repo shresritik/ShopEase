@@ -15,30 +15,14 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-export const update = async (
-  id: string,
-  name: string,
-  email: string,
-  password: string,
-  roleId: number
-) => {
+export const updateUser = async (id: string, data: FormData) => {
   const token = getToken("accessToken");
   try {
-    return await axios.put(
-      BASE_URL + "/api/users/" + id,
-      {
-        name,
-        email,
-        password,
-        roleId,
+    return await axios.put(BASE_URL + "/api/users/" + id, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    });
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
@@ -50,7 +34,6 @@ export const register = async (data: FormData): Promise<void> => {
     await axios.post(BASE_URL + "/api/users", data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
   } catch (error: unknown) {
@@ -75,9 +58,7 @@ export const fetchWithAuth = async (
     const response = await fetch(url, options);
 
     if (response.status === 401) {
-      // Handle token expiration
       await refreshToken();
-      // Retry the request with a new token
       const newToken = getToken("accessToken");
 
       if (newToken) {
@@ -103,6 +84,19 @@ export const fetchUserProfile = async () => {
       Authorization: `Bearer ${token}`,
     },
   });
+  return res.data;
+};
+export const getUserByEmail = async (email: string) => {
+  const token = getToken("accessToken");
+  const res = await axios.post(
+    BASE_URL + "/api/users/email",
+    { email },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return res.data;
 };
 export const deleteUser = async (id: string) => {

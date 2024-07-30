@@ -93,6 +93,18 @@ export const getUserByEmail = async (email: string) => {
     },
   });
 };
+export const getUsersEmail = async (email: string) => {
+  return await prisma.user.findFirst({
+    where: { email },
+    include: {
+      role: {
+        select: {
+          role_rank: true,
+        },
+      },
+    },
+  });
+};
 export const findUserPermission = async (email: string) => {
   const userWithPermissions = await prisma.user.findFirst({
     where: { email },

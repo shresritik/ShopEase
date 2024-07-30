@@ -2,6 +2,7 @@ import { userProfileStore } from "../../store";
 
 export const SidebarView = () => {
   const user = userProfileStore.getState();
+  console.log(user);
   return `<div
   class="relative flex w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
 >
@@ -95,7 +96,7 @@ export const SidebarView = () => {
          <div
       id="create-user"
       role="button"
-      class="sidebar create-user  flex items-center w-full p-6 border leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+      class="sidebar udpate-user  flex items-center w-full p-6 border leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
     ><div class="grid mr-4 place-items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"

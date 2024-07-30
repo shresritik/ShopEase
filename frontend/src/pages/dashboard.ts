@@ -33,12 +33,7 @@ export const render = async () => {
       const user = await fetchUserProfile();
       const res = SidebarView();
       leftElement.innerHTML = res;
-      if (user.roleId != 3) {
-        // document.querySelector("#create-user")?.classList.toggle("hidden");
-        // document.querySelector("#create-product")?.classList.toggle("hidden");
-        // document.querySelector("#update-product")?.classList.toggle("hidden");
-        // document.querySelector("#delete-product")?.classList.toggle("hidden");
-      }
+
       if (user.roleId == 2) {
         rightElement.appendChild(await Product.render());
       } else {
@@ -53,16 +48,14 @@ export const render = async () => {
         if (classArray.includes("orders") && user.roleId != 2) {
           const createOrders = await Order.render();
           createOrders.classList.add("create-orders");
-          container.classList.remove("h-[90vh]");
 
           rightElement.appendChild(createOrders);
         } else if (classArray.includes("profile")) {
           const update = await Update.render();
           update.classList.add("profile-update");
-          container.classList.remove("h-[90vh]");
+
           rightElement.appendChild(update);
         } else if (classArray.includes("delete")) {
-          container.classList.add("h-[90vh]");
           const deleteUser = await Delete.render(
             false,
             user.roleId != 3 ? false : true
@@ -71,23 +64,26 @@ export const render = async () => {
           rightElement.appendChild(deleteUser);
         } else if (classArray.includes("create-user")) {
           const createUser = await User.render(false);
-          container.classList.remove("h-[90vh]");
 
           createUser.classList.add("create-user");
           rightElement.appendChild(createUser);
+        } else if (classArray.includes("udpate-user")) {
+          const updateUser = await User.render(false, true);
+          updateUser.classList.add("udpate-user");
+          rightElement.appendChild(updateUser);
         } else if (classArray.includes("create-product")) {
           const createProduct = await Product.render();
-          container.classList.remove("h-[90vh]");
+
           createProduct.classList.add("create-product");
           rightElement.appendChild(createProduct);
         } else if (classArray.includes("update-product")) {
           const createProduct = await Product.render(false);
-          container.classList.add("h-[90vh]");
+
           createProduct.classList.add("update-Product");
           rightElement.appendChild(createProduct);
         } else if (classArray.includes("delete-product")) {
           const deleteProduct = await Delete.render(true);
-          container.classList.add("h-[90vh]");
+
           deleteProduct.classList.add("delete-Product");
           rightElement.appendChild(deleteProduct);
         }
