@@ -69,7 +69,7 @@ export default function OrderView(orderData: any, userRoleId: number): string {
         order.total_amount
       } </span></p>
         ${
-          userRoleId == 2
+          userRoleId >= 2
             ? ""
             : `<p class="text-gray-600">Profit: <span class="font-medium">Rs. ${order.profit} </span></p>`
         } 

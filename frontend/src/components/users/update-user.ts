@@ -1,6 +1,7 @@
 import { fetchUserProfile, update } from "../../utils/userApi.ts";
 import { createElement } from "../../utils/createElement.ts";
-import { fetchHtml } from "../../utils/fetchHtml.ts";
+import { RegisterView } from "../dashboard-view/RegisterView.ts";
+import { toast } from "../../utils/toast.ts";
 
 export const render = async () => {
   const container = createElement("div", {
@@ -8,12 +9,12 @@ export const render = async () => {
   });
 
   const form = createElement("form", {
-    className: "bg-white p-6 rounded shadow-md w-full mt-8 mb-2 w-80 sm:w-96 ",
+    className: "bg-white p-6 rounded shadow-md w-full mb-2 w-1/2 sm:w-1/3 ",
   });
 
   try {
     const user = await fetchUserProfile();
-    const res = await fetchHtml("update");
+    const res = RegisterView(true, true);
     form.innerHTML = res;
 
     const name = form.querySelector("#name") as HTMLInputElement;
@@ -24,9 +25,6 @@ export const render = async () => {
     const confirmPassword = form.querySelector(
       "#confirmPassword"
     ) as HTMLInputElement;
-    const img = form.querySelector("img");
-    img!.src =
-      "http://localhost:8000/static/profile/1721749177172-revision.jpg";
     const inputs = [name, email, password, confirmPassword];
 
     form.addEventListener("submit", async (e) => {
@@ -52,7 +50,6 @@ export const render = async () => {
         errorElement.classList.remove("hidden");
       }
     });
-    // TODO Admin level update
     inputs.forEach((input) => {
       input.addEventListener("input", () => {
         const errorElement = form.querySelector(".error") as HTMLElement;
@@ -61,8 +58,11 @@ export const render = async () => {
         successElement.classList.add("hidden");
       });
     });
-  } catch (error) {
-    console.error("Error rendering user update form:", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error rendering user update form:", error);
+      toast(error.message, "danger");
+    }
     // Handle error appropriately, e.g., display an error message
   }
 

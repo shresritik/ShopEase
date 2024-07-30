@@ -8,6 +8,8 @@ import { createElement } from "../../utils/createElement.ts";
 import { dispatch } from "../../utils/dispatch.ts";
 import { fetchHtml } from "../../utils/fetchHtml.ts";
 import { deleteProduct, getAllProducts } from "../../utils/productApi.ts";
+import { DeleteView } from "../dashboard-view/DeleteView.ts";
+import { toast } from "../../utils/toast.ts";
 
 const populateDropdown = (
   container: HTMLSelectElement,
@@ -41,12 +43,10 @@ export const render = async (prod = false, forUsers: boolean = true) => {
 
   try {
     const user = await fetchUserProfile();
-    const res = await fetchHtml("deleteNotification");
+    const res = DeleteView(prod);
     container.innerHTML = res;
-
     let selectedUserId = user.id;
     let selectedOption: HTMLOptionElement | null = null;
-
     if (!forUsers) {
       const users = await getAllUsers();
       const dropdown = container.querySelector(
@@ -54,7 +54,6 @@ export const render = async (prod = false, forUsers: boolean = true) => {
       ) as HTMLSelectElement;
       populateDropdown(dropdown, users, user.roleId);
       container.querySelector(".select")?.classList.toggle("hidden");
-
       dropdown.addEventListener("change", (event) => {
         const target = event.target as HTMLSelectElement;
         selectedUserId = target.value;
@@ -78,7 +77,6 @@ export const render = async (prod = false, forUsers: boolean = true) => {
         selectedOption = target.selectedOptions[0];
       });
     }
-
     const deleteButton = container.querySelector("#deleteBtn");
     if (deleteButton) {
       deleteButton.addEventListener("click", async () => {
@@ -109,9 +107,10 @@ export const render = async (prod = false, forUsers: boolean = true) => {
       });
     }
   } catch (error: unknown) {
-    if (error instanceof Error)
+    if (error instanceof Error) {
       console.error("Error rendering delete notification:", error);
+      toast(error.message, "danger");
+    }
   }
-
   return container;
 };

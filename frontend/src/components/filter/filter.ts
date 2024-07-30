@@ -15,7 +15,8 @@ const populateDropdown = (
   options: { id: number; category_name: string }[]
 ) => {
   const allOption = document.createElement("option");
-  (allOption.value = ""), (allOption.text = "All");
+  allOption.value = "";
+  allOption.text = "All";
   container.appendChild(allOption);
   options.forEach((option) => {
     const opt = document.createElement("option");
@@ -25,16 +26,11 @@ const populateDropdown = (
   });
 };
 
-export const render = async (
-  productList: HTMLElement,
-  divSection: HTMLElement,
-  page: HTMLElement,
-  container: HTMLElement
-) => {
+export const render = async (productList: HTMLElement) => {
   const filterState: FilterState = {
-    categoryId: "1",
+    categoryId: "",
     price: "0",
-    rating: "1",
+    rating: "",
     search: "",
   };
 
@@ -93,7 +89,6 @@ export const render = async (
     applyFilters();
   });
 
-  // Initial render
   await applyFilters();
 
   return filterContent;

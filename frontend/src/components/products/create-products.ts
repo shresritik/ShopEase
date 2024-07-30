@@ -1,5 +1,4 @@
 import { createElement } from "../../utils/createElement";
-import { fetchHtml } from "../../utils/fetchHtml";
 import {
   createProduct,
   getCategories,
@@ -8,6 +7,8 @@ import {
 } from "../../utils/productApi";
 import { updateStore } from "../../store";
 import { IUser } from "../../interface/user";
+import { CreateProductView } from "../dashboard-view/CreateProductView";
+import { toast } from "../../utils/toast";
 
 const populateDropdown = (
   container: HTMLSelectElement,
@@ -26,13 +27,12 @@ export const render = async (create: boolean = true) => {
     className: "flex flex-col justify-center items-center",
   });
   const form = createElement("form", {
-    className:
-      "bg-white p-6 rounded shadow-md w-full mt-8 mb-2 w-80 sm:w-[33rem] ",
+    className: "bg-white p-6 rounded shadow-md w-full  mb-2 w-1/2 sm:w-1/3 ",
   });
   try {
     let selectedCategoryId: string;
 
-    const res = await fetchHtml("create-products");
+    const res = CreateProductView(create);
     form.innerHTML = res;
     const productName = form.querySelector("#name") as HTMLInputElement;
     const description = form.querySelector("#description") as HTMLInputElement;
@@ -42,7 +42,6 @@ export const render = async (create: boolean = true) => {
     const stockField = form.querySelector("#stock") as HTMLInputElement;
     if (!create) {
       form.querySelector(".form")?.classList.add("hidden");
-
       const product = form.querySelector("#product") as HTMLInputElement;
       form.querySelector("#checkName")?.addEventListener("click", async (e) => {
         e.preventDefault();
@@ -59,6 +58,7 @@ export const render = async (create: boolean = true) => {
           selectedCategoryId = "" + prodValue.category_id;
         } else {
           console.log("error");
+          toast("error", "danger");
         }
       });
     } else {
@@ -101,15 +101,21 @@ export const render = async (create: boolean = true) => {
         const successElement = form?.querySelector(".success") as HTMLElement;
         successElement?.classList.remove("hidden");
       } catch (error) {
-        const errorElement = form.querySelector(".error") as HTMLElement;
-        errorElement.textContent = `${error}`;
-        errorElement.classList.remove("hidden");
+        if (error instanceof Error) {
+          const errorElement = form.querySelector(".error") as HTMLElement;
+          errorElement.textContent = `${error}`;
+          errorElement.classList.remove("hidden");
+          toast(error.message, "danger");
+        }
       }
     });
   } catch (error) {
-    const errorElement = form.querySelector(".error") as HTMLElement;
-    errorElement.textContent = `${error}`;
-    errorElement.classList.remove("hidden");
+    if (error instanceof Error) {
+      const errorElement = form.querySelector(".error") as HTMLElement;
+      errorElement.textContent = `${error}`;
+      errorElement.classList.remove("hidden");
+      toast(error.message, "danger");
+    }
   }
   container.append(form);
   return container;
