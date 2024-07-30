@@ -69,6 +69,7 @@ export const getProductById = async (id: number) => {
     where: {
       id,
     },
+
     include: {
       category: {
         select: {

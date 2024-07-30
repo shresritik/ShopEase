@@ -2,18 +2,12 @@ import { IOrder_Product } from "../interface/order";
 import prisma from "../utils/prisma";
 
 // Define an interface for the product in the order
-export interface IOrderProduct {
-  id: number;
-  quantity: number;
-  selling_price: number;
-  category_id: number;
-}
 
 export const createOrder = async (
   userId: number,
   totalAmount: number,
   address: string,
-  products: IOrderProduct[]
+  products: IOrder_Product[]
 ) => {
   return await prisma.order.create({
     data: {
@@ -26,6 +20,8 @@ export const createOrder = async (
           quantity: product.quantity,
           net_amount: product.quantity * product.selling_price,
           category_id: product.category_id,
+          report:
+            product.quantity * (product.selling_price - product.cost_price),
         })),
       },
     },

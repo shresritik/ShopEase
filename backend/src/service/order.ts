@@ -4,17 +4,26 @@ import { IOrder } from "../interface/order";
 import * as OrderModel from "../model/order";
 import * as ProductModel from "../model/product";
 import { createSignature } from "./auth";
+import { getAProductById } from "./product";
 export const createOrderProduct = async ({
   userId,
   totalAmount,
   location,
   products,
 }: IOrder) => {
+  let prodArr: any = [];
+  prodArr = await Promise.all(
+    products.map(async (pro) => {
+      const val = await getAProductById(pro.id);
+      return { ...pro, cost_price: val?.cost_price };
+    })
+  );
+
   const order = await OrderModel.createOrder(
     userId,
     totalAmount,
     location,
-    products
+    prodArr
   );
   const signature = createSignature(
     `total_amount=${order.total_amount},transaction_uuid=${order.id},product_code=EPAYTEST`

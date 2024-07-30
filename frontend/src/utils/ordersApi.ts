@@ -2,8 +2,8 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { getToken } from "./auth";
 import { IFormCheckout } from "../interface/checkout";
-const token = getToken("accessToken");
 export async function createOrders(data: IFormCheckout) {
+  const token = getToken("accessToken");
   try {
     return await axios.post(BASE_URL + "/api/orders", data, {
       headers: {
@@ -20,6 +20,7 @@ export async function createOrders(data: IFormCheckout) {
   }
 }
 export async function getOrdersByUsers(data: number) {
+  const token = getToken("accessToken");
   try {
     console.log(data);
     const orders = await axios.get(BASE_URL + "/api/orders/" + data, {
@@ -40,6 +41,7 @@ export async function getOrdersByUsers(data: number) {
   }
 }
 export async function getAllOrders() {
+  const token = getToken("accessToken");
   try {
     const orders = await axios.get(BASE_URL + "/api/orders", {
       headers: {
