@@ -22,7 +22,6 @@ export async function createOrders(data: IFormCheckout) {
 export async function getOrdersByUsers(data: number) {
   const token = getToken("accessToken");
   try {
-    console.log(data);
     const orders = await axios.get(BASE_URL + "/api/orders/" + data, {
       headers: {
         Authorization: `Bearer ${token}`,

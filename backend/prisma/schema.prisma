@@ -112,6 +112,7 @@ model Order {
   location      String
   createdAt     DateTime        @default(now())
   Order_Product Order_Product[] @relation("order_product")
+  profit        Decimal         @db.Decimal(10, 2)
 }
 
 model Review {
@@ -135,5 +136,4 @@ model Order_Product {
   net_amount  Decimal  @db.Decimal(10, 2)
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   category_id Int
-  report      Int?
 }

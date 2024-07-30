@@ -49,12 +49,12 @@ export const getOrders = async () => {
 export const getUserOrders = async (userId: number) => {
   return await OrderModel.getOrderByUser(userId);
 };
-export const deleteOrder = async (id: number) => {
+export const deleteOrder = async (id: string) => {
   return await OrderModel.deleteOrder(id);
 };
 
-export const getAProduct = async (orderId: string) => {
-  const order = await OrderModel.getProductById(orderId);
+export const getAOrder = async (orderId: string) => {
+  const order = await OrderModel.getOrderById(orderId);
   if (!order) throw new NotFound("No Order Found by id " + orderId);
   return order;
 };
@@ -90,7 +90,7 @@ export const updateProductFromPayment = async (
 ): Promise<UpdateResult[]> => {
   try {
     // Ensure the returned order has the expected structure
-    const order: Order = await getAProduct(orderId);
+    const order: Order = await getAOrder(orderId);
 
     // Check if order and its products exist
     if (!order || !order.Order_Product) {

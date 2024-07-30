@@ -1,81 +1,88 @@
-import { IOrderView } from "../../interface/order";
+import { timezone } from "../../utils";
 
-const OrderView = (order: IOrderView, index: number, userRole: number) => {
-  return `<div class="w-full md:w-1/2 px-4 sm:px-6 lg:px-8">
+export default function OrderView(orderData: any, userRoleId: number): string {
+  const order = orderData[0];
 
-
-  <div class="w-full mb-3">
-    <div class="rounded-3xl bg-white shadow-lg">
-      <div class="px-4 py-6 sm:px-8 sm:py-10">
-        <div class="flow-root w-full">
-          <ul class="-my-8">
-            <div
-              class="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0 w-full"
-            >
-           <div>
-                <h1 class="font-semibold">${index + 1}. Order ID</h1>
-                <h1 class="w-10">${order.id}</h1>
-              </div>
-              <div class="relative">
-                <img
-                  class="h-24 w-24 max-w-full rounded-lg object-cover"
-                  src="${order.pic}"
-                  alt=""
-                />
-              </div>
-
-              <div class="relative flex flex-1 flex-col justify-between w-full">
-                <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                  <div class="pr-8 sm:pr-5">
-                    <p class="text-base font-semibold text-gray-900">
-                    ${order.name}
-                    </p>
-                    <p class="mx-0 mt-1 mb-0 text-sm text-gray-400">
-                      Category: ${order.category}
-                    </p>
-                    <p class="mx-0 mt-1 mb-0 text-sm text-gray-400">
-                      Quantiy: ${order.quantity}
-                    </p>
-                  </div>
-
-                  <div
-                    class="mt-4 flex flex-col items-end justify-between sm:mt-0 sm:items-start sm:justify-end"
-                  >
-                    <p
-                      class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right"
-                    >
-                      Total: Rs ${order.totalAmount}
-                    </p>
-                    <p
-                      class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right"
-                    >
-                      Sub Total: Rs ${order.subtotal}
-                    </p>
-                    <p
-                      class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-left"
-                    >
-                      Purchased At: ${order.createdAt}
-                    </p>${
-                      userRole > 1
-                        ? `<button  data-id= "${order.name}" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-4 py-1 bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>`
-                        : ` <p
-                      class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-left"
-                    >
-                      Purchased By: ${order.user}
-                    </p>`
-                    }
-                  
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ul>
-        </div>
+  return `
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6" data-order-id="${
+      order.id
+    }">
+      <h3 class="text-xl font-semibold mb-2">Order #${order.id}</h3>
+     <div class="flex justify-between">
+     ${
+       order.user
+         ? `<p class="text-gray-600 mb-4">Customer: <span class="font-medium"> ${order.user}</p>`
+         : ""
+     }</span>
+     <p class="text-gray-600 mb-4">Created at: <span class="font-medium"> ${timezone(
+       order.createdAt
+     )}</p>
       </div>
-    </div>
-  </div>
-</div>
-`;
-};
+      <h4 class="text-lg font-semibold mb-2">Products:</h4>
+      <ul class="space-y-4">
+        ${order.products.map(
+          (product: any) => `
+          <li class="flex items-start border-b border-gray-200 pb-4">
+            <img src="${product[0].pic}" alt="${
+            product[0].productName
+          }" class="w-16 h-16 object-cover rounded-md mr-4">
+            <div class="flex-grow">
+              <p class="font-medium">${
+                product[0].productName
+              } <span class="text-sm text-gray-500">(${
+            product[0].category
+          })</span>
+            <p class="text-sm text-gray-600">Quantity: ${
+              product[0].quantity
+            }</p>
+            </p>
+              <p class="text-sm text-gray-600">Selling Price: Rs. ${
+                product[0].selling_price
+              }</p>
+              ${
+                userRoleId === 1
+                  ? `<p class="text-sm text-gray-600">Cost Price: Rs. ${product[0].cost_price.toFixed(
+                      2
+                    )}</p>`
+                  : ""
+              }
+              <p class="text-sm text-gray-600">Net Amount: Rs. ${
+                product[0].net_amount
+              }</p>
+              
+            </div>
+          </li>
+        `
+        )}
+        </ul>
+        <div class="flex justify-between items-center w-full mt-4">
 
-export default OrderView;
+        <div class="flex flex-col space-y-1 ">
+
+           <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${
+             order.total_amount - Math.floor(order.total_amount / 1.13)
+           } </span></p>
+      <p class="text-gray-600">Total Amount: <span class="font-medium">Rs. ${
+        order.total_amount
+      } </span></p>
+        ${
+          userRoleId == 2
+            ? ""
+            : `<p class="text-gray-600">Profit: <span class="font-medium">Rs. ${order.profit} </span></p>`
+        } 
+ 
+
+      </div>
+      ${
+        userRoleId > 2
+          ? `<button  data-id= "${order.name}" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-8  bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>`
+          : ` <p
+        class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-left"
+      >
+        Purchased By: ${order.user}
+      </p>`
+      }
+     </div>
+    </div>
+  `;
+}

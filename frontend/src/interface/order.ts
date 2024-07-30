@@ -3,6 +3,7 @@ import { IProduct } from "./product";
 export interface OrderProduct {
   product: {
     product_name: string;
+    cost_price: number;
     pic: string | null;
   };
   category: {
@@ -10,6 +11,7 @@ export interface OrderProduct {
   };
   net_amount: number;
   quantity: number;
+  profit?: number;
 }
 
 export interface Order {
@@ -26,4 +28,5 @@ export interface IOrderView extends IProduct {
   subtotal: number;
   createdAt: Date;
   user?: string;
+  profit?: number;
 }

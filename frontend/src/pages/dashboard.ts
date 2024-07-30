@@ -25,11 +25,7 @@ export const render = async () => {
     { className: "text-3xl mb-4" },
     "Dashboard"
   );
-  const logoutButton = createElement(
-    "button",
-    { className: "bg-red-500 text-white p-2 rounded" },
-    "Logout"
-  );
+
   container.appendChild(heading);
   const renderSidebar = async () => {
     try {
@@ -42,14 +38,18 @@ export const render = async () => {
         document.querySelector("#update-product")?.classList.toggle("hidden");
         document.querySelector("#delete-product")?.classList.toggle("hidden");
       }
-      rightElement.appendChild(await Order.render());
+      if (user.roleId == 2) {
+        rightElement.appendChild(await Product.render());
+      } else {
+        rightElement.appendChild(await Order.render());
+      }
       const handleSidebarClick = async (event: Event) => {
         const target = event.target as HTMLElement;
         const classArray = [...target.classList];
 
         rightElement.innerHTML = "";
 
-        if (classArray.includes("orders")) {
+        if (classArray.includes("orders") && user.roleId != 2) {
           const createOrders = await Order.render();
           createOrders.classList.add("create-orders");
           rightElement.appendChild(createOrders);
@@ -104,15 +104,8 @@ export const render = async () => {
 
   renderSidebar();
 
-  logoutButton.addEventListener("click", () => {
-    removeToken("accessToken");
-    userProfileStore.dispatch({ type: "RESET" });
-    dispatch("/login");
-  });
-
   divElement.appendChild(leftElement);
   divElement.appendChild(rightElement);
   container.appendChild(divElement);
-  container.appendChild(logoutButton);
   return container;
 };

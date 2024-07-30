@@ -3,6 +3,7 @@ import {
   createOrder,
   deleteOrderById,
   getAllOrders,
+  getOrderById,
   getOrdersByUser,
 } from "../controller/orders";
 import { handleEsewaSuccess } from "../middleware/payment";
@@ -46,5 +47,11 @@ router.delete(
   authenticate(),
   authorize([PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET]),
   deleteOrderById
+);
+router.get(
+  "/order/:id",
+  authenticate(),
+  authorize([PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET]),
+  getOrderById
 );
 export default router;

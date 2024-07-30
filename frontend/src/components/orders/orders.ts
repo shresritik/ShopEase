@@ -19,25 +19,31 @@ export const render = async () => {
       container.innerHTML += "<h1>You have not bought any products yet</h1>";
     }
   }
-
   if (allOrders || allOrders.length > 0) {
-    const orderData = allOrders.flatMap((order: Order) => {
-      return order.Order_Product.map((e: OrderProduct) => {
-        return {
+    let orderDetail = allOrders.map((order: any) => {
+      return [
+        {
           id: order.id,
-          createdAt: order.createdAt,
-          totalAmount: order.total_amount,
-          category: e.category.category_name,
-          subtotal: e.net_amount,
-          name: e.product.product_name,
-          pic: e.product.pic,
-          quantity: e.quantity,
+          total_amount: +order.total_amount,
           user: order.user ? order.user.name : "",
-        };
-      });
+          profit: order.profit,
+          createdAt: order.createdAt,
+          products: order.Order_Product.map((e: any) => [
+            {
+              category: e.category.category_name,
+              net_amount: +e.net_amount,
+              productName: e.product.product_name,
+              selling_price: +e.product.selling_price,
+              cost_price: +e.product.cost_price,
+              pic: e.product.pic,
+              quantity: e.quantity,
+            },
+          ]),
+        },
+      ];
     });
-    orderData.forEach((data: IOrderView, i: number) => {
-      container.innerHTML += OrderView(data, i, user.roleId);
+    orderDetail.forEach((data: any) => {
+      container.innerHTML += OrderView(data, user.roleId);
     });
 
     const reviewModal = (await Review.render()) as HTMLElement;

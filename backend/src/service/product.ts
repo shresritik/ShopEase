@@ -71,11 +71,11 @@ export const getProductCategory = async (category: string, query: IQuery) => {
   const cat = await ProductModel.getProductsByCategory(category, query);
   if (cat.length == 0 || !cat)
     throw new NotFound(`Category ${category} not found`);
-  const count = await ProductModel.count(query);
-
   if (cat.length == 0) {
     return { message: "Product is empty" };
   }
+  const count = await ProductModel.count(query);
+
   const meta = {
     page: query.page,
     size: cat.length,

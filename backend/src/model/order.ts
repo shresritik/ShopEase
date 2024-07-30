@@ -9,19 +9,26 @@ export const createOrder = async (
   address: string,
   products: IOrder_Product[]
 ) => {
+  console.log("prod", products);
+  const totalProfit = products.reduce((acc, product) => {
+    console.log((product.quantity, product.selling_price, product.cost_price));
+    const productProfit =
+      product.quantity * (product.selling_price - product.cost_price);
+    return acc + productProfit;
+  }, 0);
+  console.log(totalProfit);
   return await prisma.order.create({
     data: {
       user_id: userId,
       total_amount: totalAmount,
       location: address,
+      profit: totalProfit,
       Order_Product: {
         create: products.map((product: IOrder_Product) => ({
           product_id: product.id,
           quantity: product.quantity,
           net_amount: product.quantity * product.selling_price,
           category_id: product.category_id,
-          report:
-            product.quantity * (product.selling_price - product.cost_price),
         })),
       },
     },
@@ -30,15 +37,19 @@ export const createOrder = async (
     },
   });
 };
-export const deleteOrder = async (id: number) => {
+export const deleteOrder = async (id: string) => {
+  console.log(id);
   return await prisma.order.delete({
     where: {
-      id: "" + id,
+      id: id,
     },
   });
 };
 export const getAllOrders = async () => {
   return await prisma.order.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
     include: {
       user: {
         select: {
@@ -56,6 +67,9 @@ export const getAllOrders = async () => {
 };
 export const getOrderByUser = async (userId: number) => {
   return await prisma.order.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
     where: {
       user_id: userId,
     },
@@ -70,7 +84,7 @@ export const getOrderByUser = async (userId: number) => {
     },
   });
 };
-export const getProductById = async (orderId: string) => {
+export const getOrderById = async (orderId: string) => {
   return await prisma.order.findUnique({
     where: { id: orderId },
     include: {
