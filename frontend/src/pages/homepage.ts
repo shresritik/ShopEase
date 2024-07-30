@@ -3,6 +3,7 @@ import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import { CardWrapper } from "../components/card/CardWrapper";
 import { IProduct } from "../interface/product";
+import { getAllProducts } from "../utils/productApi";
 
 interface CategorizedProducts {
   [category: string]: IProduct[];
@@ -13,7 +14,27 @@ export const render = async (): Promise<HTMLElement> => {
   });
 
   try {
-    const categorizedProducts: CategorizedProducts = await getProductsArray({
+    const ratedWrapper = createElement("div", {
+      className: " flex flex-col gap-4 flex-wrap ",
+    });
+    const ratedList = createElement("div", {
+      className: "products-list flex gap-4 flex-wrap ",
+    });
+
+    const topRated: IProduct = await getAllProducts({ rating: "3" });
+    if (topRated) {
+      ratedWrapper.innerHTML +=
+        "<h1 class='text-xl font-bold mt-16'>Top Rated Products</h1>";
+
+      for (const prod of Object.values(topRated)) {
+        if ("page" in prod) continue;
+        const productElement = CardWrapper(prod);
+        ratedList.appendChild(productElement);
+      }
+      ratedWrapper.appendChild(ratedList);
+      container.appendChild(ratedWrapper);
+    }
+    let categorizedProducts: CategorizedProducts = await getProductsArray({
       size: "4",
     });
     for (const [category, productsObj] of Object.entries(categorizedProducts)) {
@@ -40,12 +61,10 @@ export const render = async (): Promise<HTMLElement> => {
       const productsList = createElement("div", {
         className: "products-list flex gap-4 flex-wrap ",
       });
-      let products: unknown[] = [];
-      if ("meta" in productsObj) {
-        products = Object.entries(productsObj)
-          .filter(([key, value]) => key !== "meta" && typeof value === "object")
-          .map(([_, product]) => product as IProduct);
-      }
+
+      const products = Object.entries(productsObj)
+        .filter(([key, value]) => key !== "meta" && typeof value === "object")
+        .map(([_, product]) => product as IProduct);
       products.forEach((prod: IProduct) => {
         const productElement = CardWrapper(prod);
         productsList.appendChild(productElement);
