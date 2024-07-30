@@ -13,7 +13,9 @@ export const render = async (): Promise<HTMLElement> => {
   });
 
   try {
-    const categorizedProducts: CategorizedProducts = await getProductsArray();
+    const categorizedProducts: CategorizedProducts = await getProductsArray({
+      size: "4",
+    });
     for (const [category, productsObj] of Object.entries(categorizedProducts)) {
       const categoryDiv = createElement("div", {
         className: "category p-2 md:p-10 ",

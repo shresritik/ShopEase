@@ -70,11 +70,18 @@ export const ProductDetails = (details: any, quantity: number) => {
         }
       </div>
     </div>
-    <div>
-    <h1 class="my-5">Total Reviews ${details.total_review}</h1>
+     <div id="similar-products" class="my-2">
     </div>
+     ${
+       details.total_review
+         ? `  <div>
+    <h1 class="my-8">Total Reviews ${details.total_review}</h1>
+    </div>`
+         : ""
+     }
+  
+   
     <div id="review-details" class="my-2">
-    
     </div>
   </div>
 </div>

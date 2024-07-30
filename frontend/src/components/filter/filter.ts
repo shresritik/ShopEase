@@ -85,7 +85,7 @@ export const render = async (
       rating: filterState.rating,
     };
     const products = await getAllProducts(query);
-    renderProducts({ products, productList, divSection, page, container });
+    renderProducts({ products, productList });
   };
 
   filterBtn?.addEventListener("click", (e: Event) => {

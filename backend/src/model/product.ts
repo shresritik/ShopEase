@@ -83,13 +83,13 @@ export const getProductById = async (id: number) => {
 };
 export const getProductsByCategory = async (
   category: string,
-  query: IQuery
+  query: ProductFilter
 ) => {
-  const { page, size, q } = query;
+  const { page, size, search } = query;
   return await prisma.product.findMany({
     skip: (page! - 1) * size!,
     take: size,
-    where: !q
+    where: !search
       ? {
           category: {
             category_name: {
@@ -114,6 +114,9 @@ export const getProductByCategoryAndId = async (
   id: number
 ) => {
   return await prisma.product.findFirst({
+    include: {
+      category: true,
+    },
     where: {
       id,
       category: {

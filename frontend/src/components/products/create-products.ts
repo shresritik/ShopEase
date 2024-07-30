@@ -86,7 +86,7 @@ export const render = async (create: boolean = true) => {
       formData.append("selling_price", sellField.value);
       formData.append(
         "category_id",
-        selectedCategoryId ? selectedCategoryId : "Dairy"
+        selectedCategoryId ? selectedCategoryId : "1"
       );
       formData.append("stock", stockField.value);
 

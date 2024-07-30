@@ -53,7 +53,6 @@ export const render = async () => {
   reviewBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
     const product = document.querySelector("[data-review]") as HTMLElement;
-    console.log(product);
     const data: IReview = {
       name: reviewText.value,
       userId: userProfile.id,

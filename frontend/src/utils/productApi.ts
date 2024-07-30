@@ -48,11 +48,21 @@ export async function getCategories() {
     if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }
 }
-export async function getProductsByCategories(category: string, size?: string) {
+export async function getProductsByCategories(
+  category: string,
+  query?: IQuery
+) {
   try {
-    const sizeCheck = size ? `?size=${size}` : "";
+    const queryParams = new URLSearchParams();
+    if (query && query.size) {
+      queryParams.append("size", query.size);
+    }
+    if (query && query.search) {
+      queryParams.append("search", query.search);
+    }
+
     const res = await axios.get(
-      BASE_URL + "/api/products/" + category + sizeCheck
+      BASE_URL + "/api/products/" + category + `?${queryParams}`
     );
     return res.data;
   } catch (error: unknown) {

@@ -51,6 +51,9 @@ export default function OrderView(orderData: any, userRoleId: number): string {
               }</p>
               
             </div>
+            <button  data-review= "${
+              product[0].productName
+            }" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-8  bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>
           </li>
         `
         )}
@@ -75,7 +78,7 @@ export default function OrderView(orderData: any, userRoleId: number): string {
       </div>
       ${
         userRoleId > 2
-          ? `<button  data-id= "${order.name}" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-8  bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>`
+          ? ``
           : ` <p
         class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-left"
       >

@@ -10,18 +10,13 @@ interface ProductsResponse {
 interface RenderProductsParams {
   products: ProductsResponse | { message: string };
   productList: HTMLElement;
-  divSection: HTMLElement;
-  page: HTMLElement;
-  container: HTMLElement;
 }
 
 export const renderProducts = ({
   products,
   productList,
-  divSection,
-  page,
-  container,
 }: RenderProductsParams): void => {
+  productList.innerHTML = "";
   if ("message" in products && products.message === "Product is empty") {
     productList.innerHTML = "<div>Product is empty</div>";
   } else if ("meta" in products) {

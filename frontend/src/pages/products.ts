@@ -39,7 +39,7 @@ export const render = async (params: {
       divSection.appendChild(filterSection);
       divSection.appendChild(productList);
       container.appendChild(divSection);
-      renderProducts({ products, productList, divSection, page, container });
+      renderProducts({ products, productList });
     } else {
       products = await getProductsByCategories(params.category);
       categoryTitle.textContent += `
@@ -48,7 +48,7 @@ export const render = async (params: {
       divSection.appendChild(productList);
       container.appendChild(page);
       container.appendChild(divSection);
-      renderProducts({ products, productList, divSection, page, container });
+      renderProducts({ products, productList });
     }
   } catch (error) {
     console.error("Error in renderProducts:", error);

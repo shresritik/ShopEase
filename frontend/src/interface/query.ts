@@ -3,4 +3,6 @@ export interface IQuery {
   category?: string;
   price?: string;
   rating?: string;
+  size?: string;
+  search?: string;
 }

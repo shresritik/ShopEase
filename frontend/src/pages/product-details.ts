@@ -1,11 +1,17 @@
 import { ProductDetails } from "../components/products/ProductDetailsView";
 import { cartStore, counterStore } from "../store";
 import { createElement } from "../utils/createElement";
-import { getProductDetails } from "../utils/productApi";
+import {
+  getAllProducts,
+  getProductDetails,
+  getProductsByCategories,
+} from "../utils/productApi";
 import startCover from "../assets/svg/star-cover.svg";
 import { ProductReview } from "../components/products/ProductReview";
 import { getReview } from "../utils/reviewApi";
 import { IReviewDetails } from "../interface/review";
+import { IProduct } from "../interface/product";
+import { CardWrapper } from "../components/card/CardWrapper";
 
 export const render = async ({
   id,
@@ -23,6 +29,10 @@ export const render = async ({
   const productDetailsContainer = createElement("div", {
     id: "product-details-container",
   });
+  const productList = createElement("div", {
+    className: `flex justify-start
+    gap-4 my-5 `,
+  });
   container.appendChild(productDetailsContainer);
   const reviewDetailsContainer = createElement("div", {
     id: "review-details",
@@ -38,10 +48,9 @@ export const render = async ({
       const quantity = counterState[details.id!] || 0;
       productDetailsContainer.innerHTML = ProductDetails(details, quantity);
     }
-
     const res = productDetailsContainer.querySelector(".star");
     if (res) {
-      res.innerHTML = ""; // Clear existing stars
+      res.innerHTML = "";
       for (let i = 0; i < details.avg_rating; i++) {
         res.innerHTML += `<img src=${startCover} width="20">`;
       }
@@ -88,6 +97,26 @@ export const render = async ({
 
   counterStore.subscribe(updateContent);
   updateContent(counterStore.getState());
+  const firstProdName = details.product_name.split(" ")[0];
+  const similarDetails = await getAllProducts({
+    name: firstProdName,
+  });
+  const similarProdDiv = container.querySelector(
+    "#similar-products"
+  ) as HTMLDivElement;
+  const productArray = Object.entries(similarDetails)
+    .filter(([key, value]) => key !== "meta" && typeof value === "object")
+    .map(([_, product]) => product as IProduct);
+  if (productArray.length > 0) {
+    similarProdDiv.innerHTML += "<h1>Similar Products</h1>";
+  }
+  productArray.forEach((prod: IProduct) => {
+    if (details.id != prod.id) {
+      const productElement = CardWrapper(prod);
+      productList.appendChild(productElement);
+    }
+  });
+  similarProdDiv.appendChild(productList);
   const reviews = await getReview(details.id);
   reviews.forEach((review: IReviewDetails) => {
     const reviewInfo = {
