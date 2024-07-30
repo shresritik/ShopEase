@@ -9,14 +9,14 @@ interface CategorizedProducts {
 }
 export const render = async (): Promise<HTMLElement> => {
   const container = createElement("div", {
-    className: "flex flex-col justify-center gap-2  w-max mx-auto",
+    className: "flex flex-col justify-center gap-2  md:w-max mx-auto",
   });
 
   try {
     const categorizedProducts: CategorizedProducts = await getProductsArray();
     for (const [category, productsObj] of Object.entries(categorizedProducts)) {
       const categoryDiv = createElement("div", {
-        className: "category p-10 ",
+        className: "category p-2 md:p-10 ",
       });
       const categoryTitle = createElement("h1", {
         className: "text-xl font-bold mb-4",
@@ -36,7 +36,7 @@ export const render = async (): Promise<HTMLElement> => {
         dispatch(`/products/${category}`);
       });
       const productsList = createElement("div", {
-        className: "products-list flex gap-4",
+        className: "products-list flex gap-4 flex-wrap ",
       });
       let products: unknown[] = [];
       if ("meta" in productsObj) {

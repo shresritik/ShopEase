@@ -8,15 +8,15 @@ export interface ICard {
 export default function BaseCard(props: ICard) {
   return `
   <div
-  class="hover:cursor-pointer relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96"
+  class="hover:cursor-pointer relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl  lg:w-96"
 >
   <div
-    class="card relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-96"
+    class="card relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl w-52 md:w-full lg:h-96"
   >
     <img
       alt="prod"
       src="${props.img}"
-      class="object-cover w-full h-full"
+      class="object-contain w-full  h-full"
     />
   </div>
   <div class="p-6">

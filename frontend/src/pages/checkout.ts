@@ -4,6 +4,7 @@ import { CheckoutView } from "../components/checkout/CheckoutView";
 import { CheckoutCard, ICheckoutProduct } from "../interface/checkout";
 import { IProduct } from "../interface/product";
 import { cartStore, userProfileStore } from "../store";
+import { roundOff } from "../utils";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import { createOrders } from "../utils/ordersApi";
@@ -28,8 +29,7 @@ export const render = () => {
   });
   let totalAmount = {
     subtotal: amount,
-    delivery: 40,
-    total: amount + 40,
+    total: roundOff(amount * 1.13),
   };
   checkoutAmount!.innerHTML += CheckoutAmount(totalAmount);
   const user = userProfileStore.getState();
