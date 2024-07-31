@@ -1,6 +1,6 @@
 import { cartStore, userProfileStore } from "../../store";
 import { dispatch } from "../../utils/dispatch";
-
+import productImg from "../../assets/svg/products.svg";
 export const Navbar = () => {
   document.addEventListener("DOMContentLoaded", () => {
     const login = document.getElementById("showLogin");
@@ -48,7 +48,12 @@ export const Navbar = () => {
         e.preventDefault();
         profileDropdown!.classList.toggle("hidden");
       });
-
+      document
+        .querySelector(".productClick")
+        ?.addEventListener("click", (e) => {
+          e.preventDefault();
+          dispatch("/products");
+        });
       document.addEventListener("click", (e: MouseEvent) => {
         const target = e.target as HTMLElement;
 
@@ -61,7 +66,7 @@ export const Navbar = () => {
       });
     }
   });
-  return `
+  return /*html */ `
   <header class="relative h-full w-full border-b-2 shadow-lg border-b-1 border-slate-200 bg-white/90 shadow-slate-700/5 after:absolute after:top-full after:left-0 after:z-10 after:block after:h-px after:w-full after:bg-slate-200 lg:border-slate-200 lg:backdrop-blur-sm lg:after:hidden">
   <div class="sticky top-0 mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[96rem]">
     <nav id="navbar" aria-label="main navigation" class="flex h-[5.5rem] items-stretch justify-between font-medium text-slate-700 sticky top-0 w-full" role="navigation">
@@ -73,12 +78,14 @@ export const Navbar = () => {
       <!-- Navigation links -->
       <ul   class="  flex ">
         <li  class="flex items-stretch">
-          <a class="flex items-center gap-2 py-4  hover:text-gray-500 focus:text-gray-600 focus:outline-none focus-visible:outline-none lg:px-8" data-link href="/products">
-            Products
-          </a>
+          <div class="flex productClick items-center py-4  group focus:text-gray-600 focus:outline-none focus-visible:outline-none lg:px-8" >
+          <img src="${productImg}" class="cursor-pointer group-hover-bg-red-500"/>
+
+            <h1 class="group-hover:text-gray-500 cursor-pointer">Products</h1>
+          </div>
         </li>
           <div id="cartIcon" class="flex items-center px-6 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" class="cursor-pointer">
           <path fill="black" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/>
         </svg>
         <p id="cartList" class="bg-red-500 text-white w-5 h-5 p-3 flex items-center justify-center rounded-full">

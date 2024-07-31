@@ -46,21 +46,19 @@ const setupEventListeners = (container: HTMLElement, user: IUser) => {
     .querySelector(".filter-drop")
     ?.addEventListener("click", async (e) => {
       e.preventDefault();
-      let filteredData;
-      if (selectedDay) {
-        const isoDate = convertToISO(selectedDay);
-        if (user.roleId > 2) {
-          filteredData = await getOrdersByUsers(user.id!, { q: isoDate });
-        } else {
-          filteredData = await getAllOrders({ q: isoDate });
-        }
+      const isoDate = selectedDay ? convertToISO(selectedDay) : null;
+      const params = isoDate ? { q: isoDate } : undefined;
+
+      const getOrders =
+        user.roleId > 2
+          ? () => getOrdersByUsers(user.id!, params)
+          : () => getAllOrders(params);
+
+      const filteredData = await getOrders();
+
+      if (filteredData) {
         const filteredOrderDetail = mapOrdersToDetail(filteredData);
         renderOrders(container, filteredOrderDetail, user.roleId);
-      } else {
-        if (filteredData) {
-          const filteredOrderDetail = mapOrdersToDetail(filteredData);
-          renderOrders(container, filteredOrderDetail, user.roleId);
-        }
       }
     });
 };
