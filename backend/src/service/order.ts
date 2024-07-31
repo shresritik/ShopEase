@@ -5,6 +5,7 @@ import * as OrderModel from "../model/order";
 import * as ProductModel from "../model/product";
 import { createSignature } from "./auth";
 import { getAProductById } from "./product";
+import { IQuery } from "../interface/utils";
 export const createOrderProduct = async ({
   userId,
   totalAmount,
@@ -43,11 +44,11 @@ export const createOrderProduct = async ({
   };
   return { ...order, formData };
 };
-export const getOrders = async () => {
-  return await OrderModel.getAllOrders();
+export const getOrders = async (query: IQuery) => {
+  return await OrderModel.getAllOrders(query);
 };
-export const getUserOrders = async (userId: number) => {
-  return await OrderModel.getOrderByUser(userId);
+export const getUserOrders = async (userId: number, query: IQuery) => {
+  return await OrderModel.getOrderByUser(userId, query);
 };
 export const deleteOrder = async (id: string) => {
   return await OrderModel.deleteOrder(id);

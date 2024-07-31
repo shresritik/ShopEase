@@ -28,7 +28,7 @@ export async function getAllOrders(
   next: NextFunction
 ) {
   try {
-    const order = await getOrders();
+    const order = await getOrders(req.query);
     res.status(HttpStatusCode.OK).json(order);
   } catch (error) {
     next(error);
@@ -41,7 +41,7 @@ export async function getOrdersByUser(
 ) {
   try {
     const { id } = req.params;
-    const order = await getUserOrders(+id);
+    const order = await getUserOrders(+id, req.query);
     res.status(HttpStatusCode.OK).json(order);
   } catch (error) {
     next(error);

@@ -12,7 +12,6 @@ export const render = async (): Promise<HTMLElement> => {
   const container = createElement("div", {
     className: "flex flex-col justify-center gap-2  md:w-max mx-auto",
   });
-
   try {
     const ratedWrapper = createElement("div", {
       className: " flex flex-col gap-4 flex-wrap ",

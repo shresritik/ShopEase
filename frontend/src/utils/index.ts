@@ -14,3 +14,6 @@ export const timezone = (time: Date) => {
     second: "2-digit",
   });
 };
+export const convertToISO = (date: number) => {
+  return new Date(Date.now() - date * 24 * 60 * 60 * 1000).toISOString();
+};

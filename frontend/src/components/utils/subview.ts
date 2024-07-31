@@ -8,3 +8,19 @@ export const TotalAmountView = (totalAmount: number) => {
           '
         </div>`;
 };
+export const DateDropDownView = () => {
+  return ` 
+  <div class="flex justify-center items-center space-x-2 mb-5">
+  <select
+    id="date-drop"
+    name="date-drop"
+    class="block px-2 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-900 focus:border-indigo-500"
+  >
+    <option value="" selected >All</option>
+    <option value="7" >Last 7 days</option>
+    <option value="15" >Last 15 days</option>
+    <option value="30" >Last 30 days</option>
+  </select>
+  <button class="filter-drop bg-gray-900 px-5 text-white py-2">Filter</button>
+  </div>`;
+};

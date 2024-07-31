@@ -13,6 +13,6 @@ export const toast = (message: string, status: string) => {
     style: {
       background: status == "danger" ? "red" : "green",
     },
-    onClick: function () {}, // Callback after click
+    onClick: function () {},
   }).showToast();
 };

@@ -19,7 +19,7 @@ export const getAllProducts = async (query: ProductFilter) => {
     where.category_id = +filters.category;
   }
   if (filters.price) {
-    where.selling_price = { gte: +filters.price };
+    where.selling_price = { lte: +filters.price };
   }
   if (filters.rating) {
     where.avg_rating = { gte: +filters.rating };

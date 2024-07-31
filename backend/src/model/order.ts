@@ -1,4 +1,5 @@
 import { IOrder_Product } from "../interface/order";
+import { IQuery } from "../interface/utils";
 import prisma from "../utils/prisma";
 
 // Define an interface for the product in the order
@@ -9,7 +10,6 @@ export const createOrder = async (
   address: string,
   products: IOrder_Product[]
 ) => {
-  console.log("prod", products);
   const totalProfit = products.reduce((acc, product) => {
     console.log((product.quantity, product.selling_price, product.cost_price));
     const productProfit =
@@ -45,11 +45,16 @@ export const deleteOrder = async (id: string) => {
     },
   });
 };
-export const getAllOrders = async () => {
+export const getAllOrders = async (query: IQuery) => {
   return await prisma.order.findMany({
     orderBy: {
       createdAt: "desc",
     },
+    where: query.q
+      ? {
+          createdAt: { gte: query.q },
+        }
+      : {},
     include: {
       user: {
         select: {
@@ -65,15 +70,20 @@ export const getAllOrders = async () => {
     },
   });
 };
-export const getOrderByUser = async (userId: number) => {
+export const getOrderByUser = async (userId: number, query: IQuery) => {
   return await prisma.order.findMany({
     orderBy: {
       createdAt: "desc",
     },
-    where: {
-      user_id: userId,
-    },
 
+    where: query.q
+      ? {
+          createdAt: { gte: query.q },
+          user_id: userId,
+        }
+      : {
+          user_id: userId,
+        },
     include: {
       Order_Product: {
         include: {

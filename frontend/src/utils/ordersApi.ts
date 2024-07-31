@@ -19,14 +19,22 @@ export async function createOrders(data: IFormCheckout) {
       );
   }
 }
-export async function getOrdersByUsers(data: number) {
+export async function getOrdersByUsers(data: number, query?: { q: string }) {
   const token = getToken("accessToken");
   try {
-    const orders = await axios.get(BASE_URL + "/api/orders/" + data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const queryParam = new URLSearchParams();
+    if (query && query.q) {
+      queryParam.append("q", query.q);
+    }
+
+    const orders = await axios.get(
+      BASE_URL + "/api/orders/" + data + `?${queryParam}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (orders.status == 200) {
       return orders.data;
     }
@@ -39,14 +47,21 @@ export async function getOrdersByUsers(data: number) {
       );
   }
 }
-export async function getAllOrders() {
+export async function getAllOrders(query?: { q: string }) {
   const token = getToken("accessToken");
   try {
-    const orders = await axios.get(BASE_URL + "/api/orders", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const queryParam = new URLSearchParams();
+    if (query && query.q) {
+      queryParam.append("q", query.q);
+    }
+    const orders = await axios.get(
+      BASE_URL + "/api/orders" + `?${queryParam}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (orders.status == 200) {
       return orders.data;
     }
