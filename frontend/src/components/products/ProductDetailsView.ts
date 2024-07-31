@@ -14,13 +14,22 @@ export const ProductDetails = (details: any, quantity: number) => {
         </div>
         <div class="flex -mx-2 mb-4 justify-center w-[30rem] ">
           <div class="w-max px-2">
-            <button
-              class="cart w-full bg-gray-900 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
-            >
-              Add to Cart
-            </button>
+        
+    <button
+      class=" cart block w-full select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+      type="button"
+         ${details.stock == 0 ? "disabled" : ""}
+    >
+      Add to Cart
+    </button>
+    <button
+      class=" remove-cart  w-full hidden select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+      type="button"
+    >
+  Remove from Cart
+    </button>
           </div>
-          <div class="flex justify-center items-center gap-1">
+          <div class="hidden quantity-div justify-center items-center gap-1">
           <button data-prod="${details.id}" data-qty="${
     details.stock
   }" class="plus bg-gray-900 block w-maxselect-none text-white m-1 w-8 text-xl">+</button>
@@ -70,17 +79,7 @@ export const ProductDetails = (details: any, quantity: number) => {
         }
       </div>
     </div>
-     <div id="similar-products" class="my-2">
-    </div>
-     ${
-       details.total_review
-         ? `  <div>
-    <h1 class="my-8">Total Reviews ${details.total_review}</h1>
-    </div>`
-         : ""
-     }
   
-   
     <div id="review-details" class="my-2">
     </div>
   </div>

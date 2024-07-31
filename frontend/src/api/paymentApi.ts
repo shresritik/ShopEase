@@ -1,7 +1,16 @@
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import { getToken } from "../utils/auth";
+export const getPaymentForm = async (data: any) => {
+  const token = getToken("accessToken");
 
+  const res = await axios.post(BASE_URL + "/api/orders/payment", data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res;
+};
 export const esewaCall = (formData: any) => {
   var path = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
 
@@ -16,7 +25,7 @@ export const esewaCall = (formData: any) => {
     hiddenField.setAttribute("value", formData[key]);
     form.appendChild(hiddenField);
   }
-
+  console.log(form);
   document.body.appendChild(form);
   form.submit();
 };

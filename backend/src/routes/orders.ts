@@ -2,6 +2,7 @@ import express from "express";
 import {
   createOrder,
   deleteOrderById,
+  generatePaymentForm,
   getAllOrders,
   getOrderById,
   getOrdersByUser,
@@ -29,6 +30,12 @@ router.post(
   authorize([PERMISSION.USER_POST]),
   handleEsewaSuccess,
   updateProductAfterPayment
+);
+router.post(
+  "/payment",
+  authenticate(),
+  authorize([PERMISSION.USER_POST]),
+  generatePaymentForm
 );
 router.get(
   "/:id",

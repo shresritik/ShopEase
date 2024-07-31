@@ -2,7 +2,6 @@ import { roundOff, timezone } from "../../utils";
 
 export default function OrderView(orderData: any, userRoleId: number): string {
   const order = orderData[0];
-  console.log(order.discountValue);
   return `
     <div class="bg-white shadow-md rounded-lg p-6 mb-6" data-order-id="${
       order.id
@@ -51,9 +50,10 @@ export default function OrderView(orderData: any, userRoleId: number): string {
               }</p>
               
             </div>
+       
         ${
-          userRoleId == 3
-            ? ` <button  data-review= "${product[0].productName}" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-8  bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>
+          userRoleId == 3 && order.status != "pending"
+            ? ` <button  data-review= "${product[0].productName}" data-dialog-target="sign-in-dialog" class="btn shrink-0 text-base px-8 py-2  bg-gray-900  text-white sm:order-2 sm:ml-8 sm:text-left">Rate</button>
           </li>`
             : ""
         }
@@ -92,6 +92,11 @@ export default function OrderView(orderData: any, userRoleId: number): string {
  
 
       </div>
+      <p
+        class="shrink-0 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-left"
+      >
+       Status: ${order.status}
+      </p>
       ${
         userRoleId > 2
           ? ``
@@ -101,6 +106,14 @@ export default function OrderView(orderData: any, userRoleId: number): string {
         Purchased By: ${order.user}
       </p>`
       }
+       ${
+         order.status == "pending" && userRoleId == 3
+           ? `<button id="payment-data"  data-pending='${JSON.stringify({
+               id: order.id,
+               total_amount: order.total_amount,
+             })}'   class=" shrink-0 text-base px-8 py-2  bg-green-500  text-white sm:order-2 sm:ml-8 sm:text-left">Pay via esewa</button>`
+           : ""
+       }
      </div>
     </div>
   `;

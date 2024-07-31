@@ -116,6 +116,7 @@ model Order {
   profit        Decimal         @db.Decimal(10, 2)
   discount      Discount?       @relation(fields: [discountId], references: [id])
   discountId    Int?
+  status        String?         @default("pending")
 }
 
 model Review {

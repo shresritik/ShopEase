@@ -37,14 +37,14 @@ export default function BaseCard(props: ICard) {
     >
    Category: ${props.category}
     </p>
-    <div class="flex justify-start items-center gap-4 text-black  text-sm">
+    <div class="flex justify-start items-center gap-4 relative text-black  text-sm">
 
     <p
       class="block font-sans  antialiased  leading-normal opacity-75"
     >
    Quanity: ${props.qty}
     </p>
-        <div class="flex justify-center items-center gap-3 ">
+        <div class="quantity-div hidden absolute right-0  justify-center items-center gap-3 ">
     <button class="plus bg-gray-900  block w-maxselect-none  text-white m-1 w-8 text-xl ">+</button>
     <p class="quantity">0</p>
         <button class="minus bg-gray-900  block w-maxselect-none  text-white m-1 w-8 text-xl ">-</button>
@@ -59,6 +59,12 @@ export default function BaseCard(props: ICard) {
          ${props.qty == 0 ? "disabled" : ""}
     >
       Add to Cart
+    </button>
+    <button
+      class=" remove-cart  w-full hidden select-none rounded-lg bg-gray-900 py-3.5 px-7 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+      type="button"
+    >
+  Remove from Cart
     </button>
 
   </div>

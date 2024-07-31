@@ -112,3 +112,14 @@ export const getOrderById = async (orderId: string) => {
     },
   });
 };
+export const updateOrderById = async (
+  orderId: string,
+  data: { status: string }
+) => {
+  return await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      status: data.status,
+    },
+  });
+};

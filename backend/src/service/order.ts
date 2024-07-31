@@ -7,6 +7,7 @@ import { createSignature } from "./auth";
 import { getAProductById } from "./product";
 import { IQuery } from "../interface/utils";
 import { getDiscountByCode } from "./discount";
+import { generateFormForPayment } from "../utils/paymentForm";
 export const createOrderProduct = async ({
   userId,
   totalAmount,
@@ -34,26 +35,14 @@ export const createOrderProduct = async ({
     discountInfo?.id
   );
 
-  const signature = createSignature(
-    `total_amount=${order.total_amount},transaction_uuid=${order.id},product_code=EPAYTEST`
-  );
-  const formData = {
-    amount: order.total_amount,
-    failure_url: "http://localhost:5173/success",
-    product_delivery_charge: "0",
-    product_service_charge: "0",
-    product_code: "EPAYTEST",
-    signature: signature,
-    signed_field_names: "total_amount,transaction_uuid,product_code",
-    success_url: "http://localhost:5173/success",
-    tax_amount: "0",
-    total_amount: order.total_amount,
-    transaction_uuid: order.id,
-  };
+  const formData = generateFormForPayment(order);
   return { ...order, formData };
 };
 export const getOrders = async (query: IQuery) => {
   return await OrderModel.getAllOrders(query);
+};
+export const updateOrder = async (id: string, data: { status: string }) => {
+  return await OrderModel.updateOrderById(id, data);
 };
 export const getUserOrders = async (userId: number, query: IQuery) => {
   return await OrderModel.getOrderByUser(userId, query);

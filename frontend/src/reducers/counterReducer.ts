@@ -22,6 +22,13 @@ export const counterReducer = (state: any, action: any) => {
       removeToken("counter");
       return state;
     }
+    case "REMOVE": {
+      const id = action.payload;
+      const newState = { ...state };
+      delete newState[id];
+
+      return newState;
+    }
     default:
       return state;
   }

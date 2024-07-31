@@ -6,6 +6,7 @@ import OrderView from "./OrderView";
 import * as Review from "../reviews/review";
 import { DateDropDownView } from "../utils/subview";
 import { convertToISO } from "../../utils";
+import { esewaCall, getPaymentForm } from "../../api/paymentApi";
 const renderDateDropdown = (container: HTMLElement) => {
   const dropdownContainer = createElement("div", {
     id: "date-dropdown-container",
@@ -70,6 +71,7 @@ const mapOrdersToDetail = (orders: any[]) => {
       total_amount: +order.total_amount,
       user: order.user ? order.user.name : "",
       profit: order.profit,
+      status: order.status,
       discountValue: order?.discount?.percentage * 100 + "%",
       discountCode: order?.discount?.code,
       createdAt: order.createdAt,
@@ -158,6 +160,19 @@ export const render = async () => {
     renderOrders(container, orderDetail, user.roleId);
     setupEventListeners(container, user);
   }
+  const pendingPayment =
+    container.querySelectorAll<HTMLButtonElement>("#payment-data");
+  pendingPayment.forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      const target = event.currentTarget as HTMLButtonElement;
+      const productData = JSON.parse(target.dataset.pending!);
 
+      const res = await getPaymentForm({
+        ...productData,
+        id: productData.id + "1",
+      });
+      await esewaCall(res.data);
+    });
+  });
   return container;
 };

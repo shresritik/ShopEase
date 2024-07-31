@@ -34,7 +34,19 @@ export const render = async ({
     id: "review-details",
     className: "flex flex-col gap-4",
   });
+  const similarProdDiv = createElement("div", {
+    id: "review-details",
+    className: "w-3/4 mx-auto ",
+  });
+  const titleDiv = createElement("div", {
+    className: "w-3/4 mx-auto ",
+  });
+  container.appendChild(similarProdDiv);
+  titleDiv.textContent = "Total Reviews: " + details.total_review;
+
+  reviewDetailsContainer.prepend(titleDiv);
   container.appendChild(reviewDetailsContainer);
+  let isInCart = false;
 
   function updateContent(state: [key: number]) {
     const counterState = state;
@@ -51,45 +63,80 @@ export const render = async ({
         res.innerHTML += `<img src=${startCover} width="20">`;
       }
     }
-    attachEventListeners();
+    updateCartVisibility();
   }
 
-  function attachEventListeners() {
-    productDetailsContainer
-      .querySelector(".plus")
-      ?.addEventListener("click", function (e) {
-        e.preventDefault();
+  function updateCartVisibility() {
+    const cartButton = productDetailsContainer.querySelector(".cart");
+    const quantityDiv = productDetailsContainer.querySelector(".quantity-div");
+    const removeCartButton =
+      productDetailsContainer.querySelector(".remove-cart");
+
+    if (isInCart) {
+      cartButton?.classList.add("hidden");
+      quantityDiv?.classList.replace("hidden", "flex");
+      removeCartButton?.classList.remove("hidden");
+    } else {
+      cartButton?.classList.remove("hidden");
+      quantityDiv?.classList.replace("flex", "hidden");
+      removeCartButton?.classList.add("hidden");
+    }
+  }
+
+  productDetailsContainer.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+
+    if (target.classList.contains("plus")) {
+      e.preventDefault();
+      const currentState = counterStore.getState();
+      const currentQty = currentState[details.id!] || 0;
+      if (currentQty < details.stock) {
         counterStore.dispatch({
           type: "INCREMENT",
           payload: { id: details.id, qty: details.stock },
         });
-      });
-
-    productDetailsContainer
-      .querySelector(".minus")
-      ?.addEventListener("click", function (e) {
-        e.preventDefault();
+      }
+    } else if (target.classList.contains("minus")) {
+      e.preventDefault();
+      const currentState = counterStore.getState();
+      const currentQty = currentState[details.id!] || 0;
+      if (currentQty > 0) {
         counterStore.dispatch({
           type: "DECREMENT",
           payload: { id: details.id },
         });
-      });
-
-    productDetailsContainer
-      .querySelector(".cart")
-      ?.addEventListener("click", (e) => {
-        e.preventDefault();
+      }
+    } else if (target.classList.contains("cart")) {
+      e.preventDefault();
+      if (!isInCart) {
         const quantity = counterStore.getState();
         cartStore.dispatch({
           type: "INCREMENT",
           payload: {
             ...details,
-            qty: quantity[details.id!],
+            qty: quantity[details.id!] || 1,
             stock: details.stock,
           },
         });
-      });
-  }
+        isInCart = true;
+        updateCartVisibility();
+      }
+    } else if (target.classList.contains("remove-cart")) {
+      e.preventDefault();
+      if (isInCart) {
+        cartStore.dispatch({
+          type: "REMOVE",
+          payload: { id: details.id },
+        });
+        counterStore.dispatch({
+          type: "REMOVE",
+          payload: { id: details.id },
+        });
+        isInCart = false;
+        updateCartVisibility();
+      }
+    }
+  });
 
   counterStore.subscribe(updateContent);
   updateContent(counterStore.getState());
@@ -97,9 +144,6 @@ export const render = async ({
   const similarDetails = await getProductsByCategories(category, {
     name: firstProdName,
   });
-  const similarProdDiv = container.querySelector(
-    "#similar-products"
-  ) as HTMLDivElement;
   const productArray = Object.entries(similarDetails)
     .filter(([key, value]) => key !== "meta" && typeof value === "object")
     .map(([_, product]) => product as IProduct);

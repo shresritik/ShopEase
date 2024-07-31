@@ -42,8 +42,10 @@ export function CardWrapper(prod: IProduct) {
     if (!state[prod.id!]) qty!.textContent = "0";
     else state[prod.id!] <= prod.stock && (qty!.textContent = state[prod.id!]);
   });
+
   productElement.querySelector(".cart")?.addEventListener("click", (e) => {
     e.preventDefault();
+
     const quantity = counterStore.getState();
     cartStore.dispatch({
       type: "INCREMENT",
@@ -54,6 +56,31 @@ export function CardWrapper(prod: IProduct) {
         category: prod.category,
       },
     });
+    productElement.querySelector(".cart")!.classList.add("hidden");
+
+    productElement
+      .querySelector(".quantity-div")
+      ?.classList.replace("hidden", "flex");
+    productElement.querySelector(".remove-cart")!.classList.remove("hidden");
   });
+  productElement
+    .querySelector(".remove-cart")
+    ?.addEventListener("click", (e) => {
+      e.preventDefault();
+      cartStore.dispatch({
+        type: "REMOVE",
+        payload: prod.id,
+      });
+      counterStore.dispatch({
+        type: "REMOVE",
+        payload: prod.id,
+      });
+      productElement.querySelector(".cart")!.classList.remove("hidden");
+
+      productElement
+        .querySelector(".quantity-div")
+        ?.classList.replace("flex", "hidden");
+      productElement.querySelector(".remove-cart")!.classList.add("hidden");
+    });
   return productElement;
 }

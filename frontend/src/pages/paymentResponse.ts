@@ -1,7 +1,7 @@
 import axios from "axios";
 import { cartStore } from "../store";
 import { createElement } from "../utils/createElement";
-import { successEsewa } from "../utils/paymentApi";
+import { successEsewa } from "../api/paymentApi";
 import { toast } from "../utils/toast";
 
 export const render = async () => {
