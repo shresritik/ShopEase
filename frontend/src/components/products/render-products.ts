@@ -1,6 +1,7 @@
 import { IProduct } from "../../interface/product";
 import { IQuery } from "../../interface/query";
-import { getCategories, getProductsByCategories } from "../../api/productApi";
+import { getProductsByCategories } from "../../api/productApi";
+import { getCategories } from "../../api/categoriesApi";
 
 export const getProductsArray = async (query: IQuery) => {
   const categorizedProducts: { [key: string]: IProduct[] } = {};

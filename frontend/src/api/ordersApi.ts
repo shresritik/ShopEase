@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../constants";
-import { getToken } from "./auth";
 import { IFormCheckout } from "../interface/checkout";
+import { getToken } from "../utils/auth";
 export async function createOrders(data: IFormCheckout) {
   const token = getToken("accessToken");
   try {

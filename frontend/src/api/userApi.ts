@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, refreshToken, saveToken } from "./auth.ts";
+import { getToken, refreshToken, saveToken } from "../utils/auth.ts";
 import { BASE_URL } from "../constants/index.ts";
 
 export const login = async (email: string, password: string) => {

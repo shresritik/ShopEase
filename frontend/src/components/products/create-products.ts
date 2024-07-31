@@ -1,7 +1,6 @@
 import { createElement } from "../../utils/createElement";
 import {
   createProduct,
-  getCategories,
   getProductByName,
   updateProduct,
 } from "../../api/productApi";
@@ -9,6 +8,7 @@ import { updateStore } from "../../store";
 import { IUser } from "../../interface/user";
 import { CreateProductView } from "../dashboard-view/CreateProductView";
 import { toast } from "../../utils/toast";
+import { getCategories } from "../../api/categoriesApi";
 
 const populateDropdown = (
   container: HTMLSelectElement,

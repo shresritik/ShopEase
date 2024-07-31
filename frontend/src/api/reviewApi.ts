@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "../constants";
-import { getToken } from "./auth";
+import { getToken } from "../utils/auth";
 import { IReview } from "../interface/review";
 
 export const createReview = async (review: IReview) => {

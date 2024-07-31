@@ -1,11 +1,7 @@
 import { ProductDetails } from "../components/products/ProductDetailsView";
 import { cartStore, counterStore } from "../store";
 import { createElement } from "../utils/createElement";
-import {
-  getAllProducts,
-  getProductDetails,
-  getProductsByCategories,
-} from "../api/productApi";
+import { getProductDetails, getProductsByCategories } from "../api/productApi";
 import startCover from "../assets/svg/star-cover.svg";
 import { ProductReview } from "../components/products/ProductReview";
 import { getReview } from "../api/reviewApi";

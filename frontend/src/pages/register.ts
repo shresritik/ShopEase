@@ -1,9 +1,4 @@
-import {
-  fetchUserProfile,
-  getUserByEmail,
-  register,
-  updateUser,
-} from "../api/userApi.ts";
+import { getUserByEmail, register, updateUser } from "../api/userApi.ts";
 import { createElement } from "../utils/createElement.ts";
 import { dispatch } from "../utils/dispatch.ts";
 import { RegisterView } from "../components/dashboard-view/RegisterView.ts";

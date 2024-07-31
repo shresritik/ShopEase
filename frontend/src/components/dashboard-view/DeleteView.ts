@@ -1,4 +1,4 @@
-export const DeleteView = (prod = false) => {
+export const DeleteView = (prod = false, category = false) => {
   return `
   
 
@@ -9,19 +9,21 @@ export const DeleteView = (prod = false) => {
     <h5
       class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900"
     >
-      Are you sure you want to delete account?
+      Are you sure you want to delete?
     </h5>
     <p
       class="block font-sans text-base antialiased font-light leading-relaxed text-inherit"
     >
-      Deleting account, deletes all its history.
+      It will delete all its history.
     </p>
   </div>
   <div class="select relative hidden w-full px-5">
     <label
       for="email-dropdown"
       class="block text-sm font-medium text-gray-700 mb-2"
-      > Select ${prod ? "Product" : "Email"}</label
+      > Select ${prod && !category ? "Product" : "Email"} ${
+    category && !prod ? "Category" : ""
+  }</label
     >
     <select
       id="email-dropdown"
@@ -40,7 +42,9 @@ export const DeleteView = (prod = false) => {
       Yes
     </button>
     <div class="text-green-500 my-2 hidden success">
-    ${prod ? "Product" : "User"} deleted successfully
+    ${prod && !category ? "Product" : "User"} ${
+    category && !prod ? "Category" : ""
+  } deleted successfully
     </div>
   </div>
 </div>

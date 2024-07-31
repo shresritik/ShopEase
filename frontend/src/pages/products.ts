@@ -29,12 +29,7 @@ export const render = async (params: {
   try {
     let products: IProduct[];
     if (pathname[pathname.length - 1] == "products") {
-      const filterSection = await Filter.render(
-        productList,
-        divSection,
-        page,
-        container
-      );
+      const filterSection = await Filter.render(productList);
       products = await getAllProducts();
       divSection.appendChild(filterSection);
       divSection.appendChild(productList);

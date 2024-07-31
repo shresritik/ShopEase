@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../constants";
-import { getToken } from "./auth";
 import { IQuery } from "../interface/query";
+import { getToken } from "../utils/auth";
 
 export async function createProduct(data: FormData) {
   const token = getToken("accessToken");
@@ -40,14 +40,6 @@ export async function updateProduct(id: number, data: FormData) {
   }
 }
 
-export async function getCategories() {
-  try {
-    const res = await axios.get(BASE_URL + "/api/categories");
-    return res.data;
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
-  }
-}
 export async function getProductsByCategories(
   category: string,
   query?: IQuery

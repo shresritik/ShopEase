@@ -3,8 +3,11 @@ import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import * as Update from "../components/users/update-user";
 import * as Delete from "../components/users/delete-user";
+import * as DeleteCategory from "../components/categories/delete-category";
 import * as User from "./register";
 import * as Product from "../components/products/create-products";
+import * as Category from "../components/categories/create-category";
+import * as UpdateCategory from "../components/categories/update-category";
 import * as Order from "../components/orders/orders";
 import { fetchUserProfile } from "../api/userApi";
 import { userProfileStore } from "../store";
@@ -20,13 +23,13 @@ export const render = async () => {
   const rightElement = createElement("div", {
     className: "p-6 flex flex-col w-full",
   });
-  const heading = createElement(
-    "h1",
-    { className: "text-3xl mb-4" },
-    "Dashboard"
-  );
+  // const heading = createElement(
+  //   "h1",
+  //   { className: "text-3xl mb-4" },
+  //   "Dashboard"
+  // );
 
-  container.appendChild(heading);
+  // container.appendChild(heading);
   const renderSidebar = async () => {
     try {
       const user = await fetchUserProfile();
@@ -83,6 +86,18 @@ export const render = async () => {
 
           deleteProduct.classList.add("delete-Product");
           rightElement.appendChild(deleteProduct);
+        } else if (classArray.includes("create-category")) {
+          const createProduct = await Category.render();
+          createProduct.classList.add("create-Product");
+          rightElement.appendChild(createProduct);
+        } else if (classArray.includes("delete-category")) {
+          const deleteProduct = await DeleteCategory.render();
+          deleteProduct.classList.add("delete-category");
+          rightElement.appendChild(deleteProduct);
+        } else if (classArray.includes("update-category")) {
+          const updateProduct = await UpdateCategory.render();
+          updateProduct.classList.add("update-category");
+          rightElement.appendChild(updateProduct);
         }
       };
 

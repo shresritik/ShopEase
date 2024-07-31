@@ -2,15 +2,17 @@ import { userProfileStore } from "../../store";
 
 export const SidebarView = () => {
   const user = userProfileStore.getState();
-  console.log(user);
-  return `<div
+  // TODO CHANGE ICON CLASS
+  return /* html */ `
+  
+  <div
   class="relative flex w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-xl shadow-blue-gray-900/5"
 >
   <nav
     class="flex min-w-[240px] flex-col gap-1 font-sans text-base font-normal text-blue-gray-700"
   >${
     user.roleId != 2
-      ? `
+      ? /* html */ `
     <div
       role="button"
       class="sidebar border orders flex items-center w-full p-6 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
@@ -73,7 +75,7 @@ export const SidebarView = () => {
     </div>
     ${
       user.roleId != 3
-        ? `
+        ? /* html */ `
          <div
       id="create-user"
       role="button"
@@ -130,6 +132,7 @@ export const SidebarView = () => {
        
        fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 22c-.818 0-1.6-.33-3.163-.99C3.946 19.366 2 18.543 2 17.16V7m9 15V11.355M11 22c.725 0 1.293-.26 2.5-.777M20 7v4m-5 6.5h7M18.5 21v-7M7.326 9.691L4.405 8.278C2.802 7.502 2 7.114 2 6.5s.802-1.002 2.405-1.778l2.92-1.413C9.13 2.436 10.03 2 11 2s1.871.436 3.674 1.309l2.921 1.413C19.198 5.498 20 5.886 20 6.5s-.802 1.002-2.405 1.778l-2.92 1.413C12.87 10.564 11.97 11 11 11s-1.871-.436-3.674-1.309M5 12l2 1m9-9L6 9" color="black"/></svg>
       </div>
+      
       Create Product
     </div>
     <div
@@ -155,9 +158,36 @@ export const SidebarView = () => {
       </div>
       Delete Product
     </div>
-        
-        
-        
+    <div
+      role="button"
+      id="create-category"
+      class="sidebar create-category  flex items-center w-full p-6 border leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+    >
+      <div class="grid mr-4 place-items-center create-category">
+  <svg class="create-category" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path class="create-category" fill="none" stroke="#474747" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3h6m-3-3v6"/></svg>
+      </div>
+  Create Category
+    </div>
+    <div
+      role="button"
+      id="update-category"
+      class="sidebar update-category  flex items-center w-full p-6 border leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+    >
+      <div class="grid mr-4 place-items-center update-category">
+     <svg class="update-category " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path class="update-category " fill="none" stroke="#474747" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3h6m-3-3v6"/></svg>
+      </div>
+  Update Category
+    </div>
+    <div
+      role="button"
+      id="delete-category"
+      class="sidebar delete-category  flex items-center w-full p-6 border leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+    >
+      <div class="grid mr-4 place-items-center delete-category">
+       <svg class="delete-category " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path class="delete-category " fill="#474747" d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z"/></svg>
+      </div>
+  Delete Category
+    </div>
         `
         : ""
     }

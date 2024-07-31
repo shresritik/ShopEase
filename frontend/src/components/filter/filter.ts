@@ -1,7 +1,8 @@
 import { createElement } from "../../utils/createElement";
 import { fetchHtml } from "../../utils/fetchHtml";
-import { getAllProducts, getCategories } from "../../api/productApi";
+import { getAllProducts } from "../../api/productApi";
 import { renderProducts } from "../products/products-page";
+import { getCategories } from "../../api/categoriesApi";
 
 interface FilterState {
   categoryId: string;

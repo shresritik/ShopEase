@@ -8,7 +8,7 @@ export const Navbar = () => {
     const profileImg = document.getElementById(
       "profileImg"
     ) as HTMLImageElement;
-    userProfileStore.subscribe((state) => {
+    userProfileStore.subscribe(() => {
       let user = userProfileStore.getState();
       if (!user.name) {
         profile?.classList.add("hidden");
