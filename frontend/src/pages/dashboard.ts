@@ -6,7 +6,7 @@ import * as Delete from "../components/users/delete-user";
 import * as User from "./register";
 import * as Product from "../components/products/create-products";
 import * as Order from "../components/orders/orders";
-import { fetchUserProfile } from "../utils/userApi";
+import { fetchUserProfile } from "../api/userApi";
 import { userProfileStore } from "../store";
 import axios from "axios";
 import { SidebarView } from "../components/admin-panel/SidebarView";

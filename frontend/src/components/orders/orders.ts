@@ -1,7 +1,7 @@
 import { IUser } from "../../interface/user";
 import { userProfileStore } from "../../store";
 import { createElement } from "../../utils/createElement";
-import { getAllOrders, getOrdersByUsers } from "../../utils/ordersApi";
+import { getAllOrders, getOrdersByUsers } from "../../api/ordersApi";
 import OrderView from "./OrderView";
 import * as Review from "../reviews/review";
 import { DateDropDownView } from "../utils/subview";

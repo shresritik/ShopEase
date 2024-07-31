@@ -1,4 +1,4 @@
-import { fetchUserProfile, updateUser } from "../../utils/userApi.ts";
+import { fetchUserProfile, updateUser } from "../../api/userApi.ts";
 import { createElement } from "../../utils/createElement.ts";
 import { RegisterView } from "../dashboard-view/RegisterView.ts";
 import { toast } from "../../utils/toast.ts";

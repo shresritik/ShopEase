@@ -2,11 +2,11 @@ import {
   deleteUser,
   fetchUserProfile,
   getAllUsers,
-} from "../../utils/userApi.ts";
+} from "../../api/userApi.ts";
 import { removeToken } from "../../utils/auth.ts";
 import { createElement } from "../../utils/createElement.ts";
 import { dispatch } from "../../utils/dispatch.ts";
-import { deleteProduct, getAllProducts } from "../../utils/productApi.ts";
+import { deleteProduct, getAllProducts } from "../../api/productApi.ts";
 import { DeleteView } from "../dashboard-view/DeleteView.ts";
 import { toast } from "../../utils/toast.ts";
 import { userProfileStore } from "../../store.ts";

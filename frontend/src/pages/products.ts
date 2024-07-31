@@ -1,5 +1,5 @@
 import { createElement } from "../utils/createElement";
-import { getAllProducts, getProductsByCategories } from "../utils/productApi";
+import { getAllProducts, getProductsByCategories } from "../api/productApi";
 import { IProduct } from "../interface/product";
 import * as Filter from "../components/filter/filter";
 import { renderProducts } from "../components/products/products-page";

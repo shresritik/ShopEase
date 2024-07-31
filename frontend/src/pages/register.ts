@@ -3,7 +3,7 @@ import {
   getUserByEmail,
   register,
   updateUser,
-} from "../utils/userApi.ts";
+} from "../api/userApi.ts";
 import { createElement } from "../utils/createElement.ts";
 import { dispatch } from "../utils/dispatch.ts";
 import { RegisterView } from "../components/dashboard-view/RegisterView.ts";

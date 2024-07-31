@@ -1,5 +1,5 @@
 // import { store } from "../store.ts";
-import { fetchUserProfile, login } from "../utils/userApi.ts";
+import { fetchUserProfile, login } from "../api/userApi.ts";
 import { createElement } from "../utils/createElement.ts";
 import { dispatch } from "../utils/dispatch.ts";
 import { userProfileStore } from "../store.ts";

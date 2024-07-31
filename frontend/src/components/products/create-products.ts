@@ -4,7 +4,7 @@ import {
   getCategories,
   getProductByName,
   updateProduct,
-} from "../../utils/productApi";
+} from "../../api/productApi";
 import { updateStore } from "../../store";
 import { IUser } from "../../interface/user";
 import { CreateProductView } from "../dashboard-view/CreateProductView";

@@ -1,6 +1,6 @@
 import { createElement } from "../../utils/createElement";
 import { fetchHtml } from "../../utils/fetchHtml";
-import { getAllProducts, getCategories } from "../../utils/productApi";
+import { getAllProducts, getCategories } from "../../api/productApi";
 import { renderProducts } from "../products/products-page";
 
 interface FilterState {

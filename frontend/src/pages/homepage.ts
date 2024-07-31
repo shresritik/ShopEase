@@ -3,7 +3,7 @@ import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import { CardWrapper } from "../components/card/CardWrapper";
 import { IProduct } from "../interface/product";
-import { getAllProducts } from "../utils/productApi";
+import { getAllProducts } from "../api/productApi";
 
 interface CategorizedProducts {
   [category: string]: IProduct[];

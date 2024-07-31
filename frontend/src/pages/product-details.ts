@@ -5,10 +5,10 @@ import {
   getAllProducts,
   getProductDetails,
   getProductsByCategories,
-} from "../utils/productApi";
+} from "../api/productApi";
 import startCover from "../assets/svg/star-cover.svg";
 import { ProductReview } from "../components/products/ProductReview";
-import { getReview } from "../utils/reviewApi";
+import { getReview } from "../api/reviewApi";
 import { IReviewDetails } from "../interface/review";
 import { IProduct } from "../interface/product";
 import { CardWrapper } from "../components/card/CardWrapper";

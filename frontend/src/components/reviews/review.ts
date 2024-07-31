@@ -4,7 +4,7 @@ import starCover from "../../assets/svg/star-cover.svg";
 import { ReviewView } from "./ReviewView";
 import { userProfileStore } from "../../store";
 import { IReview } from "../../interface/review";
-import { createReview } from "../../utils/reviewApi";
+import { createReview } from "../../api/reviewApi";
 import { toast } from "../../utils/toast";
 import { AxiosError } from "axios";
 let active: number = 0;
