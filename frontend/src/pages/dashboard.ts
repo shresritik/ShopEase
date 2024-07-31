@@ -1,7 +1,6 @@
 import { removeToken } from "../utils/auth";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
-import { fetchHtml } from "../utils/fetchHtml";
 import * as Update from "../components/users/update-user";
 import * as Delete from "../components/users/delete-user";
 import * as User from "./register";

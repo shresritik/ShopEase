@@ -6,7 +6,6 @@ import {
 import { removeToken } from "../../utils/auth.ts";
 import { createElement } from "../../utils/createElement.ts";
 import { dispatch } from "../../utils/dispatch.ts";
-import { fetchHtml } from "../../utils/fetchHtml.ts";
 import { deleteProduct, getAllProducts } from "../../utils/productApi.ts";
 import { DeleteView } from "../dashboard-view/DeleteView.ts";
 import { toast } from "../../utils/toast.ts";

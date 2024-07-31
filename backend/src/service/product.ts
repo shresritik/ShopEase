@@ -16,10 +16,7 @@ export const getProducts = async (query: IQuery) => {
   };
   return { ...products, meta };
 };
-export const getCategories = async () => {
-  const products = await ProductModel.getAllCategories();
-  return products;
-};
+
 export const getAProductById = async (id: number) => {
   const products = await ProductModel.getProductById(id);
   return products;

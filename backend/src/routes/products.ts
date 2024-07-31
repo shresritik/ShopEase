@@ -6,7 +6,6 @@ import {
   getProductByCategoryAndId,
   updateProduct,
   getProductsByCategory,
-  getAllCategories,
   getProductByName,
 } from "../controller/products";
 import { authenticate, authorize } from "../middleware/auth";
@@ -15,7 +14,6 @@ import { validateReqQuery } from "../middleware/validator";
 import { getProductByQuerySchema } from "../schema/products";
 const router = express();
 router.get("/", validateReqQuery(getProductByQuerySchema), getAllProducts);
-router.get("/categories", getAllCategories);
 router.post(
   "/",
   authenticate(),

@@ -42,7 +42,7 @@ export async function updateProduct(id: number, data: FormData) {
 
 export async function getCategories() {
   try {
-    const res = await axios.get(BASE_URL + "/api/products/categories");
+    const res = await axios.get(BASE_URL + "/api/categories");
     return res.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);

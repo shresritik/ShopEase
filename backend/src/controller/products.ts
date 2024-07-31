@@ -1,10 +1,9 @@
-import { NextFunction, query, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
   createAProduct,
   deleteAProducts,
   getAProduct,
   getAProductByCategoryAndId,
-  getCategories,
   getProductCategory,
   getProducts,
   updateAProduct,
@@ -24,18 +23,7 @@ export const getAllProducts = async (
     next(error);
   }
 };
-export const getAllCategories = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const products = await getCategories();
-    res.status(HttpStatusCode.OK).json(products);
-  } catch (error) {
-    next(error);
-  }
-};
+
 export const getProductByCategoryAndId = async (
   req: Request,
   res: Response,

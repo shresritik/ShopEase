@@ -3,14 +3,6 @@ import { IProduct, ProductFilter } from "../interface/product";
 import { IQuery } from "../interface/utils";
 import prisma from "../utils/prisma";
 import { IReviews } from "../interface/reviews";
-export const getAllCategories = async () => {
-  return await prisma.category.findMany({
-    select: {
-      id: true,
-      category_name: true,
-    },
-  });
-};
 
 export const getAllProducts = async (query: ProductFilter) => {
   const filters: ProductFilter = query;
