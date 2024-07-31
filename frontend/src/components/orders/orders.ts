@@ -70,6 +70,8 @@ const mapOrdersToDetail = (orders: any[]) => {
       total_amount: +order.total_amount,
       user: order.user ? order.user.name : "",
       profit: order.profit,
+      discountValue: order?.discount?.percentage * 100 + "%",
+      discountCode: order?.discount?.code,
       createdAt: order.createdAt,
       products: order.Order_Product.map((e: any) => [
         {

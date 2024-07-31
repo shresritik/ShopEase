@@ -85,7 +85,7 @@ model Product {
   stock          Int             @default(0)
   selling_price  Decimal         @db.Decimal(10, 2)
   category       Category?       @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  category_id    Int // Foreign key for Category
+  category_id    Int
   avg_rating     Decimal?        @db.Decimal(10, 2)
   total_review   Decimal?        @db.Decimal(10, 2)
   Review         Review[]        @relation("Review")
@@ -114,6 +114,8 @@ model Order {
   createdAt     DateTime        @default(now())
   Order_Product Order_Product[] @relation("order_product")
   profit        Decimal         @db.Decimal(10, 2)
+  discount      Discount?       @relation(fields: [discountId], references: [id])
+  discountId    Int?
 }
 
 model Review {
@@ -137,4 +139,13 @@ model Order_Product {
   net_amount  Decimal  @db.Decimal(10, 2)
   category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   category_id Int
+}
+
+model Discount {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  percentage Float
+  validFrom  DateTime
+  validUntil DateTime
+  order      Order[]
 }

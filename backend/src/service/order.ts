@@ -6,11 +6,13 @@ import * as ProductModel from "../model/product";
 import { createSignature } from "./auth";
 import { getAProductById } from "./product";
 import { IQuery } from "../interface/utils";
+import { getDiscountByCode } from "./discount";
 export const createOrderProduct = async ({
   userId,
   totalAmount,
   location,
   products,
+  discount,
 }: IOrder) => {
   let prodArr: any = [];
   prodArr = await Promise.all(
@@ -19,13 +21,19 @@ export const createOrderProduct = async ({
       return { ...pro, cost_price: val?.cost_price };
     })
   );
-
+  let discountInfo;
+  if (discount) {
+    discountInfo = await getDiscountByCode(discount);
+  }
+  console.log(discountInfo);
   const order = await OrderModel.createOrder(
     userId,
     totalAmount,
     location,
-    prodArr
+    prodArr,
+    discountInfo?.id
   );
+
   const signature = createSignature(
     `total_amount=${order.total_amount},transaction_uuid=${order.id},product_code=EPAYTEST`
   );

@@ -1,4 +1,7 @@
+import { userProfileStore } from "../../store";
+
 export const CheckoutView = () => {
+  const user = userProfileStore.getState();
   return `
     <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
   <div class="px-4 pt-8">
@@ -24,6 +27,7 @@ export const CheckoutView = () => {
           name="email"
           disabled
           required
+          value="${user.email}"
           class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
           placeholder="your.email@gmail.com"
         />

@@ -8,10 +8,10 @@ export const createOrder = async (
   userId: number,
   totalAmount: number,
   address: string,
-  products: IOrder_Product[]
+  products: IOrder_Product[],
+  discountId?: number
 ) => {
   const totalProfit = products.reduce((acc, product) => {
-    console.log((product.quantity, product.selling_price, product.cost_price));
     const productProfit =
       product.quantity * (product.selling_price - product.cost_price);
     return acc + productProfit;
@@ -23,6 +23,7 @@ export const createOrder = async (
       total_amount: totalAmount,
       location: address,
       profit: totalProfit,
+      discountId,
       Order_Product: {
         create: products.map((product: IOrder_Product) => ({
           product_id: product.id,
@@ -34,6 +35,7 @@ export const createOrder = async (
     },
     include: {
       Order_Product: true,
+      discount: true,
     },
   });
 };
@@ -56,6 +58,7 @@ export const getAllOrders = async (query: IQuery) => {
         }
       : {},
     include: {
+      discount: true,
       user: {
         select: {
           name: true,
@@ -85,6 +88,7 @@ export const getOrderByUser = async (userId: number, query: IQuery) => {
           user_id: userId,
         },
     include: {
+      discount: true,
       Order_Product: {
         include: {
           category: true,
@@ -98,6 +102,8 @@ export const getOrderById = async (orderId: string) => {
   return await prisma.order.findUnique({
     where: { id: orderId },
     include: {
+      discount: true,
+
       Order_Product: {
         include: {
           product: true,

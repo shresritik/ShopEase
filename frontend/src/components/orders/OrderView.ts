@@ -1,8 +1,8 @@
-import { timezone } from "../../utils";
+import { roundOff, timezone } from "../../utils";
 
 export default function OrderView(orderData: any, userRoleId: number): string {
   const order = orderData[0];
-
+  console.log(order.discountValue);
   return `
     <div class="bg-white shadow-md rounded-lg p-6 mb-6" data-order-id="${
       order.id
@@ -64,9 +64,20 @@ export default function OrderView(orderData: any, userRoleId: number): string {
         <div class="flex justify-between items-center w-full mt-4">
 
         <div class="flex flex-col space-y-1 ">
+        ${
+          order.discountCode
+            ? `
+          <div class="flex justify-between gap-2">
+          <p class="text-gray-600">Discount: <span class="font-medium">${order.discountValue} </span></p>
+           <p class="text-gray-600">Coupon: <span class="font-medium">${order.discountCode} </span></p>
+           </div>
+          
+          `
+            : ""
+        }
 
-           <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${Math.round(
-             order.total_amount - Math.floor(order.total_amount / 1.13)
+           <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${roundOff(
+             order.total_amount - order.total_amount / 1.13
            )} </span></p>
       <p class="text-gray-600">Total Amount: <span class="font-medium">Rs. ${
         order.total_amount
@@ -74,7 +85,9 @@ export default function OrderView(orderData: any, userRoleId: number): string {
         ${
           userRoleId >= 2
             ? ""
-            : `<p class="text-gray-600">Profit: <span class="font-medium">Rs. ${order.profit} </span></p>`
+            : `<p class="text-gray-600">Profit: <span class="font-medium ${
+                order.profit > 0 ? "text-green-500" : "text-red-500"
+              }">Rs. ${order.profit} </span></p>`
         } 
  
 

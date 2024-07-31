@@ -10,7 +10,10 @@ import { getCurrentLocation } from "../api/locationApi";
 import { createOrders } from "../api/ordersApi";
 import { esewaCall } from "../api/paymentApi";
 import { toast } from "../utils/toast";
+import { getADiscount } from "../api/discountApi";
+import { IDiscount } from "../interface/discount";
 export const render = () => {
+  let coupon: string;
   getCurrentLocation();
   const container = createElement("div", { className: "p-6" });
   const checkoutState = cartStore.getState();
@@ -31,32 +34,58 @@ export const render = () => {
     subtotal: amount,
     total: roundOff(amount * 1.13),
   };
-  checkoutAmount!.innerHTML += CheckoutAmount(totalAmount);
-  const user = userProfileStore.getState();
-  const email = container.querySelector("#email") as HTMLInputElement;
-  email.value = user.email;
-  const address = container.querySelector(
-    "#billing-address"
+  checkoutAmount!.innerHTML = CheckoutAmount(totalAmount);
+  const discountValue = checkoutAmount?.querySelector(
+    "#discount"
   ) as HTMLInputElement;
-  locationStore.subscribe((state) => (address.value = state.location));
-  let checkProducts: ICheckoutProduct[] = [];
-  checkoutState.map((el: ICheckoutProduct) => {
-    checkProducts.push({
-      id: el.id,
-      quantity: el.qty,
-      selling_price: el.selling_price,
-      category_id: el.category!.id,
+
+  checkoutAmount
+    ?.querySelector("#discountBtn")
+    ?.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const res = (await getADiscount(discountValue.value)) as IDiscount;
+      if (res) {
+        coupon = res.code;
+        totalAmount.subtotal = amount - res.percentage;
+        totalAmount.total = roundOff(totalAmount.subtotal * 1.13);
+        checkoutAmount!.innerHTML = CheckoutAmount(totalAmount);
+        const showValue = checkoutAmount?.querySelector(
+          "#discountValue"
+        ) as HTMLParagraphElement;
+        const discountValue = checkoutAmount?.querySelector(
+          "#discount"
+        ) as HTMLInputElement;
+        showValue?.classList.remove("hidden");
+        showValue.textContent = `${res.percentage * 100}%`;
+        checkoutAmount?.querySelector("#discountBtn")?.classList.add("hidden");
+        checkoutAmount?.querySelector("#discount")?.classList.add("hidden");
+        discountValue.classList.add("hidden");
+      }
     });
-  });
-  const form = {
-    userId: user.id,
-    totalAmount: totalAmount.total,
-    products: checkProducts,
-    location: address.value,
-  };
-  const payBtn = container.querySelector("#payBtn");
-  payBtn?.addEventListener("click", async (e) => {
-    e.preventDefault();
+  const submitPayment = async () => {
+    const user = userProfileStore.getState();
+    const email = container.querySelector("#email") as HTMLInputElement;
+    email.value = user.email;
+    const address = container.querySelector(
+      "#billing-address"
+    ) as HTMLInputElement;
+    locationStore.subscribe((state) => (address.value = state.location));
+    let checkProducts: ICheckoutProduct[] = [];
+    checkoutState.map((el: ICheckoutProduct) => {
+      checkProducts.push({
+        id: el.id,
+        quantity: el.qty,
+        selling_price: el.selling_price,
+        category_id: el.category!.id,
+      });
+    });
+    const form = {
+      userId: user.id,
+      totalAmount: totalAmount.total,
+      products: checkProducts,
+      location: address.value,
+      discount: coupon ? coupon : undefined,
+    };
     if (user.role.role_rank == 1 || user.role.role_rank == 2) {
       toast("Admin or Super Admin cannot pay", "danger");
     } else {
@@ -69,6 +98,12 @@ export const render = () => {
         toast("Something went wrong", "danger");
       }
     }
+  };
+
+  const payBtn = container.querySelector("#payBtn");
+  payBtn?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await submitPayment();
   });
 
   return container;

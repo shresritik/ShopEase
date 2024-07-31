@@ -4,11 +4,13 @@ import { dispatch } from "../utils/dispatch";
 import { CardWrapper } from "../components/card/CardWrapper";
 import { IProduct } from "../interface/product";
 import { getAllProducts } from "../api/productApi";
+import { convertToISO } from "../utils";
 
 interface CategorizedProducts {
   [category: string]: IProduct[];
 }
 export const render = async (): Promise<HTMLElement> => {
+  console.log(convertToISO(0), convertToISO(-10));
   const container = createElement("div", {
     className: "flex flex-col justify-center gap-2  md:w-max mx-auto",
   });

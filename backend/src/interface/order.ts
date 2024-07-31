@@ -1,5 +1,3 @@
-import { IProduct } from "./product";
-
 export interface IOrder_Product {
   id: number;
   quantity: number;
@@ -12,4 +10,5 @@ export interface IOrder {
   totalAmount: number;
   location: string;
   products: IOrder_Product[];
+  discount?: string;
 }
