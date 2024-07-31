@@ -41,13 +41,11 @@ export const render = async () => {
       const handleSidebarClick = async (event: Event) => {
         const target = event.target as HTMLElement;
         const classArray = [...target.classList];
-
         rightElement.innerHTML = "";
-
+        console.log(classArray, target);
         if (classArray.includes("orders") && user.roleId != 2) {
           const createOrders = await Order.render();
           createOrders.classList.add("create-orders");
-
           rightElement.appendChild(createOrders);
         } else if (classArray.includes("profile")) {
           const update = await Update.render();
@@ -66,9 +64,9 @@ export const render = async () => {
 
           createUser.classList.add("create-user");
           rightElement.appendChild(createUser);
-        } else if (classArray.includes("udpate-user")) {
+        } else if (classArray.includes("update-user")) {
           const updateUser = await User.render(false, true);
-          updateUser.classList.add("udpate-user");
+          updateUser.classList.add("update-user");
           rightElement.appendChild(updateUser);
         } else if (classArray.includes("create-product")) {
           const createProduct = await Product.render();
