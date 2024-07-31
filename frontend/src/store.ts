@@ -5,9 +5,11 @@ import {
   Listener,
   Reducer,
   UserProfileState,
+  LocationStore,
 } from "./interface/store";
 import { cartReducer } from "./reducers/cartReducer";
 import { counterReducer } from "./reducers/counterReducer";
+import { locationReducer } from "./reducers/locationReducer";
 import { updateProdReducer, userProfileReducer } from "./reducers/userReducer";
 import { getToken, saveToken } from "./utils/auth";
 
@@ -62,4 +64,9 @@ export const userProfileStore = createStore<UserProfileState, Action>(
   "user-profile",
   {},
   userProfileReducer
+);
+export const locationStore = createStore<LocationStore, Action>(
+  "location",
+  {},
+  locationReducer
 );

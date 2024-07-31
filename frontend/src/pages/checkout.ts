@@ -2,16 +2,16 @@ import { CheckoutAmount } from "../components/checkout/CheckoutAmount";
 import { CheckoutCardView } from "../components/checkout/CheckoutCardView";
 import { CheckoutView } from "../components/checkout/CheckoutView";
 import { CheckoutCard, ICheckoutProduct } from "../interface/checkout";
-import { IProduct } from "../interface/product";
-import { cartStore, userProfileStore } from "../store";
+import { cartStore, locationStore, userProfileStore } from "../store";
 import { roundOff } from "../utils";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
+import { getCurrentLocation } from "../utils/locationApi";
 import { createOrders } from "../utils/ordersApi";
 import { esewaCall } from "../utils/paymentApi";
 import { toast } from "../utils/toast";
-
 export const render = () => {
+  getCurrentLocation();
   const container = createElement("div", { className: "p-6" });
   const checkoutState = cartStore.getState();
   if (checkoutState.length == 0) {
@@ -38,6 +38,7 @@ export const render = () => {
   const address = container.querySelector(
     "#billing-address"
   ) as HTMLInputElement;
+  locationStore.subscribe((state) => (address.value = state.location));
   let checkProducts: ICheckoutProduct[] = [];
   checkoutState.map((el: ICheckoutProduct) => {
     checkProducts.push({

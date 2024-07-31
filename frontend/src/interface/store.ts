@@ -10,3 +10,4 @@ export type CounterAction = { type: string; payload?: number | [] | {} };
 export type CartState = any;
 export type CounterState = any;
 export type UserProfileState = any;
+export type LocationStore = any;
