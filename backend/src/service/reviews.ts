@@ -4,7 +4,6 @@ import { getProductWithReview } from "../model/product";
 import * as UserProduct from "../model/reviews";
 export const createProductReview = async (review: IReviews) => {
   const product = await getProductWithReview(review);
-  console.log(product);
   if (!product) {
     throw new NotFound("Product not found");
   }

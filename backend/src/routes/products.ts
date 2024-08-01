@@ -10,21 +10,31 @@ import {
 } from "../controller/products";
 import { authenticate, authorize } from "../middleware/auth";
 import { uploadProduct } from "../utils/fileUpload";
-import { validateReqQuery } from "../middleware/validator";
-import { getProductByQuerySchema } from "../schema/products";
+import {
+  validateReqBody,
+  validateReqId,
+  validateReqQuery,
+} from "../middleware/validator";
+import {
+  createProductSchema,
+  getProductByQuerySchema,
+  productByIdSchema,
+} from "../schema/products";
 const router = express();
 router.get("/", validateReqQuery(getProductByQuerySchema), getAllProducts);
 router.post(
   "/",
+  uploadProduct.single("product"),
+  validateReqBody(createProductSchema),
   authenticate(),
   authorize(["SUPER_ADMIN_POST", "ADMIN_POST"]),
-  uploadProduct.single("product"),
   createProduct
 );
 router.put(
   "/:id",
-  authenticate(),
   uploadProduct.single("product"),
+  validateReqId(productByIdSchema),
+  authenticate(),
   authorize(["SUPER_ADMIN_POST", "ADMIN_POST"]),
   updateProduct
 );
@@ -41,6 +51,7 @@ router.get(
 );
 router.delete(
   "/:id",
+  validateReqId(productByIdSchema),
   authenticate(),
   authorize(["SUPER_ADMIN_POST", "ADMIN_POST"]),
   deleteProduct

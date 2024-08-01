@@ -17,8 +17,15 @@ export const getAllCategories = async () => {
     },
   });
 };
-export const defaultCategoryById = async (id: number) => {
+export const deleteCategoryById = async (id: number) => {
   return await prisma.category.delete({
+    where: {
+      id,
+    },
+  });
+};
+export const getCategoryById = async (id: number) => {
+  return await prisma.category.findFirst({
     where: {
       id,
     },

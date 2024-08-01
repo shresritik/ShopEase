@@ -1,6 +1,10 @@
+import { Product } from "../../types/proudct";
 import { roundOff, timezone } from "../../utils";
 
-export default function OrderView(orderData: any, userRoleId: number): string {
+export default function OrderView(
+  orderData: any[],
+  userRoleId: number
+): string {
   const order = orderData[0];
   return `
     <div class="bg-white shadow-md rounded-lg p-6 mb-6" data-order-id="${
@@ -20,7 +24,7 @@ export default function OrderView(orderData: any, userRoleId: number): string {
       <h4 class="text-lg font-semibold mb-2">Products:</h4>
       <ul class="space-y-4">
         ${order.products.map(
-          (product: any) => `
+          (product: Product[]) => `
           <li class="flex items-start border-b border-gray-200 pb-4">
             <img src="${product[0].pic}" alt="${
             product[0].productName
@@ -40,7 +44,7 @@ export default function OrderView(orderData: any, userRoleId: number): string {
               }</p>
               ${
                 userRoleId == 1
-                  ? `<p class="text-sm text-gray-600">Cost Price: Rs. ${product[0].cost_price.toFixed(
+                  ? `<p class="text-sm text-gray-600">Cost Price: Rs. ${product[0].cost_price!.toFixed(
                       2
                     )}</p>`
                   : ""

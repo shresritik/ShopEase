@@ -38,7 +38,12 @@ export const render = () => {
   const discountValue = checkoutAmount?.querySelector(
     "#discount"
   ) as HTMLInputElement;
-
+  const address = container.querySelector(
+    "#billing-address"
+  ) as HTMLInputElement;
+  locationStore.subscribe(
+    (state) => (address.value = state.location ? state.location : "")
+  );
   checkoutAmount
     ?.querySelector("#discountBtn")
     ?.addEventListener("click", async (e) => {
@@ -66,10 +71,7 @@ export const render = () => {
     const user = userProfileStore.getState();
     const email = container.querySelector("#email") as HTMLInputElement;
     email.value = user.email;
-    const address = container.querySelector(
-      "#billing-address"
-    ) as HTMLInputElement;
-    locationStore.subscribe((state) => (address.value = state.location));
+
     let checkProducts: ICheckoutProduct[] = [];
     checkoutState.map((el: ICheckoutProduct) => {
       checkProducts.push({

@@ -3,7 +3,6 @@ import { BadRequest, NotFound } from "../error";
 import { IOrder } from "../interface/order";
 import * as OrderModel from "../model/order";
 import * as ProductModel from "../model/product";
-import { createSignature } from "./auth";
 import { getAProductById } from "./product";
 import { IQuery } from "../interface/utils";
 import { getDiscountByCode } from "./discount";
@@ -15,6 +14,7 @@ export const createOrderProduct = async ({
   products,
   discount,
 }: IOrder) => {
+  console.log(products);
   let prodArr: any = [];
   prodArr = await Promise.all(
     products.map(async (pro) => {
@@ -26,7 +26,6 @@ export const createOrderProduct = async ({
   if (discount) {
     discountInfo = await getDiscountByCode(discount);
   }
-  console.log(discountInfo);
   const order = await OrderModel.createOrder(
     userId,
     totalAmount,
@@ -39,23 +38,31 @@ export const createOrderProduct = async ({
   return { ...order, formData };
 };
 export const getOrders = async (query: IQuery) => {
-  return await OrderModel.getAllOrders(query);
+  const order = await OrderModel.getAllOrders(query);
+
+  return order;
+};
+export const getAOrder = async (orderId: string) => {
+  const order = await OrderModel.getOrderById(orderId);
+  if (!order) throw new NotFound("No Order Found by id " + orderId);
+  return order;
 };
 export const updateOrder = async (id: string, data: { status: string }) => {
+  const order = await getAOrder(id);
+  if (!order) {
+    throw new NotFound("No orders found by id " + id);
+  }
   return await OrderModel.updateOrderById(id, data);
 };
 export const getUserOrders = async (userId: number, query: IQuery) => {
   return await OrderModel.getOrderByUser(userId, query);
 };
 export const deleteOrder = async (id: string) => {
+  const order = await OrderModel.getOrderById(id);
+  if (!order) throw new NotFound("No Order Found by id " + id);
   return await OrderModel.deleteOrder(id);
 };
 
-export const getAOrder = async (orderId: string) => {
-  const order = await OrderModel.getOrderById(orderId);
-  if (!order) throw new NotFound("No Order Found by id " + orderId);
-  return order;
-};
 type Product = {
   id: number;
   product_name: string;
@@ -87,15 +94,10 @@ export const updateProductFromPayment = async (
   orderId: string
 ): Promise<UpdateResult[]> => {
   try {
-    // Ensure the returned order has the expected structure
     const order: Order = await getAOrder(orderId);
-
-    // Check if order and its products exist
     if (!order || !order.Order_Product) {
       throw new BadRequest(`Order not found or has no products: ${orderId}`);
     }
-
-    // Create an array of promises to update each product's stock
     const updatePromises = order.Order_Product.map(
       async (orderProduct: OrderProduct): Promise<UpdateResult> => {
         if (!orderProduct.product) {
@@ -103,9 +105,13 @@ export const updateProductFromPayment = async (
             `Product not found for order product ${orderProduct.product_id}`
           );
         }
-
+        console.log("---------", orderProduct);
         const newStock = orderProduct.product.stock - orderProduct.quantity;
-
+        console.log(
+          "newStock--------",
+          orderProduct.product.stock,
+          orderProduct.quantity
+        );
         if (newStock < 0) {
           throw new BadRequest(
             `Insufficient stock for product ${orderProduct.product_id}`
@@ -127,14 +133,10 @@ export const updateProductFromPayment = async (
       }
     );
 
-    // Wait for all updates to complete
     const results = await Promise.all(updatePromises);
     return results;
   } catch (error) {
-    // Log the error for debugging
     console.error("Error in updateProductFromPayment:", error);
-
-    // Rethrow the error or handle it as needed
     if (error instanceof BadRequest || error instanceof NotFound) {
       throw error;
     } else {

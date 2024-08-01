@@ -7,6 +7,7 @@ import * as Review from "../reviews/review";
 import { DateDropDownView } from "../utils/subview";
 import { convertToISO } from "../../utils";
 import { esewaCall, getPaymentForm } from "../../api/paymentApi";
+import { Order } from "../../interface/order";
 const renderDateDropdown = (container: HTMLElement) => {
   const dropdownContainer = createElement("div", {
     id: "date-dropdown-container",
@@ -64,15 +65,15 @@ const setupEventListeners = (container: HTMLElement, user: IUser) => {
     });
 };
 
-const mapOrdersToDetail = (orders: any[]) => {
-  return orders.map((order: any) => [
+const mapOrdersToDetail = (orders: Order[]) => {
+  return orders.map((order: Order) => [
     {
       id: order.id,
-      total_amount: +order.total_amount,
+      total_amount: +order.total_amount!,
       user: order.user ? order.user.name : "",
       profit: order.profit,
       status: order.status,
-      discountValue: order?.discount?.percentage * 100 + "%",
+      discountValue: order?.discount?.percentage! * 100 + "%",
       discountCode: order?.discount?.code,
       createdAt: order.createdAt,
       products: order.Order_Product.map((e: any) => [

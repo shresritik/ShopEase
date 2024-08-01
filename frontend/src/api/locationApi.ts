@@ -6,7 +6,9 @@ export const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition(showPosition);
   }
 
-  async function showPosition(position: any) {
+  async function showPosition(position: {
+    coords: { longitude: number; latitude: number };
+  }) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     const url = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${

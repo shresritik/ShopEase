@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { IDiscount } from "../interface/discount";
 import { getToken } from "../utils/auth";
+import { toast } from "../utils/toast";
 
 export async function createDiscount(data: IDiscount) {
   const token = getToken("accessToken");
@@ -12,12 +13,19 @@ export async function createDiscount(data: IDiscount) {
       },
     });
   } catch (error: unknown) {
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
+      toast(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message,
+        "danger"
+      );
       throw new Error(
         error.response?.data.error
           ? error.response.data.error
           : error.response?.data.message
       );
+    }
   }
 }
 export async function getAllDiscount() {
@@ -31,7 +39,15 @@ export async function getAllDiscount() {
     });
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message,
+        "danger"
+      );
+      throw new Error(error.response?.data.error);
+    }
   }
 }
 export async function getADiscount(code: string) {
@@ -45,7 +61,15 @@ export async function getADiscount(code: string) {
     });
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message,
+        "danger"
+      );
+      throw new Error(error.response?.data.error);
+    }
   }
 }
 export async function deleteDiscount(id: number) {
@@ -59,7 +83,15 @@ export async function deleteDiscount(id: number) {
     });
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message,
+        "danger"
+      );
+      throw new Error(error.response?.data.error);
+    }
   }
 }
 export async function updateDiscount(id: number, data: IDiscount) {
@@ -73,6 +105,14 @@ export async function updateDiscount(id: number, data: IDiscount) {
     });
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message,
+        "danger"
+      );
+      throw new Error(error.response?.data.error);
+    }
   }
 }

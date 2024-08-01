@@ -11,9 +11,12 @@ import { handleEsewaSuccess } from "../middleware/payment";
 import { updateProductAfterPayment } from "../controller/payment";
 import { authenticate, authorize } from "../middleware/auth";
 import { PERMISSION } from "@prisma/client";
+import { validateReqBody, validateReqId } from "../middleware/validator";
+import { getOrderByBodySchema, orderByIdSchema } from "../schema/order";
 const router = express();
 router.post(
   "/",
+  validateReqBody(getOrderByBodySchema),
   authenticate(),
   authorize([PERMISSION.USER_POST]),
   createOrder
@@ -24,13 +27,7 @@ router.get(
   authorize([PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET]),
   getAllOrders
 );
-router.post(
-  "/success",
-  authenticate(),
-  authorize([PERMISSION.USER_POST]),
-  handleEsewaSuccess,
-  updateProductAfterPayment
-);
+router.post("/success", handleEsewaSuccess, updateProductAfterPayment);
 router.post(
   "/payment",
   authenticate(),
@@ -39,7 +36,6 @@ router.post(
 );
 router.get(
   "/:id",
-
   authenticate(),
   authorize([
     PERMISSION.SUPER_ADMIN_GET,
@@ -51,12 +47,14 @@ router.get(
 );
 router.delete(
   "/:id",
+  validateReqId(orderByIdSchema),
   authenticate(),
   authorize([PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET]),
   deleteOrderById
 );
 router.get(
   "/order/:id",
+  validateReqId(orderByIdSchema),
   authenticate(),
   authorize([PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET]),
   getOrderById

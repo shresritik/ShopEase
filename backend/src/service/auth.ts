@@ -7,6 +7,8 @@ import { PERMISSION } from "@prisma/client";
 import { signUser } from "../utils/auth";
 import crypto from "crypto";
 import config from "../config";
+import loggerWithNameSpace from "../utils/logger";
+const logger = loggerWithNameSpace("AuthService");
 export const login = async (user: IUser) => {
   const existingUser = await getUserByEmail(user.email, { email: user.email });
   if (!existingUser) {
@@ -27,8 +29,7 @@ export const login = async (user: IUser) => {
     permissions: permissionOfUser,
     roleId: +existingUser.role?.role_rank!,
   };
-  //   console.log(permissionOfUser);
-  // //   logger.info("sign user");
+  logger.info("sign user");
   const { accessToken, refreshToken } = signUser(payload);
   return { accessToken, refreshToken };
 };
@@ -39,6 +40,8 @@ export const createSignature = (message: string) => {
   hmac.update(message);
 
   // Get the digest in base64 format
+
   const hashInBase64 = hmac.digest("base64");
+  logger.info("base64 digested");
   return hashInBase64;
 };

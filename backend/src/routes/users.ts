@@ -152,7 +152,7 @@ router.post(
     true
   ),
 
-  // validateReqBody(createUserSchema),
+  validateReqBody(createUserSchema),
   createUser
 );
 

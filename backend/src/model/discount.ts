@@ -25,6 +25,13 @@ export const deleteDiscount = async (id: number) => {
     },
   });
 };
+export const getDiscountById = async (id: number) => {
+  return await prisma.discount.findFirst({
+    where: {
+      id,
+    },
+  });
+};
 export const getDiscountByCode = async (code: string) => {
   return await prisma.discount.findFirst({
     where: {

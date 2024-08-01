@@ -1,5 +1,8 @@
-export const ProductReview = (review: any) => {
-  console.log(review);
+export const ProductReview = (review: {
+  pic: string;
+  user: string;
+  name: string;
+}) => {
   return `
     <div
   class="relative flex w-1/2 px-10 py-10 justify-center mx-auto bg-white flex-col rounded-xl bg-transparent bg-clip-border text-gray-700 shadow-none">

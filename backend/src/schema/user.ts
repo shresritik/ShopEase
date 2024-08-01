@@ -70,7 +70,7 @@ export const createUserSchema = Joi.object({
   email: Joi.string().email().required().messages({
     "any.required": "Email is required",
   }),
-  role_id: Joi.number().required().messages({
+  roleId: Joi.number().optional().default(3).messages({
     "any.required": "roleId is required",
     "number.base": "roleId must be number",
   }),
@@ -104,8 +104,10 @@ export const updateUserSchema = Joi.object({
   name: Joi.string().optional(),
   email: Joi.string().email().optional(),
   password: Joi.string()
-    .min(8)
+    .allow("")
+    .allow(null)
     .optional()
+    .min(8)
     .messages({
       "string.min": "Password must be at least 8 characters",
       "password.uppercase": "Password must have at least one uppercase",
@@ -113,16 +115,18 @@ export const updateUserSchema = Joi.object({
       "password.special": "Password must have at least one special character",
     })
     .custom((value, helpers) => {
-      if (!/[A-Z]/.test(value)) {
-        return helpers.error("password.uppercase");
+      if (value) {
+        if (!/[A-Z]/.test(value)) {
+          return helpers.error("password.uppercase");
+        }
+        if (!/[a-z]/.test(value)) {
+          return helpers.error("password.lowercase");
+        }
+        if (!/[!@#$%]/.test(value)) {
+          return helpers.error("password.special");
+        }
+        return value;
       }
-      if (!/[a-z]/.test(value)) {
-        return helpers.error("password.lowercase");
-      }
-      if (!/[!@#$%]/.test(value)) {
-        return helpers.error("password.special");
-      }
-      return value;
     }),
 }).options({
   stripUnknown: true,

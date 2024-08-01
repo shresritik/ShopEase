@@ -15,7 +15,10 @@ export async function updateProductAfterPayment(
     const order = await updateProductFromPayment(orderId!);
     if (!order) throw new NotFound("Order not found");
     if (!orderId) throw new NotFound("Order not found");
-    const updatedStatus = updateOrderById(orderId, { status: "complete" });
+    const updatedStatus = await updateOrderById(orderId, {
+      status: "complete",
+    });
+    console.log("statue", updatedStatus);
     res.status(HttpStatusCode.OK).json(updatedStatus);
   } catch (error) {
     next(error);

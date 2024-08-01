@@ -8,11 +8,51 @@ import {
   getDiscounts,
   updateADiscount,
 } from "../controller/discount";
+import { validateReqBody, validateReqId } from "../middleware/validator";
+import { createDiscountSchema, discountByIdSchema } from "../schema/discount";
 const router = express();
-router.post("/", createADiscount);
-router.get("/", getDiscounts);
-router.get("/:id", getADiscount);
-router.delete("/:id", deleteADiscount);
-router.put("/:id", updateADiscount);
+router.post(
+  "/",
+  validateReqBody(createDiscountSchema),
+  authenticate(),
+  authorize([PERMISSION.SUPER_ADMIN_POST]),
+  createADiscount
+);
+router.get(
+  "/",
+  authenticate(),
+  authorize([
+    PERMISSION.SUPER_ADMIN_GET,
+    PERMISSION.ADMIN_GET,
+    PERMISSION.USER_GET,
+  ]),
+  getDiscounts
+);
+router.get(
+  "/:id",
+  validateReqId(discountByIdSchema),
+  authenticate(),
+  authorize([
+    PERMISSION.SUPER_ADMIN_GET,
+    PERMISSION.ADMIN_GET,
+    PERMISSION.USER_GET,
+  ]),
+  getADiscount
+);
+router.delete(
+  "/:id",
+  validateReqId(discountByIdSchema),
+  authenticate(),
+  authorize([PERMISSION.SUPER_ADMIN_DELETE]),
+
+  deleteADiscount
+);
+router.put(
+  "/:id",
+  validateReqId(discountByIdSchema),
+  authenticate(),
+  authorize([PERMISSION.SUPER_ADMIN_PUT]),
+  updateADiscount
+);
 
 export default router;

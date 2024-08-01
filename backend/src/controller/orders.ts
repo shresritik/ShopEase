@@ -16,6 +16,7 @@ export async function createOrder(
 ) {
   try {
     const { userId, totalAmount, location, products, discount } = req.body;
+    console.log(userId, totalAmount, location, products, discount);
     const orderDetails = { userId, totalAmount, location, products, discount };
     const order = await createOrderProduct(orderDetails);
     res.status(HttpStatusCode.OK).json(order);

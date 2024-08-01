@@ -6,7 +6,6 @@ import { toast } from "../utils/toast.ts";
 import { IUser } from "../interface/user.ts";
 
 export const render = (forUsers = true, update = false) => {
-  console.log(update);
   const container = createElement("div", {
     className: "flex justify-center items-center ",
   });
@@ -23,6 +22,9 @@ export const render = (forUsers = true, update = false) => {
   else datas = RegisterView(!forUsers);
   form.innerHTML = datas;
   let userValue: IUser;
+  if (!forUsers) {
+    userRoleSelect = form.querySelector("#user-role") as HTMLSelectElement;
+  }
   const name = form.querySelector("#name") as HTMLInputElement;
   const email = form.querySelector("#email") as HTMLInputElement;
   const password = form.querySelector("#password") as HTMLInputElement;
@@ -38,21 +40,18 @@ export const render = (forUsers = true, update = false) => {
         form.querySelector(".check-email")?.classList.add("hidden");
         name.value = userValue.name;
         email.value = userValue.email;
-        userRoleSelect.value = "" + userValue.roleId;
+        userRoleSelect.value = userValue.roleId ? "" + userValue.roleId : "3";
+        console.log(userRoleSelect.value);
       } else {
         console.log("error");
         toast("error", "danger");
       }
     });
   } else {
-    console.log("first");
     form.querySelector(".check-email")?.classList.add("hidden");
     form.querySelector(".form")?.classList.remove("hidden");
   }
 
-  if (!forUsers) {
-    userRoleSelect = document.getElementById("user-role") as HTMLSelectElement;
-  }
   const confirmPassword = form.querySelector(
     "#confirmPassword"
   ) as HTMLInputElement;
@@ -69,9 +68,12 @@ export const render = (forUsers = true, update = false) => {
       formData.append("name", name.value);
       formData.append("email", email.value);
       formData.append("password", password.value);
-      if (!forUsers && userRoleSelect) {
+      console.log(userRoleSelect);
+      if (!forUsers || userRoleSelect) {
         formData.append("roleId", userRoleSelect.value);
-      } else formData.append("roleId", "3");
+      } else {
+        formData.append("roleId", "3");
+      }
 
       if (fileInput?.files?.[0]) {
         formData.append("profile-pic", fileInput.files[0]);
@@ -79,6 +81,7 @@ export const render = (forUsers = true, update = false) => {
       if (update) {
         await updateUser("" + userValue.id, formData);
       } else {
+        console.log(formData);
         await register(formData);
       }
       if (!forUsers) {

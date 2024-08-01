@@ -1,4 +1,15 @@
-export const ProductDetails = (details: any, quantity: number) => {
+import { Product } from "../../types/proudct";
+
+export const ProductDetails = (
+  details: Product & {
+    stock: number;
+    id: number;
+    avg_rating: number;
+    product_name: string;
+    description: string;
+  },
+  quantity: number
+) => {
   return `
        
       <div class="w-3/4 mx-auto  py-8">
