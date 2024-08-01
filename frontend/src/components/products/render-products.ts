@@ -10,6 +10,11 @@ export const getProductsArray = async (query: IQuery) => {
     for (const category of categories) {
       const categoryName = category.category_name;
       const products = await getProductsByCategories(categoryName, query);
+      console.log("prod", products);
+      if (!products) {
+        console.log(products);
+        return;
+      }
       categorizedProducts[categoryName] = products;
     }
   } catch (error) {

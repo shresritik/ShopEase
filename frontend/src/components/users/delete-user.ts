@@ -43,7 +43,7 @@ export const render = async (prod = false, forUsers: boolean = true) => {
 
   try {
     const user = await fetchUserProfile();
-    const res = DeleteView(prod);
+    const res = DeleteView(prod, false, false);
     container.innerHTML = res;
     let selectedUserId = user.id;
     let selectedOption: HTMLOptionElement | null = null;

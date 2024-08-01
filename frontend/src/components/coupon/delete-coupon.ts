@@ -3,14 +3,15 @@ import { deleteCategory, getCategories } from "../../api/categoriesApi";
 import { createElement } from "../../utils/createElement";
 import { toast } from "../../utils/toast";
 import { DeleteView } from "../dashboard-view/DeleteView";
+import { deleteDiscount, getAllDiscount } from "../../api/discountApi";
 const populateDropdown = (
   container: HTMLSelectElement,
-  options: { id: number; category_name: string }[]
+  options: { id: number; code: string }[]
 ) => {
-  options.forEach((option: { id: number; category_name: string }) => {
+  options.forEach((option: { id: number; code: string }) => {
     const opt = document.createElement("option");
     opt.value = option.id.toString();
-    opt.text = option.category_name;
+    opt.text = option.code;
     container.appendChild(opt);
   });
 };
@@ -19,20 +20,20 @@ export const render = async () => {
   const container = createElement("div", {
     className: "flex justify-center items-center",
   });
-  container.innerHTML += DeleteView(false, true, false);
-  const cateogries = await getCategories();
+  container.innerHTML += DeleteView(false, false, true);
+  const coupons = await getAllDiscount();
   const dropdown = container.querySelector(
     "#email-dropdown"
   ) as HTMLSelectElement;
   container.querySelector(".select")?.classList.toggle("hidden");
 
-  populateDropdown(dropdown, cateogries);
-  let selectedCategoryId = "1";
+  populateDropdown(dropdown, coupons);
+  let selectedDiscountId = "1";
   let selectedOption: HTMLOptionElement | null = null;
 
   dropdown.addEventListener("change", (event) => {
     const target = event.target as HTMLSelectElement;
-    selectedCategoryId = target.value;
+    selectedDiscountId = target.value;
     selectedOption = target.selectedOptions[0];
   });
   container
@@ -40,8 +41,8 @@ export const render = async () => {
     .addEventListener("click", async (e) => {
       e.preventDefault();
       try {
-        const deleteCat = await deleteCategory(+selectedCategoryId);
-        if (deleteCat.status == 200) {
+        const deleteCat = await deleteDiscount(+selectedDiscountId);
+        if (deleteCat && deleteCat.status == 200) {
           toast("Successfully Deleted", "");
           selectedOption?.remove();
         } else {

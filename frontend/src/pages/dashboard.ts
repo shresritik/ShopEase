@@ -9,6 +9,9 @@ import * as Product from "../components/products/create-products";
 import * as Category from "../components/categories/create-category";
 import * as UpdateCategory from "../components/categories/update-category";
 import * as Order from "../components/orders/orders";
+import * as CreateCoupon from "../components/coupon/create-coupon";
+import * as UpdateCoupon from "../components/coupon/update-coupon";
+import * as DeleteCoupon from "../components/coupon/delete-coupon";
 import { fetchUserProfile } from "../api/userApi";
 import { userProfileStore } from "../store";
 import axios from "axios";
@@ -45,7 +48,6 @@ export const render = async () => {
         const target = event.target as HTMLElement;
         const classArray = [...target.classList];
         rightElement.innerHTML = "";
-        console.log(classArray, target);
         if (classArray.includes("orders") && user.roleId != 2) {
           const createOrders = await Order.render();
           createOrders.classList.add("create-orders");
@@ -98,9 +100,27 @@ export const render = async () => {
           const updateProduct = await UpdateCategory.render();
           updateProduct.classList.add("update-category");
           rightElement.appendChild(updateProduct);
+        } else if (classArray.includes("create-coupon")) {
+          const createCoupon = await CreateCoupon.render();
+          createCoupon.classList.add("create-coupon");
+          rightElement.appendChild(createCoupon);
+        } else if (classArray.includes("update-coupon")) {
+          const updateCoupon = await UpdateCoupon.render();
+          updateCoupon.classList.add("update-coupon");
+          rightElement.appendChild(updateCoupon);
+        } else if (classArray.includes("delete-coupon")) {
+          const deleteCoupon = await DeleteCoupon.render();
+          deleteCoupon.classList.add("delete-coupon");
+          rightElement.appendChild(deleteCoupon);
         }
       };
-
+      document.querySelectorAll("nav > div > button").forEach((button) => {
+        button.addEventListener("click", () => {
+          const content = button.nextElementSibling;
+          content?.classList.toggle("hidden");
+          button.querySelector("svg")!.classList.toggle("rotate-180");
+        });
+      });
       document
         .querySelectorAll(".sidebar")
         .forEach((element) =>
@@ -115,6 +135,13 @@ export const render = async () => {
     }
   };
 
+  leftElement.querySelectorAll("nav > div > button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const content = button.nextElementSibling;
+      content!.classList.toggle("hidden");
+      button.querySelector("svg")!.classList.toggle("rotate-180");
+    });
+  });
   renderSidebar();
 
   divElement.appendChild(leftElement);

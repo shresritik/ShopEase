@@ -81,7 +81,7 @@ export async function deleteDiscount(id: number) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       toast(
@@ -103,7 +103,7 @@ export async function updateDiscount(id: number, data: IDiscount) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       toast(

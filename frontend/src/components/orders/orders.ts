@@ -148,6 +148,9 @@ export const render = async () => {
 
   if (user.roleId == 1 || user.roleId == 2) {
     allOrders = await getAllOrders();
+    if (!allOrders || allOrders.length == 0) {
+      container.innerHTML += "<h1>Nobody bought any products yet</h1>";
+    }
   } else {
     allOrders = await getOrdersByUsers(user.id!);
     if (!allOrders || allOrders.length == 0) {

@@ -5,7 +5,7 @@ export const createDiscountSchema = Joi.object({
     "string.base": "code must be string",
   }),
   percentage: Joi.number().max(100).messages({
-    "number.base": "percentage must be string",
+    "number.base": "percentage must be number",
   }),
   validFrom: Joi.date().messages({
     "date.base": "validFrom must be date in ISO",

@@ -56,6 +56,7 @@ export async function getProductsByCategories(
     const res = await axios.get(
       BASE_URL + "/api/products/" + category + `?${queryParams}`
     );
+    console.log(res);
     return res.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);

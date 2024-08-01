@@ -1,5 +1,6 @@
 import { routes } from "../constants";
 import { RouteDefinition } from "../interface/route";
+import { dispatch } from "../utils/dispatch";
 
 export const matchRoute = (
   path: string,
@@ -30,6 +31,7 @@ export const navigate = async (path: string, app: HTMLElement) => {
     const match = matchRoute(path, routes);
     if (!match) {
       console.error(`Route not found for path: ${path}`);
+      dispatch("not-found");
       return;
     }
 

@@ -1,4 +1,4 @@
-export const DeleteView = (prod = false, category = false) => {
+export const DeleteView = (prod = false, category = false, coupon = false) => {
   return `
   
 
@@ -21,15 +21,20 @@ export const DeleteView = (prod = false, category = false) => {
     <label
       for="email-dropdown"
       class="block text-sm font-medium text-gray-700 mb-2"
-      > Select ${prod && !category ? "Product" : "Email"} ${
-    category && !prod ? "Category" : ""
-  }</label
+      > Select ${prod && !category && !coupon ? "Product" : ""} ${
+    category && !prod && !coupon ? "Category" : ""
+  }
+
+  ${!category && !prod && coupon ? "Coupon" : ""}
+
+  </label
     >
     <select
       id="email-dropdown"
       name="email-dropdown"
       class="block w-full mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm h-6 mb-3"
     >
+      <option>-----</option>
       <!-- Options will be populated dynamically -->
     </select>
   </div>
