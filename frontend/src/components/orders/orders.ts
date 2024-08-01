@@ -8,6 +8,8 @@ import { DateDropDownView } from "../utils/subview";
 import { convertToISO } from "../../utils";
 import { esewaCall, getPaymentForm } from "../../api/paymentApi";
 import { Order } from "../../interface/order";
+import { toast } from "../../utils/toast";
+
 const renderDateDropdown = (container: HTMLElement) => {
   const dropdownContainer = createElement("div", {
     id: "date-dropdown-container",
@@ -63,6 +65,14 @@ const setupEventListeners = (container: HTMLElement, user: IUser) => {
         renderOrders(container, filteredOrderDetail, user.roleId);
       }
     });
+  if (user.roleId == 1) {
+    const downloadAllBtn = createElement("button", {
+      className: "bg-gray-900 text-white px-4 py-2 rounded my-4",
+      textContent: "Download Report",
+    });
+    downloadAllBtn.addEventListener("click", () => downloadAllOrders(user));
+    container.prepend(downloadAllBtn);
+  }
 };
 
 const mapOrdersToDetail = (orders: Order[]) => {
@@ -90,7 +100,6 @@ const mapOrdersToDetail = (orders: Order[]) => {
     },
   ]);
 };
-
 const setupReviewListeners = async (container: HTMLElement) => {
   const reviewModal = (await Review.render()) as HTMLElement;
 
@@ -138,6 +147,43 @@ const setupReviewListeners = async (container: HTMLElement) => {
   document.body.appendChild(reviewModal);
 };
 
+const downloadAllOrders = async (user: IUser) => {
+  const orders =
+    user.roleId > 2 ? await getOrdersByUsers(user.id!) : await getAllOrders();
+
+  if (!orders || orders.length === 0) {
+    toast("No orders to download", "danger");
+    return;
+  }
+
+  let csv =
+    "Order ID,User,Total Amount,Profit,Status,Discount,Coupon,Created At,Products\n";
+
+  orders.forEach((order: Order) => {
+    const products = order.Order_Product.map(
+      (p: any) => `${p.product.product_name}(${p.quantity})`
+    ).join("; ");
+
+    csv += `${order.id},${order.user?.name || ""},${order.total_amount},${
+      order.profit
+    },${order.status},${order?.discount?.percentage! * 100 + "%"},${
+      order?.discount?.code || ""
+    },${order.createdAt},${products}\n`;
+  });
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = createElement("a") as HTMLAnchorElement;
+  if (link.download !== undefined) {
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "all_orders.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+};
+
 export const render = async () => {
   const container = createElement("div", {
     className: "flex flex-col justify-center items-center",
@@ -164,6 +210,7 @@ export const render = async () => {
     renderOrders(container, orderDetail, user.roleId);
     setupEventListeners(container, user);
   }
+
   const pendingPayment =
     container.querySelectorAll<HTMLButtonElement>("#payment-data");
   pendingPayment.forEach((button) => {

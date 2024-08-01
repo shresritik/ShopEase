@@ -12,6 +12,7 @@ import { esewaCall } from "../api/paymentApi";
 import { toast } from "../utils/toast";
 import { getADiscount } from "../api/discountApi";
 import { IDiscount } from "../interface/discount";
+
 export const render = () => {
   let coupon: string;
   getCurrentLocation();
@@ -96,7 +97,6 @@ export const render = () => {
         toast("Order Placed Successfully", "");
         esewaCall(formResult.data.formData);
       } else {
-        console.log(formResult);
         toast("Something went wrong", "danger");
       }
     }

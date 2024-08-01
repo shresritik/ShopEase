@@ -33,8 +33,9 @@ const productSchema = Joi.object({
 export const getOrderByBodySchema = Joi.object({
   location: Joi.string().allow("").optional(),
   products: Joi.array().items(productSchema).min(1).required(),
-  totalAmount: Joi.number().positive().required(),
+  totalAmount: Joi.number().required(),
   userId: Joi.number().integer().positive().required(),
+  discount: Joi.string().optional().allow(),
 }).options({
   stripUnknown: true,
 });
