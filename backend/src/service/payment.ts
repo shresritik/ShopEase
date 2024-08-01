@@ -1,6 +1,6 @@
 import { BadRequest } from "../error";
 import { createSignature } from "./auth";
-
+// check for integrity of the encoded string sent by esewa
 export const paymentResponse = async (data: string) => {
   let buff = await Buffer.from(data, "base64");
   const decodedData = JSON.parse(buff.toString("utf-8"));

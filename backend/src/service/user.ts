@@ -4,6 +4,7 @@ import * as UserModel from "../model/user";
 import loggerWithNameSpace from "../utils/logger";
 import bcrypt from "bcryptjs";
 const logger = loggerWithNameSpace("UserService");
+//get all users based on the existing id
 export const getAllUsers = async (existingId: number) => {
   const users = await UserModel.getAllUsers(existingId);
   if (!users || users.length == 0) {
@@ -13,7 +14,7 @@ export const getAllUsers = async (existingId: number) => {
   logger.info("Get user data");
   return users;
 };
-
+//create user and store the default image
 export const createAUser = async (body: IUser) => {
   const userId = await UserModel.getUserByEmail(body.email);
   if (userId) {
@@ -30,7 +31,7 @@ export const createAUser = async (body: IUser) => {
   logger.info("Get user data");
   return users;
 };
-
+// get user info by email
 export async function getUserByEmail(
   userEmail: string,
   user: Omit<IUser, "password" | "name">
@@ -42,12 +43,14 @@ export async function getUserByEmail(
   logger.info("Get user by email");
   return result;
 }
+// get users email
 export async function getUsersEmail(userEmail: string) {
   const result = await UserModel.getUsersEmail(userEmail);
   if (!result) throw new NotFound("No user found");
   logger.info("Get user by email");
   return result;
 }
+// update user based on the user id
 export const updateAUser = async (id: number, body: IUser, userId: number) => {
   const user = await UserModel.getUserById(id);
   if (!user) throw new NotFound("No user found with the id " + id);
@@ -67,6 +70,7 @@ export const updateAUser = async (id: number, body: IUser, userId: number) => {
   logger.info("Update user by id " + id);
   return users;
 };
+// get user by id
 export const getAUser = async (id: number) => {
   const user = await UserModel.getUserById(id);
   if (!user) {
@@ -75,6 +79,7 @@ export const getAUser = async (id: number) => {
   logger.info("Get user by id " + id);
   return user;
 };
+// delete user by id
 export const deleteAUser = async (id: number) => {
   const user = await UserModel.getUserById(id);
   if (!user) throw new NotFound("No user found with the id " + id);

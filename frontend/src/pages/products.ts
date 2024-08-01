@@ -1,9 +1,9 @@
 import { createElement } from "../utils/createElement";
 import { getAllProducts, getProductsByCategories } from "../api/productApi";
-import { IProduct } from "../interface/product";
+import { MetaCart } from "../interface/product";
 import * as Filter from "../components/filter/filter";
 import { renderProducts } from "../components/products/products-page";
-
+// get all products page, initially get all products and then change on basis of filter
 export const render = async (params: {
   category: string;
 }): Promise<HTMLElement> => {
@@ -27,10 +27,10 @@ export const render = async (params: {
     } justify-center gap-2 mx-auto`,
   });
   try {
-    let products: IProduct[];
+    let products: MetaCart[];
     if (pathname[pathname.length - 1] == "products") {
       const filterSection = await Filter.render(productList);
-      products = await getAllProducts();
+      products = (await getAllProducts()) as MetaCart[];
       divSection.appendChild(filterSection);
       divSection.appendChild(productList);
       container.appendChild(divSection);

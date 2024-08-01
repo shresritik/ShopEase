@@ -1,3 +1,5 @@
+import { CartItem } from "../types/cartStore";
+
 export interface IProduct {
   id?: number;
   productName: string;
@@ -11,9 +13,23 @@ export interface IProduct {
   category: {
     categoryName: string;
   };
+  meta: { page: number; size: number; total: number };
+}
+export interface MetaCart extends CartItem {
+  subtotal: number;
+  total: number;
+  meta: { total: number; size: number; page: number };
+}
+export interface ProductsResponse {
   meta: {
-    total: number;
-    size: number;
     page: number;
+    size: number;
+    total: number;
   };
+  products: MetaCart[];
+}
+
+export interface RenderProductsParams {
+  products: MetaCart[] | { message: string };
+  productList: HTMLElement;
 }

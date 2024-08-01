@@ -2,13 +2,11 @@ import { getProductsArray } from "../components/products/render-products";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
 import { CardWrapper } from "../components/card/CardWrapper";
-import { IProduct } from "../interface/product";
+import { IProduct, MetaCart } from "../interface/product";
 import { getAllProducts } from "../api/productApi";
-import { convertToISO } from "../utils";
-
-interface CategorizedProducts {
-  [category: string]: IProduct[];
-}
+import { CategorizedProducts } from "../interface/categories";
+//homepage
+//first get all categories then loop through it and fetch their products limiting to size 4
 export const render = async (): Promise<HTMLElement> => {
   const container = createElement("div", {
     className: "flex flex-col justify-center gap-2  md:w-max mx-auto",
@@ -34,13 +32,13 @@ export const render = async (): Promise<HTMLElement> => {
       ratedWrapper.appendChild(ratedList);
       container.appendChild(ratedWrapper);
     }
-    let categorizedProducts: CategorizedProducts = await getProductsArray({
+    let categorizedProducts = (await getProductsArray({
       size: "4",
-    });
+    })) as CategorizedProducts;
     for (const [category, productsObj] of Object.entries(categorizedProducts)) {
       const products = Object.entries(productsObj)
         .filter(([key, value]) => key !== "meta" && typeof value === "object")
-        .map(([_, product]) => product as IProduct);
+        .map(([_, product]) => product as MetaCart);
 
       // Only proceed if there are products in this category
       if (products.length > 0) {
@@ -69,7 +67,7 @@ export const render = async (): Promise<HTMLElement> => {
         categoryTitle.textContent = category;
         viewTitle.textContent = "View All";
 
-        products.forEach((prod: IProduct) => {
+        products.forEach((prod: MetaCart) => {
           if (prod) {
             const productElement = CardWrapper(prod);
             productsList.appendChild(productElement);

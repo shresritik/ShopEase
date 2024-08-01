@@ -7,6 +7,7 @@ import helmet from "helmet";
 import swaggerDocs from "./utils/swagger";
 import path from "path";
 const app = express();
+//only allowing localhost:5173 to use backend
 const allowedOrigins = ["http://localhost:5173"];
 app.use(
   helmet({
@@ -29,12 +30,8 @@ app.use(express.json());
 app.use("/api", router);
 swaggerDocs(app, +config.port!);
 app.use("/static", express.static(path.basename(__dirname + "../uploads")));
-// app.use(notFound);
+app.use(notFound);
 app.use(genericErrorHandler);
-app.get("/", (req: Request, res: Response) => {
-  console.log("first");
-  res.json("Hello World");
-});
 
 app.listen(config.port, () => {
   console.log(`Server is listening at port ${config.port}`);

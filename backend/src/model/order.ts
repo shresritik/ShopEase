@@ -2,8 +2,7 @@ import { IOrderProduct } from "../interface/order";
 import { IQuery } from "../interface/utils";
 import prisma from "../utils/prisma";
 
-// Define an interface for the product in the order
-
+//craete order and calcuate profit based on the selling and cost price and quantity
 export const createOrder = async (
   userId: number,
   totalAmount: number,
@@ -17,7 +16,6 @@ export const createOrder = async (
       product.quantity * (product.sellingPrice - product.costPrice);
     return acc + productProfit;
   }, 0);
-  console.log("total profit", totalProfit);
   return await prisma.order.create({
     data: {
       userId: userId,
@@ -42,13 +40,13 @@ export const createOrder = async (
   });
 };
 export const deleteOrder = async (id: string) => {
-  console.log(id);
   return await prisma.order.delete({
     where: {
       id: id,
     },
   });
 };
+// get orders which are createdAt greater than the query
 export const getAllOrders = async (query: IQuery) => {
   return await prisma.order.findMany({
     orderBy: {
@@ -75,6 +73,7 @@ export const getAllOrders = async (query: IQuery) => {
     },
   });
 };
+// get orders in descending order
 export const getOrderByUser = async (userId: number, query: IQuery) => {
   return await prisma.order.findMany({
     orderBy: {

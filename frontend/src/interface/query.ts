@@ -6,3 +6,9 @@ export interface IQuery {
   size?: string;
   search?: string;
 }
+export interface FilterState {
+  categoryId: string;
+  price: string;
+  rating: string;
+  search: string;
+}

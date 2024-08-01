@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken, refreshToken, saveToken } from "../utils/auth.ts";
+import { getToken, saveToken } from "../utils/auth.ts";
 import { BASE_URL } from "../constants/index.ts";
 import { toast } from "../utils/toast.ts";
 
@@ -10,7 +10,6 @@ export const login = async (email: string, password: string) => {
       password,
     });
     saveToken("accessToken", response.data.accessToken);
-    // localStorage.setItem("refreshToken", response.data.refreshToken);
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
   }

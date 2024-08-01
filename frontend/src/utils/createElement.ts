@@ -1,7 +1,13 @@
 type Props = {
   [key: string]: any;
 };
-
+/**
+ * create html elements
+ * @param tag html tagname
+ * @param props attributes
+ * @param children of the tag
+ * @returns HTML Node
+ */
 export const createElement = (
   tag: string,
   props: Props = {},

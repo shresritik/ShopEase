@@ -9,7 +9,7 @@ import { IUser } from "../../interface/user";
 import { CreateProductView } from "../dashboard-view/CreateProductView";
 import { toast } from "../../utils/toast";
 import { getCategories } from "../../api/categoriesApi";
-
+//options to choose the product
 const populateDropdown = (
   container: HTMLSelectElement,
   options: { id: number; categoryName: string }[]
@@ -21,7 +21,7 @@ const populateDropdown = (
     container.appendChild(opt);
   });
 };
-
+// create and update products page
 export const render = async (create: boolean = true) => {
   const container = createElement("div", {
     className: "flex flex-col justify-center items-center",
@@ -57,7 +57,6 @@ export const render = async (create: boolean = true) => {
           stockField.value = prodValue.stock;
           selectedCategoryId = "" + prodValue.categoryId;
         } else {
-          console.log("error");
           toast("error", "danger");
         }
       });
@@ -93,11 +92,9 @@ export const render = async (create: boolean = true) => {
       try {
         if (productName.value.length == 0) return;
         if (create) {
-          const created = await createProduct(formData);
-          console.log(created);
+          await createProduct(formData);
         } else {
-          const updated = await updateProduct(state.id!, formData);
-          console.log(updated);
+          await updateProduct(state.id!, formData);
         }
         const successElement = form?.querySelector(".success") as HTMLElement;
         successElement?.classList.remove("hidden");

@@ -10,7 +10,7 @@ import { deleteProduct, getAllProducts } from "../../api/productApi.ts";
 import { DeleteView } from "../dashboard-view/DeleteView.ts";
 import { toast } from "../../utils/toast.ts";
 import { userProfileStore } from "../../store.ts";
-
+//dropdown to show all users
 const populateDropdown = (
   container: HTMLSelectElement,
   options: { id: number; email: string; productName: string; role: string }[],
@@ -35,7 +35,7 @@ const populateDropdown = (
     }
   );
 };
-
+// component to delete users and products
 export const render = async (prod = false, forUsers: boolean = true) => {
   const container = createElement("div", {
     className: "flex justify-center items-center",
@@ -67,7 +67,12 @@ export const render = async (prod = false, forUsers: boolean = true) => {
       ) as HTMLSelectElement;
       const products = Object.entries(prod)
         .filter(([key, value]) => key !== "meta" && typeof value === "object")
-        .map(([_, product]) => product);
+        .map(([_, product]) => product) as {
+        id: number;
+        email: string;
+        productName: string;
+        role: string;
+      }[];
       populateDropdown(dropdown, products, 2);
       container.querySelector(".select")?.classList.toggle("hidden");
 

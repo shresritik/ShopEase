@@ -76,6 +76,12 @@ export const getProductById = async (id: number) => {
   });
   return prod;
 };
+/**
+ * get products or queries by categories
+ * @param category
+ * @param query
+ * @returns  products by category
+ */
 export const getProductsByCategory = async (
   category: string,
   query: ProductFilter
@@ -199,7 +205,6 @@ export const updateProductStockFromOrder = async (
   });
 };
 export const getProductWithReview = async (review: IReviews) => {
-  console.log(review);
   return await prisma.product.findFirst({
     where: {
       productName: review.productName,

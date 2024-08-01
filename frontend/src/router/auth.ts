@@ -1,5 +1,5 @@
 import { isAuthenticated } from "../utils/auth";
-
+// authentication middleware
 export const authenticate = (dest: string, fallback: string) => {
   if (!isAuthenticated()) {
     window.history.pushState(null, "", `/${fallback}`);

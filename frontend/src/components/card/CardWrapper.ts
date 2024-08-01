@@ -1,11 +1,11 @@
-import { IProduct } from "../../interface/product";
+import { MetaCart } from "../../interface/product";
 import { cartStore, counterStore } from "../../store";
 import { CardFunction } from "../../types/card";
 import { createElement } from "../../utils/createElement";
 import { dispatch } from "../../utils/dispatch";
 import Card from "./BaseCardView";
-
-export function CardWrapper(prod: IProduct) {
+// Card Wrapper dom manipulation with state updates
+export function CardWrapper(prod: MetaCart) {
   const productElement = createElement("div", {
     className: "products",
   });
@@ -27,20 +27,22 @@ export function CardWrapper(prod: IProduct) {
     e.preventDefault();
     counterStore.dispatch({
       type: "INCREMENT",
-      payload: { id: prod.id, qty: prod.stock },
+      payload: { id: +prod.id!, qty: prod.stock },
     });
   });
   productElement.querySelector(".minus")?.addEventListener("click", (e) => {
     e.preventDefault();
     counterStore.dispatch({
       type: "DECREMENT",
-      payload: { id: prod.id },
+      payload: { id: +prod.id! },
     });
   });
   const qty = productElement.querySelector(".quantity");
   counterStore.subscribe((state) => {
     if (!state[prod.id!]) qty!.textContent = "0";
-    else state[prod.id!] <= prod.stock && (qty!.textContent = state[prod.id!]);
+    else
+      state[prod.id!] <= prod.stock &&
+        (qty!.textContent = "" + state[prod.id!]);
   });
 
   productElement.querySelector(".cart")?.addEventListener("click", (e) => {
@@ -69,11 +71,11 @@ export function CardWrapper(prod: IProduct) {
       e.preventDefault();
       cartStore.dispatch({
         type: "REMOVE",
-        payload: prod.id,
+        payload: prod.id!,
       });
       counterStore.dispatch({
         type: "REMOVE",
-        payload: prod.id,
+        payload: prod.id!,
       });
       productElement.querySelector(".cart")!.classList.remove("hidden");
 

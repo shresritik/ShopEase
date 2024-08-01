@@ -14,7 +14,6 @@ export async function updateProductAfterPayment(
     let orderId = req.transaction_uuid;
     orderId = orderId!.split("$")[0];
     let order = await updateProductFromPayment(orderId!);
-    console.log(orderId);
     if (!order) throw new NotFound("Order not found");
     if (!orderId) throw new NotFound("Order not found");
     const updatedStatus = await updateOrderById(orderId, {

@@ -1,15 +1,14 @@
 import { Reducer } from "redux";
 import { removeToken } from "../utils/auth";
-import { CounterAction } from "../interface/store";
-
-export const userProfileReducer: Reducer<any, CounterAction> = (
-  state,
-  action
-) => {
+import { UserProfileAction, UserProfileState } from "../types/userStore";
+//user reducer to store and remove the profile information
+export const userProfileReducer: Reducer<
+  UserProfileState,
+  UserProfileAction
+> = (state: UserProfileState = {}, action: UserProfileAction) => {
   switch (action.type) {
     case "STORE": {
-      Object.assign(state, action.payload);
-      return state;
+      return { ...state, ...action.payload };
     }
     case "RESET": {
       state = {};
@@ -21,14 +20,14 @@ export const userProfileReducer: Reducer<any, CounterAction> = (
       return state;
   }
 };
-export const updateProdReducer: Reducer<any, CounterAction> = (
-  state,
-  action
+//user reducer to store and remove the product information
+export const updateProdReducer: Reducer<UserProfileState, UserProfileAction> = (
+  state: UserProfileState = {},
+  action: UserProfileAction
 ) => {
   switch (action.type) {
     case "STORE": {
-      Object.assign(state, action.payload);
-      return state;
+      return { ...state, ...action.payload };
     }
     default:
       return state;

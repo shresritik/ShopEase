@@ -1,6 +1,7 @@
 import { Discount } from "@prisma/client";
 import * as DiscountModel from "../model/discount";
-import { BadRequest, NotFound } from "../error";
+import { NotFound } from "../error";
+// create discount
 export const createDiscount = async (discount: Discount) => {
   const dis = await DiscountModel.createDiscount(discount);
   if (!dis) {
@@ -8,6 +9,7 @@ export const createDiscount = async (discount: Discount) => {
   }
   return dis;
 };
+// get all discount
 export const getAllDiscount = async () => {
   const dis = await DiscountModel.getAllDiscount();
   if (!dis || dis.length == 0) {
@@ -15,6 +17,7 @@ export const getAllDiscount = async () => {
   }
   return dis;
 };
+// get discount by code
 export const getDiscountByCode = async (code: string) => {
   const dis = await DiscountModel.getDiscountByCode(code);
   if (!dis) {
@@ -23,6 +26,7 @@ export const getDiscountByCode = async (code: string) => {
 
   return dis;
 };
+// get discount by id
 export const getDiscountById = async (id: number) => {
   const dis = await DiscountModel.getDiscountById(id);
   if (!dis) {
@@ -30,6 +34,7 @@ export const getDiscountById = async (id: number) => {
   }
   return dis;
 };
+// delete discount by id
 export const deleteDiscount = async (id: number) => {
   const dis = await getDiscountById(id);
   if (!dis) {
@@ -37,6 +42,7 @@ export const deleteDiscount = async (id: number) => {
   }
   await DiscountModel.deleteDiscount(id);
 };
+// update discount by id
 export const updateDiscount = async (id: number, discount: Discount) => {
   const dis = await getDiscountById(id);
   if (!dis) {

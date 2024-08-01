@@ -1,5 +1,5 @@
 import StartToastifyInstance from "toastify-js";
-
+// toast notification for custom message and status of the toast
 export const toast = (message: string, status: string) => {
   StartToastifyInstance({
     text: message,

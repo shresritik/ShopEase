@@ -1,21 +1,33 @@
 import { Reducer } from "redux";
 import { cartStore, counterStore } from "../store";
 import { removeToken } from "../utils/auth";
-
-export const cartReducer: Reducer<any, any> = (state = [], action) => {
+import { CartAction, CartState } from "../types/cartStore";
+// cart reducer to increase, remove or reseet products on cart
+export const cartReducer: Reducer<CartState, CartAction> = (
+  state: CartState = [],
+  action: CartAction
+) => {
   switch (action.type) {
     case "INCREMENT": {
-      const { id, stock, qty, pic, productName, sellingPrice, category } =
-        action.payload;
+      const {
+        id,
+        stock,
+        qty,
+        pic,
+        productName,
+        sellingPrice,
+        category,
+        ...rest
+      } = action.payload;
       const newState = [
         ...state,
-        { id, stock, qty, pic, productName, sellingPrice, category },
+        { id, stock, qty, pic, productName, sellingPrice, category, ...rest },
       ];
       if (!!cartStore.getState()) {
         newState.push(...cartStore.getState());
       }
-      const combinedState = newState.reduce((acc, product) => {
-        const existingProduct = acc.find((p: any) => p.id == product.id);
+      const combinedState = newState.reduce<CartState>((acc, product) => {
+        const existingProduct = acc.find((p) => p.id == product.id);
         if (existingProduct) {
           existingProduct.qty = product.qty;
         } else {
@@ -28,19 +40,19 @@ export const cartReducer: Reducer<any, any> = (state = [], action) => {
     case "DECREMENT": {
       const { id, stock } = action.payload;
       const newState = state
-        .map((product: any) => {
+        .map((product) => {
           if (product.id === id) {
             return { ...product, stock: product.stock - stock };
           }
           return product;
         })
-        .filter((product: any) => product.stock > 0);
+        .filter((product) => product.stock > 0);
       return newState;
     }
     case "REMOVE": {
       const { id } = action.payload;
       const newState = [...state];
-      const existingProduct = newState.findIndex((p: any) => p.id == id);
+      const existingProduct = newState.findIndex((p) => p.id == id);
       newState.splice(existingProduct, 1);
       return newState;
     }

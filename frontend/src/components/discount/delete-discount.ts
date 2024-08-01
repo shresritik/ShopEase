@@ -1,5 +1,4 @@
 import { AxiosError } from "axios";
-import { deleteCategory, getCategories } from "../../api/categoriesApi";
 import { createElement } from "../../utils/createElement";
 import { toast } from "../../utils/toast";
 import { DeleteView } from "../dashboard-view/DeleteView";
@@ -15,7 +14,7 @@ const populateDropdown = (
     container.appendChild(opt);
   });
 };
-
+// delete discount by showing all the available coupons and selecting the one to delete
 export const render = async () => {
   const container = createElement("div", {
     className: "flex justify-center items-center",

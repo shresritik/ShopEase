@@ -1,6 +1,11 @@
 import { IReviews } from "../interface/reviews";
 import prisma from "../utils/prisma";
-
+/**
+ * aggregate the review count and rating
+ * @param review review body
+ * @param prodId product id
+ * @returns review info and product
+ */
 export const createReview = async (review: IReviews, prodId: number) => {
   const reviewInfo = await prisma.review.create({
     data: {
@@ -31,6 +36,11 @@ export const createReview = async (review: IReviews, prodId: number) => {
 
   return { reviewInfo, updatedProduct };
 };
+/**
+ *
+ * @param productId
+ * @returns reviews
+ */
 export const getAllReview = async (productId: number) => {
   return await prisma.review.findMany({
     where: {
@@ -42,6 +52,12 @@ export const getAllReview = async (productId: number) => {
     },
   });
 };
+/**
+ *
+ * @param prodId
+ * @param userId
+ * @returns product reviewed by the user
+ */
 export const hasUserReviewedProduct = async (
   prodId: number,
   userId: number

@@ -1,10 +1,9 @@
-// import { store } from "../store.ts";
 import { fetchUserProfile, login } from "../api/userApi.ts";
 import { createElement } from "../utils/createElement.ts";
 import { dispatch } from "../utils/dispatch.ts";
 import { userProfileStore } from "../store.ts";
 import { LoginView } from "../components/dashboard-view/LoginView.ts";
-
+//login page
 export const render = () => {
   const container = createElement("div", {
     className: "flex justify-center items-center h-[90vh]",
@@ -22,6 +21,7 @@ export const render = () => {
     e.preventDefault();
     try {
       await login(email.value, password.value);
+      //after login store it in userProfile
       const profile = await fetchUserProfile();
       userProfileStore.dispatch({ type: "STORE", payload: profile });
       dispatch("/dashboard");

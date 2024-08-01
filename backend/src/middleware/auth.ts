@@ -7,6 +7,12 @@ import loggerWithNameSpace from "../utils/logger";
 import { IUser } from "../interface/users";
 import { PERMISSION } from "@prisma/client";
 const logger = loggerWithNameSpace("Authentication");
+//check for the authentication token in routes and verify it with jwt secret and store the response in request
+/**
+ *
+ * @param options for bypassing the authentication for users while signup
+ * @returns
+ */
 export function authenticate(options: boolean = false) {
   return (req: IRequest, res: Response, next: NextFunction) => {
     //no need authenticate for users to create their own account
@@ -20,7 +26,6 @@ export function authenticate(options: boolean = false) {
       return;
     }
     const token = authorization?.split(" ");
-    console.log("token", token);
     if (token?.length != 2 || token[0] != "Bearer") {
       next(new UnauthorizedError("No token found"));
       return;
@@ -28,7 +33,6 @@ export function authenticate(options: boolean = false) {
     try {
       const user = verify(token[1], config.secret!) as IUser;
       logger.info("authenticate " + user.name);
-      console.log("User", user);
       req.user = user;
     } catch (error) {
       logger.error("Token failed");
@@ -52,7 +56,6 @@ export function authorize(permission: PERMISSION[], options: Boolean = false) {
       //setting hierarchial permissions(users should not crud above permissions same for admin)
       if (existingUser?.roleId! > req.body.roleId)
         throw new UnauthorizedError("Unauthorized");
-      // if (user?.roleId == 3 && options) next();
       const permit = permission.findIndex((p) => {
         return user?.permissions!.includes(p);
       });

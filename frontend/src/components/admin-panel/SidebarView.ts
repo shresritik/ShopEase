@@ -13,7 +13,7 @@ export const SidebarView = () => {
     
     <!-- Orders Section (clickable, not part of accordion) -->
     ${
-      user.roleId != 2
+      user.role?.roleRank != 2
         ? `
     <div class="border-b">
       <div class="sidebar orders flex items-center w-full p-4 cursor-pointer hover:bg-blue-gray-50 border-b">
@@ -41,7 +41,7 @@ export const SidebarView = () => {
       <div class="hidden p-4 pt-0">
         <div class="sidebar profile py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Profile</div>
         ${
-          user.roleId != 3
+          user.role?.roleRank != 3
             ? `
         <div class="sidebar create-user py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Create User</div>
         <div class="sidebar update-user py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Update User</div>
@@ -54,7 +54,7 @@ export const SidebarView = () => {
 
     <!-- Product Management Section -->
     ${
-      user.roleId != 3
+      user.role?.roleRank != 3
         ? `
     <div class="border-b">
       <button class="flex items-center justify-between w-full p-4 text-left focus:outline-none">
@@ -92,7 +92,7 @@ export const SidebarView = () => {
     </div>
     <!-- Coupon Management Section -->
     ${
-      user.roleId == 1
+      user.role?.roleRank == 1
         ? ` <div class="border-b">
       <button class="flex items-center justify-between w-full p-4 text-left focus:outline-none">
         <span class="flex items-center">

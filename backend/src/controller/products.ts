@@ -75,7 +75,6 @@ export const updateProduct = async (
   try {
     const { body, user } = req;
     const { id } = req.params;
-    console.log("asd", id);
     const products = await updateAProduct(+id, user?.id!, body);
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {

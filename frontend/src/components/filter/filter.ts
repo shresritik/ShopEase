@@ -1,15 +1,9 @@
 import { createElement } from "../../utils/createElement";
-import { fetchHtml } from "../../utils/fetchHtml";
 import { getAllProducts } from "../../api/productApi";
 import { renderProducts } from "../products/products-page";
 import { getCategories } from "../../api/categoriesApi";
-
-interface FilterState {
-  categoryId: string;
-  price: string;
-  rating: string;
-  search: string;
-}
+import { FilterState } from "../../interface/query";
+import { FilterView } from "./FilterView";
 
 const populateDropdown = (
   container: HTMLSelectElement,
@@ -26,7 +20,7 @@ const populateDropdown = (
     container.appendChild(opt);
   });
 };
-
+//filter logic for products page
 export const render = async (productList: HTMLElement) => {
   const filterState: FilterState = {
     categoryId: "",
@@ -38,7 +32,7 @@ export const render = async (productList: HTMLElement) => {
   const filterContent = createElement("div", {
     className: "flex flex-col justify-center items-center",
   });
-  filterContent.innerHTML = await fetchHtml("filter");
+  filterContent.innerHTML = FilterView();
 
   const priceValue = filterContent.querySelector("#priceValue");
   const priceRange = filterContent.querySelector(

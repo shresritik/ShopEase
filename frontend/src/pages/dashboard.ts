@@ -16,7 +16,7 @@ import { fetchUserProfile } from "../api/userApi";
 import { userProfileStore } from "../store";
 import axios from "axios";
 import { SidebarView } from "../components/admin-panel/SidebarView";
-
+//dashboard to display all the tabs for users,admin and superadmin
 export const render = async () => {
   const container = createElement("div", { className: "p-6 bg-gray-100" });
   const divElement = createElement("div", { className: "flex item-center" });
@@ -26,13 +26,6 @@ export const render = async () => {
   const rightElement = createElement("div", {
     className: "p-6 flex flex-col w-full",
   });
-  // const heading = createElement(
-  //   "h1",
-  //   { className: "text-3xl mb-4" },
-  //   "Dashboard"
-  // );
-
-  // container.appendChild(heading);
   const renderSidebar = async () => {
     try {
       const user = await fetchUserProfile();
@@ -48,6 +41,7 @@ export const render = async () => {
         const target = event.target as HTMLElement;
         const classArray = [...target.classList];
         rightElement.innerHTML = "";
+        //checking the accordion on the basis of class name
         if (classArray.includes("orders") && user.roleId != 2) {
           const createOrders = await Order.render();
           createOrders.classList.add("create-orders");

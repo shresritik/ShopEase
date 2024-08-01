@@ -14,6 +14,7 @@ const populateDropdown = (
     container.appendChild(opt);
   });
 };
+// update the category
 export const render = async () => {
   const container = createElement("div", {
     className: "flex justify-center items-center",
@@ -46,7 +47,7 @@ export const render = async () => {
           const update = await updateCategory(+selectedCategoryId, {
             categoryName: input.value,
           });
-          if (update.status == 200) {
+          if (update && update.status == 200) {
             toast("Successfully Updated", "");
             selectedOption!.textContent = input.value;
           } else {

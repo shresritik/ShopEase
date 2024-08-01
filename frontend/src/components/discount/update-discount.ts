@@ -19,6 +19,7 @@ const populateDropdown = (
     container.appendChild(opt);
   });
 };
+// update the discount similar to create discount view
 export const render = async () => {
   const container = createElement("div", {
     className: "flex justify-center items-center",

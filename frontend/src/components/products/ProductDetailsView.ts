@@ -1,13 +1,7 @@
-import { Product } from "../../types/proudct";
+import { IProduct } from "../../interface/product";
 
 export const ProductDetails = (
-  details: Product & {
-    stock: number;
-    id: number;
-    avgRating: number;
-    productName: string;
-    description: string;
-  },
+  details: IProduct & { description: string; avgRating: number },
   quantity: number
 ) => {
   return `

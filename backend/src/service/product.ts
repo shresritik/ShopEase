@@ -2,6 +2,7 @@ import { NotFound } from "../error";
 import { IProduct } from "../interface/product";
 import { IQuery } from "../interface/utils";
 import * as ProductModel from "../model/product";
+// get All products and their count
 export const getProducts = async (query: IQuery) => {
   const products = await ProductModel.getAllProducts(query);
   const count = await ProductModel.count(query);
@@ -16,11 +17,12 @@ export const getProducts = async (query: IQuery) => {
   };
   return { ...products, meta };
 };
-
+// get product by id
 export const getAProductById = async (id: number) => {
   const products = await ProductModel.getProductById(id);
   return products;
 };
+// delete product by id
 export const deleteAProducts = async (id: number) => {
   const product = await ProductModel.getProductById(id);
   if (!product) throw new NotFound("No product found with the id " + id);
@@ -28,6 +30,7 @@ export const deleteAProducts = async (id: number) => {
   await ProductModel.deleteProduct(id);
   return { message: "Product deleted" };
 };
+// create a product and set default pic if not provided
 export const createAProduct = async (userId: number, product: IProduct) => {
   const products = await ProductModel.createProduct(userId, {
     ...product,
@@ -37,6 +40,7 @@ export const createAProduct = async (userId: number, product: IProduct) => {
   });
   return products;
 };
+// update product by id
 export const updateAProduct = async (
   id: number,
   userId: number,
@@ -52,6 +56,7 @@ export const updateAProduct = async (
   });
   return products;
 };
+// get product by category and id
 export const getAProductByCategoryAndId = async (
   category: string,
   id: number,
@@ -59,20 +64,16 @@ export const getAProductByCategoryAndId = async (
 ) => {
   const prodId = await ProductModel.getProductById(id);
   const prodCat = await ProductModel.getProductsByCategory(category, query);
-  console.log(prodId, prodCat);
   if (!prodId && !prodCat)
     throw new NotFound(
       `Not Product found with id ${id} and category ${category}`
     );
   return await ProductModel.getProductByCategoryAndId(category, id);
 };
+// get product by category
 export const getProductCategory = async (category: string, query: IQuery) => {
   const cat = await ProductModel.getProductsByCategory(category, query);
   const count = await ProductModel.count(query);
-
-  // if (cat.length == 0 || !cat)
-  //   return{}
-  // throw new NotFound(`Category ${category} not found`);
 
   const meta = {
     page: query.page,
@@ -81,6 +82,7 @@ export const getProductCategory = async (category: string, query: IQuery) => {
   };
   return { ...cat, meta };
 };
+// get product info by name
 export const getAProduct = async (name: string) => {
   const prod = await ProductModel.getProductByName(name);
 

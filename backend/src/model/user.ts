@@ -13,7 +13,6 @@ export const getAllUsers = async (existingId: number) => {
       name: true,
       email: true,
       pic: true,
-      password: true,
       role: {
         select: {
           roles: true,

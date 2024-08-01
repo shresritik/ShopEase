@@ -1,6 +1,10 @@
+import { CounterAction, CounterState } from "../types/counterStore";
 import { removeToken } from "../utils/auth";
-
-export const counterReducer = (state: any, action: any) => {
+//counter reducer to increase, decrease and reset the quantity where min is 0
+export const counterReducer = (
+  state: CounterState = {},
+  action: CounterAction
+): CounterState => {
   switch (action.type) {
     case "INCREMENT": {
       const { id, amount = 1, qty } = action.payload;
@@ -23,7 +27,7 @@ export const counterReducer = (state: any, action: any) => {
       return state;
     }
     case "REMOVE": {
-      const id = action.payload;
+      const id = action.payload as number;
       const newState = { ...state };
       delete newState[id];
 

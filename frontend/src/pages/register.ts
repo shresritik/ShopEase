@@ -4,12 +4,11 @@ import { dispatch } from "../utils/dispatch.ts";
 import { RegisterView } from "../components/dashboard-view/RegisterView.ts";
 import { toast } from "../utils/toast.ts";
 import { IUser } from "../interface/user.ts";
-
+//signup page and update
 export const render = (forUsers = true, update = false) => {
   const container = createElement("div", {
     className: "flex justify-center items-center ",
   });
-
   const form = createElement("form", {
     className: `bg-white p-6 rounded shadow-md w-full ${
       forUsers ? "mt-8" : ""
@@ -28,6 +27,7 @@ export const render = (forUsers = true, update = false) => {
   const name = form.querySelector("#name") as HTMLInputElement;
   const email = form.querySelector("#email") as HTMLInputElement;
   const password = form.querySelector("#password") as HTMLInputElement;
+  // if update page then modify it
   if (update) {
     form.querySelector(".form")?.classList.add("hidden");
     form.querySelector(".check-email")?.classList.remove("hidden");
@@ -41,9 +41,7 @@ export const render = (forUsers = true, update = false) => {
         name.value = userValue.name;
         email.value = userValue.email;
         userRoleSelect.value = userValue.roleId ? "" + userValue.roleId : "3";
-        console.log(userRoleSelect.value);
       } else {
-        console.log("error");
         toast("error", "danger");
       }
     });
@@ -68,7 +66,6 @@ export const render = (forUsers = true, update = false) => {
       formData.append("name", name.value);
       formData.append("email", email.value);
       formData.append("password", password.value);
-      console.log(userRoleSelect);
       if (!forUsers || userRoleSelect) {
         formData.append("roleId", userRoleSelect.value);
       } else {
@@ -81,7 +78,6 @@ export const render = (forUsers = true, update = false) => {
       if (update) {
         await updateUser("" + userValue.id, formData);
       } else {
-        console.log(formData);
         await register(formData);
       }
       if (!forUsers) {

@@ -1,7 +1,7 @@
 import { CheckoutAmount } from "../components/checkout/CheckoutAmountView";
 import { CheckoutCardView } from "../components/checkout/CheckoutCardView";
 import { CheckoutView } from "../components/checkout/CheckoutView";
-import { CheckoutCard, ICheckoutProduct } from "../interface/checkout";
+import { ICheckoutProduct } from "../interface/checkout";
 import { cartStore, locationStore, userProfileStore } from "../store";
 import { roundOff } from "../utils";
 import { createElement } from "../utils/createElement";
@@ -12,7 +12,8 @@ import { esewaCall } from "../api/paymentApi";
 import { toast } from "../utils/toast";
 import { getADiscount } from "../api/discountApi";
 import { IDiscount } from "../interface/discount";
-
+import { MetaCart } from "../interface/product";
+//checkout page to list all the products from the cart and proceed for payment
 export const render = () => {
   let coupon: string;
   getCurrentLocation();
@@ -26,9 +27,13 @@ export const render = () => {
   const checkoutWrapper = container.querySelector(".checkout-wrapper");
   const checkoutAmount = container.querySelector(".checkout-amount");
   let amount = 0;
-  checkoutState.forEach((prod: CheckoutCard) => {
+  checkoutState.forEach((prod: MetaCart) => {
     amount += prod.qty * prod.sellingPrice;
-    prod = { ...prod, subtotal: prod.qty * prod.sellingPrice };
+    prod = {
+      ...prod,
+      total: +prod.total!,
+      subtotal: +prod.qty * prod.sellingPrice!,
+    };
     checkoutWrapper!.innerHTML += CheckoutCardView(prod);
   });
   let totalAmount = {
@@ -36,15 +41,13 @@ export const render = () => {
     total: roundOff(amount * 1.13),
   };
   checkoutAmount!.innerHTML = CheckoutAmount(totalAmount);
-  const discountValue = checkoutAmount?.querySelector(
-    "#discount"
-  ) as HTMLInputElement;
   const address = container.querySelector(
     "#billing-address"
   ) as HTMLInputElement;
   locationStore.subscribe(
     (state) => (address.value = state.location ? state.location : "")
   );
+  //check for discount
   checkoutAmount
     ?.querySelector("#discountBtn")
     ?.addEventListener("click", async (e) => {
@@ -79,29 +82,30 @@ export const render = () => {
         }
       }
     });
+  //payment button
   const submitPayment = async () => {
     const user = userProfileStore.getState();
     const email = container.querySelector("#email") as HTMLInputElement;
-    email.value = user.email;
+    if (user.email) email.value = user.email;
 
     let checkProducts: ICheckoutProduct[] = [];
-    checkoutState.map((el: ICheckoutProduct) => {
+    checkoutState.map((el) => {
       checkProducts.push({
-        id: el.id,
+        id: el.id!,
         quantity: el.qty,
         sellingPrice: el.sellingPrice,
-        categoryId: el.category!.id,
+        categoryId: el.category!.id!,
       });
     });
     const form = {
-      userId: user.id,
+      userId: user.id as number,
       totalAmount: totalAmount.total,
       products: checkProducts,
       location: address.value,
       vat: totalAmount.total - totalAmount.subtotal,
       discount: coupon ? coupon : undefined,
     };
-    if (user.role.roleRank == 1 || user.role.roleRank == 2) {
+    if (user.role?.roleRank == 1 || user.role?.roleRank == 2) {
       toast("Admin or Super Admin cannot pay", "danger");
     } else {
       const formResult = await createOrders(form);

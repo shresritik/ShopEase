@@ -1,7 +1,6 @@
 import { userProfileStore } from "../../store";
 
 export const RegisterView = (admin = false, update = false) => {
-  console.log(update);
   const user = userProfileStore.getState();
   return `
   <div class="check-email">
@@ -113,7 +112,7 @@ export const RegisterView = (admin = false, update = false) => {
   </label>
 </div>
 ${
-  user.roleId != 3 && admin
+  user.role?.roleRank != 3 && admin
     ? `<div class="relative inline-block w-64">
   <label for="user-role" class="block text-sm font-medium text-gray-700 mb-2"
     >Select Role</label
@@ -125,7 +124,7 @@ ${
   >
     <option value="3" selected>Users</option>
     <option value="2">Admin</option>
-${user.roleId == 2 ? "" : `<option value="1">Super Admin</option>`}  
+${user.role?.roleRank == 2 ? "" : `<option value="1">Super Admin</option>`}  
   </select>
 </div>`
     : ""

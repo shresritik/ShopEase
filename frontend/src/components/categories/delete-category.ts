@@ -3,6 +3,7 @@ import { deleteCategory, getCategories } from "../../api/categoriesApi";
 import { createElement } from "../../utils/createElement";
 import { toast } from "../../utils/toast";
 import { DeleteView } from "../dashboard-view/DeleteView";
+// show dropdown for the category to delete
 const populateDropdown = (
   container: HTMLSelectElement,
   options: { id: number; categoryName: string }[]
@@ -29,7 +30,7 @@ export const render = async () => {
   populateDropdown(dropdown, cateogries);
   let selectedCategoryId = "1";
   let selectedOption: HTMLOptionElement | null = null;
-
+  // select the category to delete
   dropdown.addEventListener("change", (event) => {
     const target = event.target as HTMLSelectElement;
     selectedCategoryId = target.value;
@@ -41,7 +42,7 @@ export const render = async () => {
       e.preventDefault();
       try {
         const deleteCat = await deleteCategory(+selectedCategoryId);
-        if (deleteCat.status == 200) {
+        if (deleteCat && deleteCat.status == 200) {
           toast("Successfully Deleted", "");
           selectedOption?.remove();
         } else {

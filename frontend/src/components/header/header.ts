@@ -1,6 +1,6 @@
 import { cartStore, counterStore } from "../../store";
 import { Cart } from "../cart/CartView";
-import { IProduct } from "../../interface/product";
+import { IProduct, MetaCart } from "../../interface/product";
 import { BaseCart } from "../cart/BaseCartView";
 import { Navbar } from "./Navbar";
 import { TotalAmountView } from "../utils/subview";
@@ -14,6 +14,7 @@ export const navbarRender = async () => {
   const sidebarContent = document.querySelector(
     "#sidebar-content"
   ) as HTMLElement;
+  // sidebar cart logic with dynamic quantity update
   function updateSidebarContent() {
     const cartState = cartStore.getState();
     const counterState = counterStore.getState();
@@ -39,7 +40,7 @@ export const navbarRender = async () => {
           e.preventDefault();
           counterStore.dispatch({
             type: "INCREMENT",
-            payload: { id: this.dataset.prod, qty: this.dataset.qty },
+            payload: { id: +this.dataset.prod!, qty: +this.dataset.qty! },
           });
         });
       });
@@ -51,7 +52,7 @@ export const navbarRender = async () => {
             e.preventDefault();
             counterStore.dispatch({
               type: "DECREMENT",
-              payload: { id: this.dataset.prod },
+              payload: { id: +this.dataset.prod! },
             });
           });
         });
@@ -61,16 +62,16 @@ export const navbarRender = async () => {
         .forEach((remove) => {
           remove.addEventListener("click", function (e) {
             e.preventDefault();
-            const prodId = this.dataset.prod;
+            const prodId = +this.dataset.prod!;
             if (prodId) {
               cartStore.dispatch({
                 type: "REMOVE",
-                payload: { id: this.dataset.prod },
+                payload: { id: +this.dataset.prod! },
               });
               counterStore.dispatch({
                 type: "DECREMENT",
                 payload: {
-                  id: this.dataset.prod,
+                  id: +this.dataset.prod!,
                   amount: counterStore.getState()[prodId],
                 },
               });
@@ -86,7 +87,7 @@ export const navbarRender = async () => {
           const checkoutData = cartState.map((prod: IProduct) => ({
             ...prod,
             qty: counterState[prod.id!] || 0,
-          }));
+          })) as MetaCart[];
           cartStore.dispatch({
             type: "CHECKOUT",
             payload: checkoutData,

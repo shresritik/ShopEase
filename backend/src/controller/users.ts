@@ -131,9 +131,7 @@ export async function createUser(
   next: NextFunction
 ) {
   try {
-    //   const data = await UserService.createUser(user.id, body);
     const { name, email, password, roleId } = req.body;
-    console.log(req.file);
     const profile = req.file?.filename;
     const user: IUser = {
       name,

@@ -4,7 +4,7 @@ import { createElement } from "../utils/createElement";
 import { successEsewa } from "../api/paymentApi";
 import { toast } from "../utils/toast";
 import { dispatch } from "../utils/dispatch";
-
+//response page after esewa completion
 export const render = async () => {
   const container = createElement("div", {
     className: "flex justify-center items-center h-screen",

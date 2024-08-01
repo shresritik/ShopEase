@@ -1,8 +1,8 @@
-import { Product } from "../../types/proudct";
-import { roundOff, timezone } from "../../utils";
+import { OrderDetail, OrderProductDetail } from "../../interface/order";
+import { timezone } from "../../utils";
 
 export default function OrderView(
-  orderData: any[],
+  orderData: OrderDetail[],
   userRoleId: number
 ): string {
   const order = orderData[0];
@@ -18,7 +18,7 @@ export default function OrderView(
             : ""
         }
         <p class="text-gray-600">Created at: <span class="font-medium">${timezone(
-          order.createdAt
+          order.createdAt as Date
         )}</span></p>
       </div>
       <h4 class="text-lg font-semibold mb-2">Products:</h4>
@@ -45,7 +45,7 @@ export default function OrderView(
         <tbody>
           ${order.products
             .map(
-              (product: Product[]) => `
+              (product: OrderProductDetail[]) => `
             <tr>
               <td class="px-4 py-2">
                 <div class="flex items-center">

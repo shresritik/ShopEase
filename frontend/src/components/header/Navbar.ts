@@ -2,6 +2,7 @@ import { cartStore, userProfileStore } from "../../store";
 import { dispatch } from "../../utils/dispatch";
 import productImg from "../../assets/svg/products.svg";
 export const Navbar = () => {
+  // login and profile pic logic
   document.addEventListener("DOMContentLoaded", () => {
     const login = document.getElementById("showLogin");
     const profile = document.getElementById("profile");
@@ -22,7 +23,7 @@ export const Navbar = () => {
         }
       } else {
         login?.classList.add("hidden");
-        profileImg!.src = user.pic;
+        profileImg!.src = user.pic!;
         if (profile?.classList.contains("hidden")) {
           profile?.classList.remove("hidden");
           profile?.classList.add("flex");

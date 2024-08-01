@@ -3,7 +3,7 @@ import { createCategory } from "../../api/categoriesApi";
 import { createElement } from "../../utils/createElement";
 import { toast } from "../../utils/toast";
 import { CreateCategoryView } from "./CreateCategoryView";
-
+//create category logic
 export const render = async () => {
   const container = createElement("div", {
     className: "flex flex-col justify-center items-center w-full",
@@ -17,7 +17,7 @@ export const render = async () => {
       const categoryData = { categoryName: input.value };
       try {
         const res = await createCategory(categoryData);
-        if (res.status == 200) {
+        if (res && res.status == 200) {
           toast("Category created Successfully", "");
         } else {
           toast("Something went wrong", "danger");

@@ -6,6 +6,7 @@ import { getAProductById } from "./product";
 import { IQuery } from "../interface/utils";
 import { getDiscountByCode } from "./discount";
 import { generateFormForPayment } from "../utils/paymentForm";
+// create order and check for discount by that user
 export const createOrderProduct = async ({
   userId,
   totalAmount,
@@ -38,38 +39,42 @@ export const createOrderProduct = async ({
     prodArr,
     discountInfo?.id
   );
-
+  // generate signature for esewa
   const formData = generateFormForPayment(order);
   return { ...order, formData };
 };
+// get All Orders
 export const getOrders = async (query: IQuery) => {
   const order = await OrderModel.getAllOrders(query);
 
   return order;
 };
+// get A Order by id
 export const getAOrder = async (orderId: string) => {
   const order = await OrderModel.getOrderById(orderId);
 
   if (!order) throw new NotFound("No Order Found by id " + orderId);
   return order;
 };
+// update order by id and also save its status
 export const updateOrder = async (id: string, data: { status: string }) => {
   const order = await getAOrder(id);
   if (!order) {
     throw new NotFound("No orders found by id " + id);
   }
-  console.log("++++++++++++++++", id, data);
   return await OrderModel.updateOrderById(id, data);
 };
+//get Orders by User
 export const getUserOrders = async (userId: number, query: IQuery) => {
   return await OrderModel.getOrderByUser(userId, query);
 };
+// delete orders by id
 export const deleteOrder = async (id: string) => {
   const order = await OrderModel.getOrderById(id);
   if (!order) throw new NotFound("No Order Found by id " + id);
   return await OrderModel.deleteOrder(id);
 };
-
+// update the product after payment of the order
 export const updateProductFromPayment = async (
   orderId: string
 ): Promise<UpdateResult[]> => {
@@ -86,26 +91,18 @@ export const updateProductFromPayment = async (
             `Product not found for order product ${orderProduct.productId}`
           );
         }
-
-        console.log("---------", orderProduct);
+        // check for stock
         const newStock = orderProduct.product.stock - orderProduct.quantity;
-        console.log(
-          "newStock--------",
-          orderProduct.product.stock,
-          orderProduct.quantity
-        );
-
         if (newStock < 0) {
           throw new BadRequest(
             `Insufficient stock for product ${orderProduct.productId}`
           );
         }
-
+        // update product
         const updatedOrder = await ProductModel.updateProductStockFromOrder(
           orderProduct.productId,
           newStock
         );
-        console.log(updatedOrder);
 
         if (!updatedOrder) {
           throw new BadRequest(

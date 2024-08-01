@@ -6,9 +6,10 @@ import startCover from "../assets/svg/star-cover.svg";
 import { ProductReview } from "../components/products/ProductReview";
 import { getReview } from "../api/reviewApi";
 import { IReviewDetails } from "../interface/review";
-import { IProduct } from "../interface/product";
+import { MetaCart } from "../interface/product";
 import { CardWrapper } from "../components/card/CardWrapper";
-
+import { CounterState } from "../types/counterStore";
+// show product details page based on category and its id
 export const render = async ({
   id,
   category,
@@ -50,7 +51,7 @@ export const render = async ({
   container.appendChild(reviewDetailsContainer);
   let isInCart = false;
 
-  function updateContent(state: [key: number]) {
+  function updateContent(state: CounterState) {
     const counterState = state;
     if (!details) {
       productDetailsContainer.innerHTML = "Error";
@@ -67,7 +68,7 @@ export const render = async ({
     }
     updateCartVisibility();
   }
-
+  //show and remove cart inside the card
   function updateCartVisibility() {
     const cartButton = productDetailsContainer.querySelector(".cart");
     const quantityDiv = productDetailsContainer.querySelector(".quantity-div");
@@ -84,7 +85,7 @@ export const render = async ({
       removeCartButton?.classList.add("hidden");
     }
   }
-
+  // increase and decrease the quantity
   productDetailsContainer.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
 
@@ -142,23 +143,25 @@ export const render = async ({
 
   counterStore.subscribe(updateContent);
   updateContent(counterStore.getState());
+  // show similar products based on category and name
   const firstProdName = details.productName.split(" ")[0];
   const similarDetails = await getProductsByCategories(category, {
     name: firstProdName,
   });
   const productArray = Object.entries(similarDetails)
     .filter(([key, value]) => key !== "meta" && typeof value === "object")
-    .map(([_, product]) => product as IProduct);
+    .map(([_, product]) => product as MetaCart);
   if (productArray.length > 1) {
     similarProdDiv.innerHTML += "<h1>Similar Products</h1>";
   }
-  productArray.forEach((prod: IProduct) => {
+  productArray.forEach((prod: MetaCart) => {
     if (details.id != prod.id) {
       const productElement = CardWrapper(prod);
       productList.appendChild(productElement);
     }
   });
   similarProdDiv.appendChild(productList);
+  // get reviews and ratings for the product
   const reviews = await getReview(details.id);
   reviews.forEach((review: IReviewDetails) => {
     const reviewInfo = {

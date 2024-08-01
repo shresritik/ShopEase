@@ -1,7 +1,7 @@
 import { routes } from "../constants";
 import { RouteDefinition } from "../interface/route";
 import { dispatch } from "../utils/dispatch";
-
+// match route based on comparision of length by splitting on "/" and find ":" which is the params
 export const matchRoute = (
   path: string,
   routes: RouteDefinition[]
@@ -12,7 +12,6 @@ export const matchRoute = (
     if (routeParts.length !== pathParts.length) continue;
     const params: { [key: string]: string } = {};
     let match = true;
-
     for (let i = 0; i < routeParts.length; i++) {
       if (routeParts[i].startsWith(":")) {
         params[routeParts[i].slice(1)] = pathParts[i];
@@ -23,9 +22,9 @@ export const matchRoute = (
     }
     if (match) return { route, params };
   }
-
   return null;
 };
+// navigate to different path
 export const navigate = async (path: string, app: HTMLElement) => {
   try {
     const match = matchRoute(path, routes);
@@ -34,7 +33,6 @@ export const navigate = async (path: string, app: HTMLElement) => {
       dispatch("not-found");
       return;
     }
-
     const { route, params } = match;
     const view = await route.load();
     app.innerHTML = "";

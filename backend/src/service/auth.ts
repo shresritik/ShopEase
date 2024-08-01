@@ -9,6 +9,11 @@ import crypto from "crypto";
 import config from "../config";
 import loggerWithNameSpace from "../utils/logger";
 const logger = loggerWithNameSpace("AuthService");
+/**
+ * login the user if email or password exists and generate the tokens
+ * @param body email|password
+ * @returns {access token, refresh token}
+ */
 export const login = async (user: IUser) => {
   const existingUser = await getUserByEmail(user.email, { email: user.email });
   if (!existingUser) {
@@ -34,13 +39,11 @@ export const login = async (user: IUser) => {
   return { accessToken, refreshToken };
 };
 export const createSignature = (message: string) => {
-  const secret = config.esewaSecret!; //different in production
+  const secret = config.esewaSecret!;
   // Create an HMAC-SHA256 hash
   const hmac = crypto.createHmac("sha256", secret);
   hmac.update(message);
-
   // Get the digest in base64 format
-
   const hashInBase64 = hmac.digest("base64");
   logger.info("base64 digested");
   return hashInBase64;

@@ -7,9 +7,9 @@ import * as Review from "../reviews/review";
 import { DateDropDownView } from "../utils/subview";
 import { convertToISO } from "../../utils";
 import { esewaCall, getPaymentForm } from "../../api/paymentApi";
-import { Order } from "../../interface/order";
 import { toast } from "../../utils/toast";
-
+import { Order, OrderDetail, OrderProduct } from "../../interface/order";
+// orders page to display all orders to superadmin and only user's orders
 const renderDateDropdown = (container: HTMLElement) => {
   const dropdownContainer = createElement("div", {
     id: "date-dropdown-container",
@@ -20,7 +20,7 @@ const renderDateDropdown = (container: HTMLElement) => {
 
 const renderOrders = (
   container: HTMLElement,
-  orderDetail: any[],
+  orderDetail: OrderDetail[][],
   userRoleId: number
 ) => {
   const ordersContainer =
@@ -28,7 +28,7 @@ const renderOrders = (
     createElement("div", { id: "orders-container" });
   ordersContainer.innerHTML = "";
 
-  orderDetail.forEach((data: any) => {
+  orderDetail.forEach((data: OrderDetail[]) => {
     ordersContainer.innerHTML += OrderView(data, userRoleId);
   });
 
@@ -37,7 +37,7 @@ const renderOrders = (
   }
   setupReviewListeners(container);
 };
-
+//filter on basis of date
 const setupEventListeners = (container: HTMLElement, user: IUser) => {
   let selectedDay: number;
 
@@ -75,19 +75,21 @@ const setupEventListeners = (container: HTMLElement, user: IUser) => {
   }
 };
 
-const mapOrdersToDetail = (orders: Order[]) => {
+const mapOrdersToDetail = (orders: Order[]): OrderDetail[][] => {
   return orders.map((order: Order) => [
     {
       id: order.id,
-      totalAmount: +order.totalAmount!,
+      totalAmount: +(order.totalAmount ?? 0),
       user: order.user ? order.user.name : "",
       profit: order.profit,
       vat: order.vat,
       status: order.status,
-      discountValue: order?.discount?.percentage! * 100 + "%",
-      discountCode: order?.discount?.code,
+      discountValue: order.discount
+        ? `${order.discount.percentage * 100}%`
+        : "0%",
+      discountCode: order.discount?.code,
       createdAt: order.createdAt,
-      products: order.OrderProduct.map((e: any) => [
+      products: order.OrderProduct.map((e: OrderProduct) => [
         {
           category: e.category.categoryName,
           netAmount: +e.netAmount,
@@ -101,6 +103,7 @@ const mapOrdersToDetail = (orders: Order[]) => {
     },
   ]);
 };
+//review model logic
 const setupReviewListeners = async (container: HTMLElement) => {
   const reviewModal = (await Review.render()) as HTMLElement;
 
@@ -147,7 +150,7 @@ const setupReviewListeners = async (container: HTMLElement) => {
 
   document.body.appendChild(reviewModal);
 };
-
+//download or generate report in excel
 const downloadAllOrders = async (user: IUser) => {
   const orders =
     user.roleId > 2 ? await getOrdersByUsers(user.id!) : await getAllOrders();
@@ -159,10 +162,11 @@ const downloadAllOrders = async (user: IUser) => {
 
   let csv =
     "Order ID,User,Total Amount,Profit,Status,Discount,Coupon,Created At,Products\n";
-
+  // converting the orders to csv format
   orders.forEach((order: Order) => {
     const products = order.OrderProduct.map(
-      (p: any) => `${p.product.productName}(${p.quantity})`
+      (p: { product: { productName: string }; quantity: number }) =>
+        `${p.product.productName}(${p.quantity})`
     ).join("; ");
 
     csv += `${order.id},${order.user?.name || ""},${order.totalAmount},${

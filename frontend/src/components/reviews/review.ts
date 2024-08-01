@@ -8,6 +8,7 @@ import { createReview } from "../../api/reviewApi";
 import { toast } from "../../utils/toast";
 import { AxiosError } from "axios";
 let active: number = 0;
+// component for rating and reviewing
 export const render = async () => {
   const container = createElement("div", {
     className: "flex hidden ",
@@ -17,6 +18,7 @@ export const render = async () => {
   const reviewText = container.querySelector(
     "#review-area"
   ) as HTMLInputElement;
+  // star login
   const reviewBtn = container.querySelector("#review-btn");
   for (let i = 0; i < 5; i++) {
     let starImg = createElement("img", {
@@ -53,10 +55,9 @@ export const render = async () => {
   reviewBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
     const product = document.querySelector(".flex.block ") as HTMLElement;
-    console.log(product);
     const data: IReview = {
       name: reviewText.value,
-      userId: userProfile.id,
+      userId: userProfile.id!,
       productName: product.dataset.review!,
       rating: active + 1,
     };

@@ -20,10 +20,8 @@ const productData: IProduct[] = [
     productName: "DDC Milk",
     description: "Refined Cow Milk",
     costPrice: 40,
-    sellingPrice: 40,
+    sellingPrice: 60,
     categoryId: 1,
-    avgRating: 4,
-    totalReview: 3.5,
     createdBy: 1,
     stock: 5,
   },
@@ -31,10 +29,8 @@ const productData: IProduct[] = [
     productName: "Utsav Bread",
     description: "Refined Bread from utsav",
     costPrice: 40,
-    sellingPrice: 40,
+    sellingPrice: 50,
     categoryId: 2,
-    avgRating: 4,
-    totalReview: 3.5,
     createdBy: 1,
     stock: 2,
   },
@@ -110,7 +106,6 @@ async function main() {
       },
     });
   //product
-
   for (let i = 0; i < categoryData.length; i++) {
     await prisma.category.create({
       data: {

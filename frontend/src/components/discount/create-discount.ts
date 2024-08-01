@@ -4,7 +4,7 @@ import { toast } from "../../utils/toast.ts";
 import { CreateCouponView } from "./CreateDiscountView.ts";
 import { IDiscount } from "../../interface/discount.ts";
 import { createDiscount } from "../../api/discountApi.ts";
-
+// create discount page
 export const render = async () => {
   const container = createElement("div", {
     className: "flex flex-col justify-center items-center w-full",
