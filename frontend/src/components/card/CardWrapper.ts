@@ -3,7 +3,7 @@ import { cartStore, counterStore } from "../../store";
 import { CardFunction } from "../../types/card";
 import { createElement } from "../../utils/createElement";
 import { dispatch } from "../../utils/dispatch";
-import Card from "../card/BaseCard";
+import Card from "./BaseCardView";
 
 export function CardWrapper(prod: IProduct) {
   const productElement = createElement("div", {

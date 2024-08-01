@@ -31,11 +31,13 @@ const productSchema = Joi.object({
 });
 
 export const getOrderByBodySchema = Joi.object({
-  location: Joi.string().allow("").optional(),
+  location: Joi.string().optional(),
   products: Joi.array().items(productSchema).min(1).required(),
   totalAmount: Joi.number().required(),
   userId: Joi.number().integer().positive().required(),
   discount: Joi.string().optional().allow(),
+  profit: Joi.number().optional(),
+  vat: Joi.number().optional(),
 }).options({
   stripUnknown: true,
 });

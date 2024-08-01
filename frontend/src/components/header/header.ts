@@ -1,7 +1,7 @@
 import { cartStore, counterStore } from "../../store";
-import { Cart } from "../cart/Cart";
+import { Cart } from "../cart/CartView";
 import { IProduct } from "../../interface/product";
-import { BaseCart } from "../cart/BaseCart";
+import { BaseCart } from "../cart/BaseCartView";
 import { Navbar } from "./Navbar";
 import { TotalAmountView } from "../utils/subview";
 import { dispatch } from "../../utils/dispatch";

@@ -93,9 +93,9 @@ export default function OrderView(
           `
               : ""
           }
-          <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${roundOff(
-            order.totalAmount - order.totalAmount / 1.13
-          )}</span></p>
+          <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${
+            order.vat
+          }</span></p>
           <p class="text-gray-600">Total Amount: <span class="font-medium">Rs. ${
             order.totalAmount
           }</span></p>

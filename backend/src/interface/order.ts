@@ -13,6 +13,7 @@ export interface IOrder {
   location: string;
   products: IOrderProduct[];
   discount?: string;
+  vat: number;
 }
 export interface OrderProduct {
   productId: number;

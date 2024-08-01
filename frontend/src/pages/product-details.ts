@@ -42,7 +42,9 @@ export const render = async ({
     className: "w-3/4 mx-auto ",
   });
   container.appendChild(similarProdDiv);
-  titleDiv.textContent = "Total Reviews: " + details.totalReview;
+  if (details.totalReview) {
+    titleDiv.textContent = "Total Reviews: " + details.totalReview;
+  }
 
   reviewDetailsContainer.prepend(titleDiv);
   container.appendChild(reviewDetailsContainer);
@@ -147,7 +149,7 @@ export const render = async ({
   const productArray = Object.entries(similarDetails)
     .filter(([key, value]) => key !== "meta" && typeof value === "object")
     .map(([_, product]) => product as IProduct);
-  if (productArray.length > 0) {
+  if (productArray.length > 1) {
     similarProdDiv.innerHTML += "<h1>Similar Products</h1>";
   }
   productArray.forEach((prod: IProduct) => {
@@ -160,7 +162,7 @@ export const render = async ({
   const reviews = await getReview(details.id);
   reviews.forEach((review: IReviewDetails) => {
     const reviewInfo = {
-      name: review.review,
+      name: review.review!,
       user: review.user.name,
       pic: review.user.pic,
     };

@@ -82,6 +82,7 @@ const mapOrdersToDetail = (orders: Order[]) => {
       totalAmount: +order.totalAmount!,
       user: order.user ? order.user.name : "",
       profit: order.profit,
+      vat: order.vat,
       status: order.status,
       discountValue: order?.discount?.percentage! * 100 + "%",
       discountCode: order?.discount?.code,
@@ -220,9 +221,9 @@ export const render = async () => {
 
       const res = await getPaymentForm({
         ...productData,
-        id: productData.id + "1",
+        id: productData.id,
       });
-      await esewaCall(res.data);
+      if (res) await esewaCall(res.data);
     });
   });
   return container;

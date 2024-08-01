@@ -15,6 +15,7 @@ export const getAllDiscount = async () => {
   return await prisma.discount.findMany({
     include: {
       order: true,
+      user: true,
     },
   });
 };
@@ -39,6 +40,7 @@ export const getDiscountByCode = async (code: string) => {
     },
     include: {
       order: true,
+      user: true,
     },
   });
 };

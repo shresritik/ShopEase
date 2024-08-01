@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
-import { createElement } from "../../utils/createElement";
-import { toast } from "../../utils/toast";
-import { CreateCouponView } from "./CreateCouponView.ts";
+import { createElement } from "../../utils/createElement.ts";
+import { toast } from "../../utils/toast.ts";
+import { CreateCouponView } from "./CreateDiscountView.ts";
 import { IDiscount } from "../../interface/discount.ts";
 import { createDiscount } from "../../api/discountApi.ts";
 

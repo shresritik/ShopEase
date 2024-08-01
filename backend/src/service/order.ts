@@ -1,4 +1,3 @@
-import { Decimal } from "@prisma/client/runtime/library";
 import { BadRequest, NotFound } from "../error";
 import { IOrder, OrderProduct, UpdateResult } from "../interface/order";
 import * as OrderModel from "../model/order";
@@ -7,15 +6,14 @@ import { getAProductById } from "./product";
 import { IQuery } from "../interface/utils";
 import { getDiscountByCode } from "./discount";
 import { generateFormForPayment } from "../utils/paymentForm";
-import { Product } from "@prisma/client";
 export const createOrderProduct = async ({
   userId,
   totalAmount,
   location,
+  vat,
   products,
   discount,
 }: IOrder) => {
-  console.log(products);
   let prodArr: any = [];
   prodArr = await Promise.all(
     products.map(async (pro) => {
@@ -26,11 +24,17 @@ export const createOrderProduct = async ({
   let discountInfo;
   if (discount) {
     discountInfo = await getDiscountByCode(discount);
+    discountInfo.order.forEach((order) => {
+      if (userId == order.userId) {
+        throw new BadRequest("User already used this coupon");
+      }
+    });
   }
   const order = await OrderModel.createOrder(
     userId,
     totalAmount,
     location,
+    vat,
     prodArr,
     discountInfo?.id
   );
@@ -45,6 +49,7 @@ export const getOrders = async (query: IQuery) => {
 };
 export const getAOrder = async (orderId: string) => {
   const order = await OrderModel.getOrderById(orderId);
+
   if (!order) throw new NotFound("No Order Found by id " + orderId);
   return order;
 };
@@ -53,6 +58,7 @@ export const updateOrder = async (id: string, data: { status: string }) => {
   if (!order) {
     throw new NotFound("No orders found by id " + id);
   }
+  console.log("++++++++++++++++", id, data);
   return await OrderModel.updateOrderById(id, data);
 };
 export const getUserOrders = async (userId: number, query: IQuery) => {
@@ -72,6 +78,7 @@ export const updateProductFromPayment = async (
     if (!order || !order.OrderProduct) {
       throw new BadRequest(`Order not found or has no products: ${orderId}`);
     }
+
     const updatePromises = order.OrderProduct.map(
       async (orderProduct: OrderProduct): Promise<UpdateResult> => {
         if (!orderProduct.product) {
@@ -79,6 +86,7 @@ export const updateProductFromPayment = async (
             `Product not found for order product ${orderProduct.productId}`
           );
         }
+
         console.log("---------", orderProduct);
         const newStock = orderProduct.product.stock - orderProduct.quantity;
         console.log(
@@ -86,6 +94,7 @@ export const updateProductFromPayment = async (
           orderProduct.product.stock,
           orderProduct.quantity
         );
+
         if (newStock < 0) {
           throw new BadRequest(
             `Insufficient stock for product ${orderProduct.productId}`
@@ -96,6 +105,7 @@ export const updateProductFromPayment = async (
           orderProduct.productId,
           newStock
         );
+        console.log(updatedOrder);
 
         if (!updatedOrder) {
           throw new BadRequest(

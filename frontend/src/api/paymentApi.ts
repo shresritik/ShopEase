@@ -2,15 +2,26 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { getToken } from "../utils/auth";
 import { IProduct } from "../interface/product";
+import { toast } from "../utils/toast";
 export const getPaymentForm = async (data: IProduct) => {
   const token = getToken("accessToken");
-
-  const res = await axios.post(BASE_URL + "/api/orders/payment", data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return res;
+  try {
+    const res = await axios.post(BASE_URL + "/api/orders/payment", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    }
+  }
 };
 export const esewaCall = (formData: {
   id: string;
@@ -35,17 +46,27 @@ export const esewaCall = (formData: {
 };
 export const successEsewa = async (query: string) => {
   const token = getToken("accessToken");
-
-  const data = await axios.post(
-    BASE_URL + `/api/orders/success`,
-    {
-      data: query,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  try {
+    const data = await axios.post(
+      BASE_URL + `/api/orders/success`,
+      {
+        data: query,
       },
-    }
-  );
-  return data;
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    } else if (error instanceof Error) toast(error.message, "danger");
+  }
 };

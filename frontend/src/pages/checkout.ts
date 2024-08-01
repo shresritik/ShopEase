@@ -1,4 +1,4 @@
-import { CheckoutAmount } from "../components/checkout/CheckoutAmount";
+import { CheckoutAmount } from "../components/checkout/CheckoutAmountView";
 import { CheckoutCardView } from "../components/checkout/CheckoutCardView";
 import { CheckoutView } from "../components/checkout/CheckoutView";
 import { CheckoutCard, ICheckoutProduct } from "../interface/checkout";
@@ -49,23 +49,34 @@ export const render = () => {
     ?.querySelector("#discountBtn")
     ?.addEventListener("click", async (e) => {
       e.preventDefault();
-      const res = (await getADiscount(discountValue.value)) as IDiscount;
-      if (res) {
-        coupon = res.code;
-        totalAmount.subtotal = amount - res.percentage;
-        totalAmount.total = roundOff(totalAmount.subtotal * 1.13);
-        checkoutAmount!.innerHTML = CheckoutAmount(totalAmount);
-        const showValue = checkoutAmount?.querySelector(
-          "#discountValue"
-        ) as HTMLParagraphElement;
-        const discountValue = checkoutAmount?.querySelector(
-          "#discount"
-        ) as HTMLInputElement;
-        showValue?.classList.remove("hidden");
-        showValue.textContent = `${res.percentage * 100}%`;
-        checkoutAmount?.querySelector("#discountBtn")?.classList.add("hidden");
-        checkoutAmount?.querySelector("#discount")?.classList.add("hidden");
-        discountValue.classList.add("hidden");
+      const discountValue = checkoutAmount?.querySelector(
+        "#discount"
+      ) as HTMLInputElement;
+      if (discountValue.value.length == 0) {
+        toast("Input field cannot be empty", "danger");
+      } else {
+        const res = (await getADiscount(discountValue.value)) as IDiscount;
+        if (res) {
+          if (new Date() > new Date(res.validUntil))
+            toast("Discount time is finished", "danger");
+          else {
+            coupon = res.code;
+            totalAmount.subtotal = amount - res.percentage;
+            totalAmount.total = roundOff(totalAmount.subtotal * 1.13);
+            checkoutAmount!.innerHTML = CheckoutAmount(totalAmount);
+            const showValue = checkoutAmount?.querySelector(
+              "#discountValue"
+            ) as HTMLParagraphElement;
+
+            showValue?.classList.remove("hidden");
+            showValue.textContent = `${res.percentage * 100}%`;
+            checkoutAmount
+              ?.querySelector("#discountBtn")
+              ?.classList.add("hidden");
+            checkoutAmount?.querySelector("#discount")?.classList.add("hidden");
+            discountValue.classList.add("hidden");
+          }
+        }
       }
     });
   const submitPayment = async () => {
@@ -87,6 +98,7 @@ export const render = () => {
       totalAmount: totalAmount.total,
       products: checkProducts,
       location: address.value,
+      vat: totalAmount.total - totalAmount.subtotal,
       discount: coupon ? coupon : undefined,
     };
     if (user.role.roleRank == 1 || user.role.roleRank == 2) {
@@ -95,7 +107,6 @@ export const render = () => {
       const formResult = await createOrders(form);
       if (formResult && formResult.status == 200) {
         toast("Order Placed Successfully", "");
-        console.log(formResult.data.formData);
         esewaCall(formResult.data.formData);
       } else {
         toast("Something went wrong", "danger");

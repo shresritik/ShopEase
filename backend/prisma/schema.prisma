@@ -112,11 +112,13 @@ model Category {
 
 model Order {
   id           String         @id @default(uuid())
-  user         User           @relation("order", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId       Int            @map("user_id")
+  user         User?          @relation("order", fields: [userId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  userId       Int?           @map("user_id")
   totalAmount  Decimal        @map("total_amount") @db.Decimal(10, 2)
+  vat          Decimal        @db.Decimal(10, 2)
   location     String
   createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt
   OrderProduct OrderProduct[] @relation("order_product")
   profit       Decimal        @db.Decimal(10, 2)
   status       String?        @default("pending")

@@ -1,6 +1,6 @@
 import { Discount } from "@prisma/client";
 import * as DiscountModel from "../model/discount";
-import { NotFound } from "../error";
+import { BadRequest, NotFound } from "../error";
 export const createDiscount = async (discount: Discount) => {
   const dis = await DiscountModel.createDiscount(discount);
   if (!dis) {
@@ -20,6 +20,7 @@ export const getDiscountByCode = async (code: string) => {
   if (!dis) {
     throw new NotFound("No discount found by coupon " + code);
   }
+
   return dis;
 };
 export const getDiscountById = async (id: number) => {

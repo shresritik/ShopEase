@@ -91,6 +91,7 @@ export const render = async (create: boolean = true) => {
       formData.append("stock", stockField.value);
 
       try {
+        if (productName.value.length == 0) return;
         if (create) {
           const created = await createProduct(formData);
           console.log(created);

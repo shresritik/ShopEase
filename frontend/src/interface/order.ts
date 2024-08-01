@@ -25,6 +25,7 @@ export interface Order {
   id?: number;
   createdAt?: Date;
   totalAmount?: number;
+  vat?: number;
   profit?: number;
   status?: string;
   discount?: IDiscount;

@@ -8,4 +8,5 @@ export interface IUser {
   permissions?: PERMISSION[];
   profile?: string;
   roleId?: number;
+  discountId?: number;
 }

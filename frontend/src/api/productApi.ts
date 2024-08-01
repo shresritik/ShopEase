@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { IQuery } from "../interface/query";
 import { getToken } from "../utils/auth";
+import { toast } from "../utils/toast";
 
 export async function createProduct(data: FormData) {
   const token = getToken("accessToken");
@@ -13,12 +14,14 @@ export async function createProduct(data: FormData) {
       },
     });
   } catch (error: unknown) {
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
       throw new Error(
         error.response?.data.error
           ? error.response.data.error
           : error.response?.data.message
       );
+    }
   }
 }
 export async function updateProduct(id: number, data: FormData) {
@@ -31,12 +34,14 @@ export async function updateProduct(id: number, data: FormData) {
       },
     });
   } catch (error: unknown) {
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
       throw new Error(
         error.response?.data.error
           ? error.response.data.error
           : error.response?.data.message
       );
+    }
   }
 }
 
@@ -49,17 +54,24 @@ export async function getProductsByCategories(
     if (query && query.size) {
       queryParams.append("size", query.size);
     }
-    if (query && query.search) {
-      queryParams.append("search", query.search);
+    if (query && query.name) {
+      queryParams.append("search", query.name);
     }
 
     const res = await axios.get(
       BASE_URL + "/api/products/" + category + `?${queryParams}`
     );
-    console.log(res);
+
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    }
   }
 }
 export async function getProductDetails(category: string, id: string) {
@@ -67,7 +79,14 @@ export async function getProductDetails(category: string, id: string) {
     const res = await axios.get(BASE_URL + `/api/products/${category}/${id}`);
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    }
   }
 }
 export async function getProductByName(name: string) {
@@ -77,7 +96,14 @@ export async function getProductByName(name: string) {
     });
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    }
   }
 }
 export async function getAllProducts(query?: IQuery) {
@@ -91,7 +117,14 @@ export async function getAllProducts(query?: IQuery) {
     const res = await axios.get(BASE_URL + "/api/products" + `?${queryValue}`);
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    }
   }
 }
 export async function deleteProduct(id: number) {
@@ -105,6 +138,13 @@ export async function deleteProduct(id: number) {
     });
     return res.data;
   } catch (error: unknown) {
-    if (axios.isAxiosError(error)) throw new Error(error.response?.data.error);
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    }
   }
 }

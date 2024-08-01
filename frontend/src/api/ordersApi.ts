@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { IFormCheckout } from "../interface/checkout";
 import { getToken } from "../utils/auth";
+import { toast } from "../utils/toast";
 export async function createOrders(data: IFormCheckout) {
   const token = getToken("accessToken");
   try {
@@ -11,12 +12,14 @@ export async function createOrders(data: IFormCheckout) {
       },
     });
   } catch (error: unknown) {
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
       throw new Error(
         error.response?.data.error
           ? error.response.data.error
           : error.response?.data.message
       );
+    }
   }
 }
 export async function getOrdersByUsers(data: number, query?: { q: string }) {
@@ -39,12 +42,14 @@ export async function getOrdersByUsers(data: number, query?: { q: string }) {
       return orders.data;
     }
   } catch (error: unknown) {
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
       throw new Error(
         error.response?.data.error
           ? error.response.data.error
           : error.response?.data.message
       );
+    }
   }
 }
 export async function getAllOrders(query?: { q: string }) {
@@ -66,11 +71,13 @@ export async function getAllOrders(query?: { q: string }) {
       return orders.data;
     }
   } catch (error: unknown) {
-    if (axios.isAxiosError(error))
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
       throw new Error(
         error.response?.data.error
           ? error.response.data.error
           : error.response?.data.message
       );
+    }
   }
 }

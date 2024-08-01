@@ -8,6 +8,7 @@ export const createOrder = async (
   userId: number,
   totalAmount: number,
   address: string,
+  vat: number,
   products: IOrderProduct[],
   discountId?: number
 ) => {
@@ -16,7 +17,7 @@ export const createOrder = async (
       product.quantity * (product.sellingPrice - product.costPrice);
     return acc + productProfit;
   }, 0);
-  console.log(totalProfit);
+  console.log("total profit", totalProfit);
   return await prisma.order.create({
     data: {
       userId: userId,
@@ -24,6 +25,7 @@ export const createOrder = async (
       location: address,
       profit: totalProfit,
       discountId,
+      vat,
       OrderProduct: {
         create: products.map((product: IOrderProduct) => ({
           productId: product.id,
@@ -118,8 +120,6 @@ export const updateOrderById = async (
 ) => {
   return await prisma.order.update({
     where: { id: orderId },
-    data: {
-      status: data.status,
-    },
+    data: { status: data.status },
   });
 };

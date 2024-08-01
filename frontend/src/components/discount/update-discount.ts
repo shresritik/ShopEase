@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { createElement } from "../../utils/createElement";
 import { toast } from "../../utils/toast";
-import { CreateCouponView } from "./CreateCouponView";
+import { CreateCouponView } from "./CreateDiscountView";
 import {
   getADiscount,
   getAllDiscount,
@@ -49,7 +49,6 @@ export const render = async () => {
   });
   container.querySelector("#checkBtn")?.addEventListener("click", async (e) => {
     e.preventDefault();
-
     const discountInfo = await getADiscount(selectedOption!.textContent!);
     if (discountInfo) {
       container.querySelector("#checkBtn")?.classList.add("hidden");
@@ -66,6 +65,7 @@ export const render = async () => {
   });
   container.querySelector("#submit")!.addEventListener("click", async (e) => {
     e.preventDefault();
+
     const couponData: IDiscount = {
       code: couponName.value,
       percentage: +worth.value / 100,

@@ -15,9 +15,15 @@ export async function createOrder(
   next: NextFunction
 ) {
   try {
-    const { userId, totalAmount, location, products, discount } = req.body;
-    console.log(userId, totalAmount, location, products, discount);
-    const orderDetails = { userId, totalAmount, location, products, discount };
+    const { userId, totalAmount, location, vat, products, discount } = req.body;
+    const orderDetails = {
+      userId,
+      totalAmount,
+      location,
+      vat,
+      products,
+      discount,
+    };
     const order = await createOrderProduct(orderDetails);
     res.status(HttpStatusCode.OK).json(order);
   } catch (error) {
