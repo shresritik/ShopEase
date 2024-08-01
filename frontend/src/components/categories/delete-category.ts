@@ -5,12 +5,12 @@ import { toast } from "../../utils/toast";
 import { DeleteView } from "../dashboard-view/DeleteView";
 const populateDropdown = (
   container: HTMLSelectElement,
-  options: { id: number; category_name: string }[]
+  options: { id: number; categoryName: string }[]
 ) => {
-  options.forEach((option: { id: number; category_name: string }) => {
+  options.forEach((option: { id: number; categoryName: string }) => {
     const opt = document.createElement("option");
     opt.value = option.id.toString();
-    opt.text = option.category_name;
+    opt.text = option.categoryName;
     container.appendChild(opt);
   });
 };

@@ -5,11 +5,11 @@ import { removeToken } from "../utils/auth";
 export const cartReducer: Reducer<any, any> = (state = [], action) => {
   switch (action.type) {
     case "INCREMENT": {
-      const { id, stock, qty, pic, product_name, selling_price, category } =
+      const { id, stock, qty, pic, productName, sellingPrice, category } =
         action.payload;
       const newState = [
         ...state,
-        { id, stock, qty, pic, product_name, selling_price, category },
+        { id, stock, qty, pic, productName, sellingPrice, category },
       ];
       if (!!cartStore.getState()) {
         newState.push(...cartStore.getState());

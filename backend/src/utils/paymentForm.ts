@@ -2,11 +2,12 @@ import { Order } from "@prisma/client";
 import { createSignature } from "../service/auth";
 
 export const generateFormForPayment = (order: Order) => {
+  console.log(order);
   const signature = createSignature(
-    `total_amount=${order.total_amount},transaction_uuid=${order.id},product_code=EPAYTEST`
+    `total_amount=${order.totalAmount},transaction_uuid=${order.id},product_code=EPAYTEST`
   );
   const formData = {
-    amount: order.total_amount,
+    amount: order.totalAmount,
     failure_url: "http://localhost:5173/success",
     product_delivery_charge: "0",
     product_service_charge: "0",
@@ -15,7 +16,7 @@ export const generateFormForPayment = (order: Order) => {
     signed_field_names: "total_amount,transaction_uuid,product_code",
     success_url: "http://localhost:5173/success",
     tax_amount: "0",
-    total_amount: order.total_amount,
+    total_amount: order.totalAmount,
     transaction_uuid: order.id,
   };
   return formData;

@@ -4,14 +4,14 @@ import prisma from "../utils/prisma";
 export const createReview = async (review: IReviews, prodId: number) => {
   const reviewInfo = await prisma.review.create({
     data: {
-      user_id: review.userId,
-      product_id: prodId,
+      userId: review.userId,
+      productId: prodId,
       rating: review.rating,
       review: review.name,
     },
   });
   const aggregations = await prisma.review.aggregate({
-    where: { product_id: prodId },
+    where: { productId: prodId },
     _avg: { rating: true },
     _count: { rating: true },
   });
@@ -24,8 +24,8 @@ export const createReview = async (review: IReviews, prodId: number) => {
   const updatedProduct = await prisma.product.update({
     where: { id: prodId },
     data: {
-      avg_rating: clampedAvgRating,
-      total_review: totalReviews,
+      avgRating: clampedAvgRating,
+      totalReview: totalReviews,
     },
   });
 
@@ -34,7 +34,7 @@ export const createReview = async (review: IReviews, prodId: number) => {
 export const getAllReview = async (productId: number) => {
   return await prisma.review.findMany({
     where: {
-      product_id: productId,
+      productId: productId,
     },
     include: {
       product: true,
@@ -48,8 +48,8 @@ export const hasUserReviewedProduct = async (
 ) => {
   return await prisma.review.findFirst({
     where: {
-      product_id: prodId,
-      user_id: userId,
+      productId: prodId,
+      userId: userId,
     },
   });
 };

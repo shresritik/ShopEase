@@ -14,7 +14,7 @@ export const render = async () => {
     .querySelector("#categoryBtn")
     ?.addEventListener("click", async (e) => {
       e.preventDefault();
-      const categoryData = { category_name: input.value };
+      const categoryData = { categoryName: input.value };
       try {
         const res = await createCategory(categoryData);
         if (res.status == 200) {

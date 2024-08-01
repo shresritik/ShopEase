@@ -4,8 +4,8 @@ export const ProductDetails = (
   details: Product & {
     stock: number;
     id: number;
-    avg_rating: number;
-    product_name: string;
+    avgRating: number;
+    productName: string;
     description: string;
   },
   quantity: number
@@ -53,13 +53,13 @@ export const ProductDetails = (
       </div>
       <div class="md:flex-1 px-4">
         <h2 class="text-2xl font-bold text-gray-800 mb-2">${
-          details.product_name
+          details.productName
         }</h2>
 
         <div class="flex mb-4">
           <div class="mr-4">
             <span class="font-bold text-gray-700">Price:</span>
-            <span class="text-gray-600">Rs. ${details.selling_price}</span>
+            <span class="text-gray-600">Rs. ${details.sellingPrice}</span>
           </div>
           <div>
             <span class="font-bold text-gray-700">Availability:</span>
@@ -77,11 +77,11 @@ export const ProductDetails = (
         </div>
        
         ${
-          details.avg_rating > 0
+          details.avgRating > 0
             ? `  <div
           class="flex items-center w-full rounded-lg lg:overflow-visible gap-2"
         >
-          <h3>Rating: ${details.avg_rating} </h3>
+          <h3>Rating: ${details.avgRating} </h3>
            <div class="star inline-flex items-center mb-1">
          </div>
         </div>

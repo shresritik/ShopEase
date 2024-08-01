@@ -1,13 +1,13 @@
 export interface IProduct {
-  product_name: string;
+  productName: string;
   description: string;
   pic?: string;
-  total_reviews?: number;
-  avg_rating?: number;
-  selling_price: number;
-  cost_price: number;
-  category_id: number;
-  total_review?: number;
+  totalReviews?: number;
+  avgRating?: number;
+  sellingPrice: number;
+  costPrice: number;
+  categoryId: number;
+  totalReview?: number;
   createdBy: number;
   stock: number;
 }

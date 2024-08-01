@@ -73,7 +73,7 @@ export async function getProductDetails(category: string, id: string) {
 export async function getProductByName(name: string) {
   try {
     const res = await axios.post(BASE_URL + "/api/products/me", {
-      product_name: name,
+      productName: name,
     });
     return res.data;
   } catch (error: unknown) {

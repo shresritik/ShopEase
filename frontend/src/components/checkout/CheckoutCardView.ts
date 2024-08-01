@@ -7,14 +7,14 @@ export const CheckoutCardView = (prod: CheckoutCard) => {
             alt=""
           />
           <div class="flex w-full flex-col px-4 py-4">
-            <span class="font-semibold">${prod.product_name}</span>
+            <span class="font-semibold">${prod.productName}</span>
             <div class="flex justify-between items-center">
             <div class="flex flex-col">
             <p  text-gray-800">Quantity: ${prod.qty}</p>
-            <p  text-gray-800">Category: ${prod.category.category_name}</p>
+            <p  text-gray-800">Category: ${prod.category.categoryName}</p>
             </div>
             <div class="flex flex-col">
-            <p class=" font-bold">Price: Rs. ${prod.selling_price}</p>
+            <p class=" font-bold">Price: Rs. ${prod.sellingPrice}</p>
             <p class=" font-bold text-right">Subtotal: Rs. ${prod.subtotal}</p>
             </div>
             </div>

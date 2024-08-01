@@ -4,7 +4,7 @@ import prisma from "../utils/prisma";
 export const createCategories = async (category: Category) => {
   return await prisma.category.create({
     data: {
-      category_name: category.category_name,
+      categoryName: category.categoryName,
     },
   });
 };
@@ -13,7 +13,7 @@ export const getAllCategories = async () => {
   return await prisma.category.findMany({
     select: {
       id: true,
-      category_name: true,
+      categoryName: true,
     },
   });
 };
@@ -37,7 +37,7 @@ export const updateCategoryById = async (id: number, category: Category) => {
       id,
     },
     data: {
-      category_name: category.category_name,
+      categoryName: category.categoryName,
     },
   });
 };

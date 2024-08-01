@@ -11,16 +11,16 @@ export function CardWrapper(prod: IProduct) {
   });
   const card = (Card as CardFunction)({
     img: prod.pic,
-    price: prod.selling_price,
-    title: prod.product_name,
+    price: prod.sellingPrice,
+    title: prod.productName,
     qty: prod.stock,
-    category: prod.category?.category_name,
+    category: prod.category?.categoryName,
   });
 
   productElement.innerHTML += card;
   productElement.querySelector(".card")?.addEventListener("click", (e) => {
     e.preventDefault();
-    dispatch(`/products/${prod.category.category_name}/${prod.id}`);
+    dispatch(`/products/${prod.category.categoryName}/${prod.id}`);
   });
 
   productElement.querySelector(".plus")?.addEventListener("click", (e) => {

@@ -42,7 +42,7 @@ export const render = async ({
     className: "w-3/4 mx-auto ",
   });
   container.appendChild(similarProdDiv);
-  titleDiv.textContent = "Total Reviews: " + details.total_review;
+  titleDiv.textContent = "Total Reviews: " + details.totalReview;
 
   reviewDetailsContainer.prepend(titleDiv);
   container.appendChild(reviewDetailsContainer);
@@ -59,7 +59,7 @@ export const render = async ({
     const res = productDetailsContainer.querySelector(".star");
     if (res) {
       res.innerHTML = "";
-      for (let i = 0; i < details.avg_rating; i++) {
+      for (let i = 0; i < details.avgRating; i++) {
         res.innerHTML += `<img src=${startCover} width="20">`;
       }
     }
@@ -140,7 +140,7 @@ export const render = async ({
 
   counterStore.subscribe(updateContent);
   updateContent(counterStore.getState());
-  const firstProdName = details.product_name.split(" ")[0];
+  const firstProdName = details.productName.split(" ")[0];
   const similarDetails = await getProductsByCategories(category, {
     name: firstProdName,
   });

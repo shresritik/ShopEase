@@ -12,12 +12,12 @@ import { getCategories } from "../../api/categoriesApi";
 
 const populateDropdown = (
   container: HTMLSelectElement,
-  options: { id: number; category_name: string }[]
+  options: { id: number; categoryName: string }[]
 ) => {
-  options.forEach((option: { id: number; category_name: string }) => {
+  options.forEach((option: { id: number; categoryName: string }) => {
     const opt = document.createElement("option");
     opt.value = option.id.toString();
-    opt.text = option.category_name;
+    opt.text = option.categoryName;
     container.appendChild(opt);
   });
 };
@@ -50,12 +50,12 @@ export const render = async (create: boolean = true) => {
           updateStore.dispatch({ type: "STORE", payload: prodValue });
           form.querySelector(".form")?.classList.remove("hidden");
           form.querySelector(".check")?.classList.add("hidden");
-          productName.value = prodValue.product_name;
+          productName.value = prodValue.productName;
           description.value = prodValue.description;
-          costField.value = prodValue.cost_price;
-          sellField.value = prodValue.selling_price;
+          costField.value = prodValue.costPrice;
+          sellField.value = prodValue.sellingPrice;
           stockField.value = prodValue.stock;
-          selectedCategoryId = "" + prodValue.category_id;
+          selectedCategoryId = "" + prodValue.categoryId;
         } else {
           console.log("error");
           toast("error", "danger");
@@ -77,15 +77,15 @@ export const render = async (create: boolean = true) => {
       e.preventDefault();
       const state = updateStore.getState() as IUser;
       const formData = new FormData();
-      formData.append("product_name", productName.value);
+      formData.append("productName", productName.value);
       formData.append("description", description.value);
       if (fileInput?.files?.[0]) {
         formData.append("product", fileInput.files[0]);
       }
-      formData.append("cost_price", costField.value);
-      formData.append("selling_price", sellField.value);
+      formData.append("costPrice", costField.value);
+      formData.append("sellingPrice", sellField.value);
       formData.append(
-        "category_id",
+        "categoryId",
         selectedCategoryId ? selectedCategoryId : "1"
       );
       formData.append("stock", stockField.value);

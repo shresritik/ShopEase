@@ -27,8 +27,8 @@ export const render = () => {
   const checkoutAmount = container.querySelector(".checkout-amount");
   let amount = 0;
   checkoutState.forEach((prod: CheckoutCard) => {
-    amount += prod.qty * prod.selling_price;
-    prod = { ...prod, subtotal: prod.qty * prod.selling_price };
+    amount += prod.qty * prod.sellingPrice;
+    prod = { ...prod, subtotal: prod.qty * prod.sellingPrice };
     checkoutWrapper!.innerHTML += CheckoutCardView(prod);
   });
   let totalAmount = {
@@ -78,8 +78,8 @@ export const render = () => {
       checkProducts.push({
         id: el.id,
         quantity: el.qty,
-        selling_price: el.selling_price,
-        category_id: el.category!.id,
+        sellingPrice: el.sellingPrice,
+        categoryId: el.category!.id,
       });
     });
     const form = {
@@ -89,12 +89,13 @@ export const render = () => {
       location: address.value,
       discount: coupon ? coupon : undefined,
     };
-    if (user.role.role_rank == 1 || user.role.role_rank == 2) {
+    if (user.role.roleRank == 1 || user.role.roleRank == 2) {
       toast("Admin or Super Admin cannot pay", "danger");
     } else {
       const formResult = await createOrders(form);
       if (formResult && formResult.status == 200) {
         toast("Order Placed Successfully", "");
+        console.log(formResult.data.formData);
         esewaCall(formResult.data.formData);
       } else {
         toast("Something went wrong", "danger");

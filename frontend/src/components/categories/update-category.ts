@@ -5,12 +5,12 @@ import { toast } from "../../utils/toast";
 import { CreateCategoryView } from "./CreateCategoryView";
 const populateDropdown = (
   container: HTMLSelectElement,
-  options: { id: number; category_name: string }[]
+  options: { id: number; categoryName: string }[]
 ) => {
-  options.forEach((option: { id: number; category_name: string }) => {
+  options.forEach((option: { id: number; categoryName: string }) => {
     const opt = document.createElement("option");
     opt.value = option.id.toString();
-    opt.text = option.category_name;
+    opt.text = option.categoryName;
     container.appendChild(opt);
   });
 };
@@ -44,7 +44,7 @@ export const render = async () => {
           toast("Input field cannot be empty", "danger");
         else {
           const update = await updateCategory(+selectedCategoryId, {
-            category_name: input.value,
+            categoryName: input.value,
           });
           if (update.status == 200) {
             toast("Successfully Updated", "");

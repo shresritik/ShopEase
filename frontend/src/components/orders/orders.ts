@@ -79,20 +79,20 @@ const mapOrdersToDetail = (orders: Order[]) => {
   return orders.map((order: Order) => [
     {
       id: order.id,
-      total_amount: +order.total_amount!,
+      totalAmount: +order.totalAmount!,
       user: order.user ? order.user.name : "",
       profit: order.profit,
       status: order.status,
       discountValue: order?.discount?.percentage! * 100 + "%",
       discountCode: order?.discount?.code,
       createdAt: order.createdAt,
-      products: order.Order_Product.map((e: any) => [
+      products: order.OrderProduct.map((e: any) => [
         {
-          category: e.category.category_name,
-          net_amount: +e.net_amount,
-          productName: e.product.product_name,
-          selling_price: +e.product.selling_price,
-          cost_price: +e.product.cost_price,
+          category: e.category.categoryName,
+          netAmount: +e.netAmount,
+          productName: e.product.productName,
+          sellingPrice: +e.product.sellingPrice,
+          costPrice: +e.product.costPrice,
           pic: e.product.pic,
           quantity: e.quantity,
         },
@@ -160,11 +160,11 @@ const downloadAllOrders = async (user: IUser) => {
     "Order ID,User,Total Amount,Profit,Status,Discount,Coupon,Created At,Products\n";
 
   orders.forEach((order: Order) => {
-    const products = order.Order_Product.map(
-      (p: any) => `${p.product.product_name}(${p.quantity})`
+    const products = order.OrderProduct.map(
+      (p: any) => `${p.product.productName}(${p.quantity})`
     ).join("; ");
 
-    csv += `${order.id},${order.user?.name || ""},${order.total_amount},${
+    csv += `${order.id},${order.user?.name || ""},${order.totalAmount},${
       order.profit
     },${order.status},${order?.discount?.percentage! * 100 + "%"},${
       order?.discount?.code || ""

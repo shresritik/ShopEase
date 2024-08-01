@@ -10,20 +10,20 @@ export const getAllProducts = async (query: ProductFilter) => {
   const orderBy: Prisma.ProductOrderByWithRelationInput = {};
   if (filters.search) {
     where.OR = [
-      { product_name: { contains: filters.search, mode: "insensitive" } },
+      { productName: { contains: filters.search, mode: "insensitive" } },
       { description: { contains: filters.search, mode: "insensitive" } },
     ];
   }
 
   if (filters.category) {
-    where.category_id = +filters.category;
+    where.categoryId = +filters.category;
   }
   if (filters.price) {
-    where.selling_price = { lte: +filters.price };
+    where.sellingPrice = { lte: +filters.price };
   }
   if (filters.rating) {
-    where.avg_rating = { gte: +filters.rating };
-    orderBy.avg_rating = { sort: "desc" };
+    where.avgRating = { gte: +filters.rating };
+    orderBy.avgRating = { sort: "desc" };
   }
 
   const products = await prisma.product.findMany({
@@ -35,7 +35,7 @@ export const getAllProducts = async (query: ProductFilter) => {
       category: {
         select: {
           id: true,
-          category_name: true,
+          categoryName: true,
         },
       },
     },
@@ -45,15 +45,15 @@ export const getAllProducts = async (query: ProductFilter) => {
 export const count = async (query: IQuery) => {
   const { q } = query;
   const count = await prisma.product.count({
-    where: q ? { product_name: { contains: q, mode: "insensitive" } } : {},
+    where: q ? { productName: { contains: q, mode: "insensitive" } } : {},
   });
   return { count };
 };
-export const getProductByName = async (product_name: string) => {
+export const getProductByName = async (productName: string) => {
   return await prisma.product.findFirst({
     where: {
-      product_name: {
-        startsWith: product_name,
+      productName: {
+        startsWith: productName,
         mode: "insensitive",
       },
     },
@@ -68,7 +68,7 @@ export const getProductById = async (id: number) => {
     include: {
       category: {
         select: {
-          category_name: true,
+          categoryName: true,
           id: true,
         },
       },
@@ -84,16 +84,16 @@ export const getProductsByCategory = async (
   const where: Prisma.ProductWhereInput = {};
   if (search) {
     where.AND = [
-      { product_name: { contains: search, mode: "insensitive" } },
+      { productName: { contains: search, mode: "insensitive" } },
       {
         category: {
-          category_name: { equals: category, mode: "insensitive" },
+          categoryName: { equals: category, mode: "insensitive" },
         },
       },
     ];
   } else {
     where.category = {
-      category_name: { equals: category, mode: "insensitive" },
+      categoryName: { equals: category, mode: "insensitive" },
     };
   }
   return await prisma.product.findMany({
@@ -103,7 +103,7 @@ export const getProductsByCategory = async (
     include: {
       category: {
         select: {
-          category_name: true,
+          categoryName: true,
           id: true,
         },
       },
@@ -121,7 +121,7 @@ export const getProductByCategoryAndId = async (
     where: {
       id,
       category: {
-        category_name: {
+        categoryName: {
           equals: category,
           mode: "insensitive",
         },
@@ -139,15 +139,15 @@ export const deleteProduct = async (id: number) => {
 export const createProduct = async (userId: number, product: IProduct) => {
   const prod = await prisma.product.create({
     data: {
-      product_name: product.product_name,
+      productName: product.productName,
       category: {
         connect: {
-          id: +product.category_id,
+          id: +product.categoryId,
         },
       },
       pic: product.pic,
-      cost_price: product.cost_price,
-      selling_price: product.selling_price,
+      costPrice: product.costPrice,
+      sellingPrice: product.sellingPrice,
       description: product.description,
       stock: +product.stock,
       productCreator: {
@@ -169,14 +169,14 @@ export const updateProduct = async (
       id,
     },
     data: {
-      product_name: product.product_name,
+      productName: product.productName,
       category: {
         connect: {
-          id: +product.category_id,
+          id: +product.categoryId,
         },
       },
-      cost_price: product.cost_price,
-      selling_price: product.selling_price,
+      costPrice: product.costPrice,
+      sellingPrice: product.sellingPrice,
       description: product.description,
       stock: +product.stock,
 
@@ -190,11 +190,11 @@ export const updateProduct = async (
   return prod;
 };
 export const updateProductStockFromOrder = async (
-  product_id: number,
+  productId: number,
   newStock: number
 ) => {
   return await prisma.product.update({
-    where: { id: product_id },
+    where: { id: productId },
     data: { stock: newStock },
   });
 };
@@ -202,7 +202,7 @@ export const getProductWithReview = async (review: IReviews) => {
   console.log(review);
   return await prisma.product.findFirst({
     where: {
-      product_name: review.product_name,
+      productName: review.productName,
     },
   });
 };

@@ -38,7 +38,7 @@ export const render = async (params: {
     } else {
       products = await getProductsByCategories(params.category);
       categoryTitle.textContent += `
-       ${products[0].category.category_name}`;
+       ${products[0].category.categoryName}`;
       page.appendChild(categoryTitle);
       divSection.appendChild(productList);
       container.appendChild(page);

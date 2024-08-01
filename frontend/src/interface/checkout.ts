@@ -9,9 +9,9 @@ export interface ICheckoutProduct {
   id: number;
   quantity?: number;
   qty?: number;
-  selling_price: number;
+  sellingPrice: number;
   category?: { id: number };
-  category_id: number;
+  categoryId: number;
 }
 export interface IFormCheckout {
   userId: number;

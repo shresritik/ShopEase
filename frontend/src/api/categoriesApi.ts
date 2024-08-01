@@ -3,12 +3,12 @@ import { BASE_URL } from "../constants";
 import { ICategories } from "../interface/categories";
 import { getToken } from "../utils/auth";
 
-export const createCategory = async ({ category_name }: ICategories) => {
+export const createCategory = async ({ categoryName }: ICategories) => {
   const token = getToken("accessToken");
   const data = await axios.post(
     BASE_URL + "/api/categories",
     {
-      category_name,
+      categoryName,
     },
     {
       headers: {
@@ -20,14 +20,14 @@ export const createCategory = async ({ category_name }: ICategories) => {
 };
 export const updateCategory = async (
   id: number,
-  { category_name }: ICategories
+  { categoryName }: ICategories
 ) => {
   const token = getToken("accessToken");
 
   const data = await axios.put(
     BASE_URL + "/api/categories/" + id,
     {
-      category_name,
+      categoryName,
     },
     {
       headers: {

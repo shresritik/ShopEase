@@ -57,15 +57,15 @@ export default function OrderView(
               </td>
               <td class="px-4 py-2">${product[0].category}</td>
               <td class="px-4 py-2">${product[0].quantity}</td>
-              <td class="px-4 py-2">Rs. ${product[0].selling_price}</td>
+              <td class="px-4 py-2">Rs. ${product[0].sellingPrice}</td>
               ${
                 userRoleId == 1
-                  ? `<td class="px-4 py-2">Rs. ${product[0].cost_price!.toFixed(
+                  ? `<td class="px-4 py-2">Rs. ${product[0].costPrice!.toFixed(
                       2
                     )}</td>`
                   : ""
               }
-              <td class="px-4 py-2">Rs. ${product[0].net_amount}</td>
+              <td class="px-4 py-2">Rs. ${product[0].netAmount}</td>
               ${
                 userRoleId == 3 && order.status != "pending"
                   ? `
@@ -94,10 +94,10 @@ export default function OrderView(
               : ""
           }
           <p class="text-gray-600">Vat (13%): <span class="font-medium">Rs. ${roundOff(
-            order.total_amount - order.total_amount / 1.13
+            order.totalAmount - order.totalAmount / 1.13
           )}</span></p>
           <p class="text-gray-600">Total Amount: <span class="font-medium">Rs. ${
-            order.total_amount
+            order.totalAmount
           }</span></p>
           ${
             userRoleId >= 2
@@ -125,7 +125,7 @@ export default function OrderView(
               ? `
             <button id="payment-data" data-pending='${JSON.stringify({
               id: order.id,
-              total_amount: order.total_amount,
+              totalAmount: order.totalAmount,
             })}' class="bg-green-500 text-white px-4 py-2 rounded">Pay via esewa</button>
           `
               : ""

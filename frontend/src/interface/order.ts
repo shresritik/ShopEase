@@ -4,17 +4,17 @@ import { IProduct } from "./product";
 export interface OrderProduct {
   id?: number;
   product: {
-    product_name: string;
-    cost_price: number;
+    productName: string;
+    costPrice: number;
     pic: string | null;
   };
   products?: {
-    product_name: string;
-    cost_price: number;
+    productName: string;
+    costPrice: number;
     pic: string | null;
   };
   category: {
-    category_name: string;
+    categoryName: string;
   };
   net_amount: number;
   quantity: number;
@@ -24,11 +24,11 @@ export interface OrderProduct {
 export interface Order {
   id?: number;
   createdAt?: Date;
-  total_amount?: number;
+  totalAmount?: number;
   profit?: number;
   status?: string;
   discount?: IDiscount;
-  Order_Product: OrderProduct[];
+  OrderProduct: OrderProduct[];
   user?: { name: string };
 }
 export interface IOrderView extends IProduct {

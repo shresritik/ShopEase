@@ -8,7 +8,7 @@ export const BaseCart = (
   return `
       <div class="flex gap-4 justify-start items-center border-b-2 py-3">
         <img src="${prod.pic}" class="w-12 object-contain">
-        <h1 class="w-28">${prod.product_name}</h1>
+        <h1 class="w-28">${prod.productName}</h1>
         <div class="flex justify-center items-center gap-1">
           <button data-prod="${prod.id}" data-qty="${prod.stock}" class="plus bg-gray-900 block w-maxselect-none text-white m-1 w-8 text-xl">+</button>
           <p class="quantity" data-id="${prod.id}">${quantity}</p>

@@ -1,15 +1,15 @@
 export interface IProduct {
   id?: number;
-  product_name: string;
+  productName: string;
   desc?: string;
   pic: string;
-  total_reviews?: number;
-  avg_rating?: number;
-  selling_price: number;
-  cost_price?: number;
+  totalReviews?: number;
+  avgRating?: number;
+  sellingPrice: number;
+  costPrice?: number;
   stock: number;
   category: {
-    category_name: string;
+    categoryName: string;
   };
   meta: {
     total: number;

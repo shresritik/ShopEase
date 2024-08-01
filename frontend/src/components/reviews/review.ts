@@ -57,8 +57,8 @@ export const render = async () => {
     const data: IReview = {
       name: reviewText.value,
       userId: userProfile.id,
-      product_name: product.dataset.review!,
-      rating: active,
+      productName: product.dataset.review!,
+      rating: active + 1,
     };
     try {
       const postReview = await createReview(data);

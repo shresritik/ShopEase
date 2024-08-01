@@ -3,7 +3,7 @@ export type Product = {
   pic: string;
   category: string;
   quantity: string;
-  selling_price: number;
-  cost_price: number;
-  net_amount: number;
+  sellingPrice: number;
+  costPrice: number;
+  netAmount: number;
 };

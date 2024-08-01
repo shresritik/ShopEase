@@ -9,7 +9,7 @@ import Joi from "joi";
  *       required:
  *         - email
  *         - name
- *         - role_id
+ *         - roleId
  *         - password
  *       properties:
  *         email:
@@ -18,7 +18,7 @@ import Joi from "joi";
  *         name:
  *           type: string
  *           default: Jane Doe
- *         role_id:
+ *         roleId:
  *           type: number
  *           default: 1
  *         password:

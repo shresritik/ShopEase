@@ -38,115 +38,123 @@ model User {
   email          String
   pic            String?   @default("http://localhost:8000/static/profile/default.png")
   password       String
-  createdAt      DateTime  @default(now())
+  createdAt      DateTime  @default(now()) @map("created_at")
   create         User?     @relation("user", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdBy      Int?      @unique
+  createdBy      Int?      @unique @map("created_by")
   update         User?     @relation("update_user", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  updatedBy      Int?      @unique
-  updatedAt      DateTime? @updatedAt
+  updatedBy      Int?      @unique @map("updated_by")
+  updatedAt      DateTime? @updatedAt @map("updated_at")
   createUser     User?     @relation("user")
   updatedUser    User?     @relation("update_user")
   order          Order[]   @relation("order")
   userProd       Review[]  @relation("Review")
   role           Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  roleId         Int?
+  roleId         Int?      @map("role_id")
   ProductCreator Product[] @relation("product_creator")
   ProductUpdator Product[] @relation("product_updator")
+  discount       Discount? @relation(fields: [discountId], references: [id])
+  discountId     Int?      @map("discount_id")
 }
 
 model Role {
-  id                Int                 @id @default(autoincrement())
-  roles             ROLE                @default(USER)
-  role_rank         Int                 @default(3)
-  Roles_Permissions Roles_Permissions[]
+  id                Int                @id @default(autoincrement())
+  roles             ROLE               @default(USER)
+  roleRank          Int                @default(3) @map("role_rank")
+  Roles_Permissions RolesPermissions[]
   user              User[]
 }
 
 model Permission {
-  id                Int                 @id @default(autoincrement())
+  id                Int                @id @default(autoincrement())
   permissions       PERMISSION
-  Roles_Permissions Roles_Permissions[]
+  Roles_Permissions RolesPermissions[]
 }
 
-model Roles_Permissions {
+model RolesPermissions {
   id           Int        @id @default(autoincrement())
   role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  roleId       Int
+  roleId       Int        @map("role_id")
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  permissionId Int
+  permissionId Int        @map("permission_id")
+
+  @@map("roles_permissions")
 }
 
 model Product {
-  id             Int             @id @default(autoincrement())
-  product_name   String
+  id             Int            @id @default(autoincrement())
+  productName    String         @map("product_name")
   description    String?
-  pic            String?         @default("http://localhost:8000/static/products/default-product-image.png")
-  cost_price     Decimal         @db.Decimal(10, 2)
-  stock          Int             @default(0)
-  selling_price  Decimal         @db.Decimal(10, 2)
-  category       Category?       @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  category_id    Int
-  avg_rating     Decimal?        @db.Decimal(10, 2)
-  total_review   Decimal?        @db.Decimal(10, 2)
-  Review         Review[]        @relation("Review")
-  Order_Product  Order_Product[] @relation("order_product")
-  productCreator User?           @relation("product_creator", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdBy      Int
-  productUpdator User?           @relation("product_updator", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pic            String?        @default("http://localhost:8000/static/products/default-product-image.png")
+  costPrice      Decimal        @map("cost_price") @db.Decimal(10, 2)
+  stock          Int            @default(0)
+  sellingPrice   Decimal        @map("selling_price") @db.Decimal(10, 2)
+  category       Category?      @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId     Int            @map("category_id")
+  avgRating      Decimal?       @map("avg_rating") @db.Decimal(10, 2)
+  totalReview    Decimal?       @map("total_review") @db.Decimal(10, 2)
+  Review         Review[]       @relation("Review")
+  Order_Product  OrderProduct[] @relation("order_product")
+  productCreator User?          @relation("product_creator", fields: [createdBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy      Int            @map("created_by")
+  productUpdator User?          @relation("product_updator", fields: [updatedBy], references: [id], onDelete: Cascade, onUpdate: Cascade)
   updatedBy      Int?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  createdAt      DateTime       @default(now()) @map("updated_by")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
 }
 
 model Category {
-  id            Int             @id @default(autoincrement())
-  category_name String
+  id            Int            @id @default(autoincrement())
+  categoryName  String         @map("category_name")
   Product       Product[]
-  Order_Product Order_Product[]
+  Order_Product OrderProduct[]
 }
 
 model Order {
-  id            String          @id @default(uuid())
-  user          User            @relation("order", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user_id       Int
-  total_amount  Decimal         @db.Decimal(10, 2)
-  location      String
-  createdAt     DateTime        @default(now())
-  Order_Product Order_Product[] @relation("order_product")
-  profit        Decimal         @db.Decimal(10, 2)
-  discount      Discount?       @relation(fields: [discountId], references: [id])
-  discountId    Int?
-  status        String?         @default("pending")
+  id           String         @id @default(uuid())
+  user         User           @relation("order", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId       Int            @map("user_id")
+  totalAmount  Decimal        @map("total_amount") @db.Decimal(10, 2)
+  location     String
+  createdAt    DateTime       @default(now()) @map("created_at")
+  OrderProduct OrderProduct[] @relation("order_product")
+  profit       Decimal        @db.Decimal(10, 2)
+  status       String?        @default("pending")
+  discount     Discount?      @relation(fields: [discountId], references: [id])
+  discountId   Int?           @map("discount_id")
 }
 
 model Review {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation("Review", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user_id    Int
-  product    Product? @relation("Review", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  product_id Int
-  rating     Int?
-  review     String?
-  createdAt  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  user      User     @relation("Review", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    Int      @map("user_id")
+  product   Product? @relation("Review", fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId Int      @map("product_id")
+  rating    Int?
+  review    String?
+  createdAt DateTime @default(now()) @map("created_at")
 }
 
-model Order_Product {
-  id          Int      @id @default(autoincrement())
-  order       Order    @relation("order_product", fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  order_id    String
-  product     Product? @relation("order_product", fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  product_id  Int
-  quantity    Int      @default(0)
-  net_amount  Decimal  @db.Decimal(10, 2)
-  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  category_id Int
+model OrderProduct {
+  id         Int      @id @default(autoincrement())
+  order      Order    @relation("order_product", fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orderId    String   @map("order_id")
+  product    Product? @relation("order_product", fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId  Int      @map("product_id")
+  quantity   Int      @default(0)
+  netAmount  Decimal  @map("net_amount") @db.Decimal(10, 2)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId Int      @map("category_id")
+
+  @@map("order_product")
 }
 
 model Discount {
   id         Int      @id @default(autoincrement())
   code       String   @unique
   percentage Float
-  validFrom  DateTime
-  validUntil DateTime
+  validFrom  DateTime @map("valid_from")
+  validUntil DateTime @map("valid_until")
+  user       User[]
   order      Order[]
 }

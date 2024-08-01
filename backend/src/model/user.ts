@@ -87,7 +87,7 @@ export const getUserByEmail = async (email: string) => {
     include: {
       role: {
         select: {
-          role_rank: true,
+          roleRank: true,
         },
       },
     },
@@ -99,7 +99,7 @@ export const getUsersEmail = async (email: string) => {
     include: {
       role: {
         select: {
-          role_rank: true,
+          roleRank: true,
         },
       },
     },

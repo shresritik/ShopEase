@@ -22,7 +22,7 @@ export const navbarRender = async () => {
     if (cartState.length > 0) {
       cartState.forEach((prod: IProduct) => {
         const quantity = counterState[prod.id!] || 0;
-        const prodTotal = quantity * prod.selling_price;
+        const prodTotal = quantity * prod.sellingPrice;
         totalAmount += prodTotal;
         sidebarContent!.innerHTML += BaseCart(prod, quantity, prodTotal);
       });

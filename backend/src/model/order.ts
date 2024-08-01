@@ -1,4 +1,4 @@
-import { IOrder_Product } from "../interface/order";
+import { IOrderProduct } from "../interface/order";
 import { IQuery } from "../interface/utils";
 import prisma from "../utils/prisma";
 
@@ -8,33 +8,33 @@ export const createOrder = async (
   userId: number,
   totalAmount: number,
   address: string,
-  products: IOrder_Product[],
+  products: IOrderProduct[],
   discountId?: number
 ) => {
   const totalProfit = products.reduce((acc, product) => {
     const productProfit =
-      product.quantity * (product.selling_price - product.cost_price);
+      product.quantity * (product.sellingPrice - product.costPrice);
     return acc + productProfit;
   }, 0);
   console.log(totalProfit);
   return await prisma.order.create({
     data: {
-      user_id: userId,
-      total_amount: totalAmount,
+      userId: userId,
+      totalAmount: totalAmount,
       location: address,
       profit: totalProfit,
       discountId,
-      Order_Product: {
-        create: products.map((product: IOrder_Product) => ({
-          product_id: product.id,
+      OrderProduct: {
+        create: products.map((product: IOrderProduct) => ({
+          productId: product.id,
           quantity: product.quantity,
-          net_amount: product.quantity * product.selling_price,
-          category_id: product.category_id,
+          netAmount: product.quantity * product.sellingPrice,
+          categoryId: product.categoryId,
         })),
       },
     },
     include: {
-      Order_Product: true,
+      OrderProduct: true,
       discount: true,
     },
   });
@@ -64,7 +64,7 @@ export const getAllOrders = async (query: IQuery) => {
           name: true,
         },
       },
-      Order_Product: {
+      OrderProduct: {
         include: {
           category: true,
           product: true,
@@ -82,14 +82,14 @@ export const getOrderByUser = async (userId: number, query: IQuery) => {
     where: query.q
       ? {
           createdAt: { gte: query.q },
-          user_id: userId,
+          userId: userId,
         }
       : {
-          user_id: userId,
+          userId: userId,
         },
     include: {
       discount: true,
-      Order_Product: {
+      OrderProduct: {
         include: {
           category: true,
           product: true,
@@ -104,7 +104,7 @@ export const getOrderById = async (orderId: string) => {
     include: {
       discount: true,
 
-      Order_Product: {
+      OrderProduct: {
         include: {
           product: true,
         },

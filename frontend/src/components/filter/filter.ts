@@ -13,7 +13,7 @@ interface FilterState {
 
 const populateDropdown = (
   container: HTMLSelectElement,
-  options: { id: number; category_name: string }[]
+  options: { id: number; categoryName: string }[]
 ) => {
   const allOption = document.createElement("option");
   allOption.value = "";
@@ -22,7 +22,7 @@ const populateDropdown = (
   options.forEach((option) => {
     const opt = document.createElement("option");
     opt.value = option.id.toString();
-    opt.text = option.category_name;
+    opt.text = option.categoryName;
     container.appendChild(opt);
   });
 };

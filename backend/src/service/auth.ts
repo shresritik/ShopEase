@@ -27,7 +27,7 @@ export const login = async (user: IUser) => {
     email: existingUser.email,
     name: existingUser.name,
     permissions: permissionOfUser,
-    roleId: +existingUser.role?.role_rank!,
+    roleId: +existingUser.role?.roleRank!,
   };
   logger.info("sign user");
   const { accessToken, refreshToken } = signUser(payload);

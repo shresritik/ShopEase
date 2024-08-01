@@ -24,10 +24,10 @@ export const getOrderByQuerySchema = Joi.object({
 const productSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
   quantity: Joi.number().integer().positive().required(),
-  selling_price: Joi.string()
+  sellingPrice: Joi.string()
     .pattern(/^\d+(\.\d{1,2})?$/)
     .required(),
-  category_id: Joi.number().integer().positive().required(),
+  categoryId: Joi.number().integer().positive().required(),
 });
 
 export const getOrderByBodySchema = Joi.object({

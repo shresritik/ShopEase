@@ -19,8 +19,6 @@ export async function getUsers(
   next: NextFunction
 ) {
   try {
-    //   const data = await UserService.createUser(user.id, body);
-
     logger.info("create a user");
     const users = await getAllUsers(+req.user?.roleId!);
     res.status(HttpStatusCode.OK).json(users);

@@ -36,10 +36,10 @@ export const getProductByQuerySchema = Joi.object({
 });
 
 export const createProductSchema = Joi.object({
-  product_name: Joi.string().required().min(3).max(100),
-  category_id: Joi.number().integer().positive().required(),
-  cost_price: Joi.number().positive().precision(2).required(),
-  selling_price: Joi.number().positive().precision(2).required(),
+  productName: Joi.string().required().min(3).max(100),
+  categoryId: Joi.number().integer().positive().required(),
+  costPrice: Joi.number().positive().precision(2).required(),
+  sellingPrice: Joi.number().positive().precision(2).required(),
   description: Joi.string().required().min(10).max(1000),
   stock: Joi.number().integer().min(0).required(),
 }).options({

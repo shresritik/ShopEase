@@ -1,4 +1,10 @@
-import { PERMISSION, PrismaClient, ROLE } from "@prisma/client";
+import {
+  PERMISSION,
+  Prisma,
+  PrismaClient,
+  Product,
+  ROLE,
+} from "@prisma/client";
 import config from "../src/config";
 import { IProduct } from "../src/interface/product";
 import { IUser } from "../src/interface/users";
@@ -11,32 +17,32 @@ const userData: IUser = {
 const categoryData = ["Dairy", "Bakery", "Packaged Food"];
 const productData: IProduct[] = [
   {
-    product_name: "DDC Milk",
+    productName: "DDC Milk",
     description: "Refined Cow Milk",
-    cost_price: 40,
-    selling_price: 50,
-    category_id: 1,
-    avg_rating: 4,
-    total_review: 3.5,
+    costPrice: 40,
+    sellingPrice: 40,
+    categoryId: 1,
+    avgRating: 4,
+    totalReview: 3.5,
     createdBy: 1,
     stock: 5,
   },
   {
-    product_name: "Utsav Bread",
+    productName: "Utsav Bread",
     description: "Refined Bread from utsav",
-    cost_price: 40,
-    selling_price: 50,
-    category_id: 1,
-    avg_rating: 4,
-    total_review: 3.5,
+    costPrice: 40,
+    sellingPrice: 40,
+    categoryId: 2,
+    avgRating: 4,
+    totalReview: 3.5,
     createdBy: 1,
     stock: 2,
   },
 ];
 const roleData = [
-  { roles: ROLE.SUPER_ADMIN, role_rank: 1 },
-  { roles: ROLE.ADMIN, role_rank: 2 },
-  { roles: ROLE.USER, role_rank: 3 },
+  { roles: ROLE.SUPER_ADMIN, roleRank: 1 },
+  { roles: ROLE.ADMIN, roleRank: 2 },
+  { roles: ROLE.USER, roleRank: 3 },
 ];
 const permissionData = [
   { permission: PERMISSION.SUPER_ADMIN_GET },
@@ -81,7 +87,7 @@ async function main() {
   });
   //superadmin
   for (let i = 1; i <= 13; i++)
-    await prisma.roles_Permissions.create({
+    await prisma.rolesPermissions.create({
       data: {
         roleId: 1,
         permissionId: i,
@@ -89,7 +95,7 @@ async function main() {
     });
   //admin
   for (let i = 5; i <= 12; i++)
-    await prisma.roles_Permissions.create({
+    await prisma.rolesPermissions.create({
       data: {
         roleId: 2,
         permissionId: i,
@@ -97,7 +103,7 @@ async function main() {
     });
   //user
   for (let i = 9; i <= 12; i++)
-    await prisma.roles_Permissions.create({
+    await prisma.rolesPermissions.create({
       data: {
         roleId: 3,
         permissionId: i,
@@ -108,7 +114,7 @@ async function main() {
   for (let i = 0; i < categoryData.length; i++) {
     await prisma.category.create({
       data: {
-        category_name: categoryData[i],
+        categoryName: categoryData[i],
       },
     });
   }

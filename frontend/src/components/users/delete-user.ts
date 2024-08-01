@@ -13,23 +13,23 @@ import { userProfileStore } from "../../store.ts";
 
 const populateDropdown = (
   container: HTMLSelectElement,
-  options: { id: number; email: string; product_name: string; role: string }[],
+  options: { id: number; email: string; productName: string; role: string }[],
   roleId: number
 ) => {
   options.forEach(
     (option: {
       id: number;
       email: string;
-      product_name: string;
+      productName: string;
       role: string;
     }) => {
       const opt = document.createElement("option");
       if (option.role != "SUPER_ADMIN" && roleId > 1) {
         opt.value = option.id.toString();
-        opt.text = option.email || option.product_name;
+        opt.text = option.email || option.productName;
       } else {
         opt.value = option.id.toString();
-        opt.text = option.email || option.product_name;
+        opt.text = option.email || option.productName;
       }
       container.appendChild(opt);
     }

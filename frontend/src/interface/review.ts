@@ -1,7 +1,7 @@
 export interface IReview {
   name: string;
   userId: number;
-  product_name: string;
+  productName: string;
   rating?: number;
 }
 export interface IReviewDetails {

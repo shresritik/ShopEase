@@ -1,12 +1,13 @@
 import { Decimal } from "@prisma/client/runtime/library";
 import { BadRequest, NotFound } from "../error";
-import { IOrder } from "../interface/order";
+import { IOrder, OrderProduct, UpdateResult } from "../interface/order";
 import * as OrderModel from "../model/order";
 import * as ProductModel from "../model/product";
 import { getAProductById } from "./product";
 import { IQuery } from "../interface/utils";
 import { getDiscountByCode } from "./discount";
 import { generateFormForPayment } from "../utils/paymentForm";
+import { Product } from "@prisma/client";
 export const createOrderProduct = async ({
   userId,
   totalAmount,
@@ -19,7 +20,7 @@ export const createOrderProduct = async ({
   prodArr = await Promise.all(
     products.map(async (pro) => {
       const val = await getAProductById(pro.id);
-      return { ...pro, cost_price: val?.cost_price };
+      return { ...pro, costPrice: val?.costPrice };
     })
   );
   let discountInfo;
@@ -63,46 +64,19 @@ export const deleteOrder = async (id: string) => {
   return await OrderModel.deleteOrder(id);
 };
 
-type Product = {
-  id: number;
-  product_name: string;
-  description: string | null;
-  pic: string | null;
-  cost_price: Decimal;
-  stock: number;
-  selling_price: Decimal;
-  category_id: number;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-type OrderProduct = {
-  product_id: number;
-  quantity: number;
-  product: Product | null;
-};
-
-type Order = {
-  Order_Product: OrderProduct[];
-};
-
-type UpdateResult = {
-  updatedOrder: Product;
-  status: "COMPLETE";
-};
 export const updateProductFromPayment = async (
   orderId: string
 ): Promise<UpdateResult[]> => {
   try {
-    const order: Order = await getAOrder(orderId);
-    if (!order || !order.Order_Product) {
+    const order = await getAOrder(orderId);
+    if (!order || !order.OrderProduct) {
       throw new BadRequest(`Order not found or has no products: ${orderId}`);
     }
-    const updatePromises = order.Order_Product.map(
+    const updatePromises = order.OrderProduct.map(
       async (orderProduct: OrderProduct): Promise<UpdateResult> => {
         if (!orderProduct.product) {
           throw new BadRequest(
-            `Product not found for order product ${orderProduct.product_id}`
+            `Product not found for order product ${orderProduct.productId}`
           );
         }
         console.log("---------", orderProduct);
@@ -114,18 +88,18 @@ export const updateProductFromPayment = async (
         );
         if (newStock < 0) {
           throw new BadRequest(
-            `Insufficient stock for product ${orderProduct.product_id}`
+            `Insufficient stock for product ${orderProduct.productId}`
           );
         }
 
         const updatedOrder = await ProductModel.updateProductStockFromOrder(
-          orderProduct.product_id,
+          orderProduct.productId,
           newStock
         );
 
         if (!updatedOrder) {
           throw new BadRequest(
-            `Failed to update stock for product ${orderProduct.product_id}`
+            `Failed to update stock for product ${orderProduct.productId}`
           );
         }
 

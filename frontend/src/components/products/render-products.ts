@@ -8,7 +8,7 @@ export const getProductsArray = async (query: IQuery) => {
   try {
     const categories = await getCategories();
     for (const category of categories) {
-      const categoryName = category.category_name;
+      const categoryName = category.categoryName;
       const products = await getProductsByCategories(categoryName, query);
       console.log("prod", products);
       if (!products) {

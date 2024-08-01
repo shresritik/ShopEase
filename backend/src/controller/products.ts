@@ -104,7 +104,7 @@ export const getProductByName = async (
   try {
     const { body } = req;
 
-    const products = await getAProduct(body.product_name);
+    const products = await getAProduct(body.productName);
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {
     next(error);

@@ -2,7 +2,11 @@ import { Discount } from "@prisma/client";
 import * as DiscountModel from "../model/discount";
 import { NotFound } from "../error";
 export const createDiscount = async (discount: Discount) => {
-  return await DiscountModel.createDiscount(discount);
+  const dis = await DiscountModel.createDiscount(discount);
+  if (!dis) {
+    throw new NotFound("Cannot create discount coupon");
+  }
+  return dis;
 };
 export const getAllDiscount = async () => {
   const dis = await DiscountModel.getAllDiscount();

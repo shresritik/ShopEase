@@ -1,8 +1,8 @@
 import Joi from "joi";
 
 export const createCategorySchema = Joi.object({
-  category_name: Joi.string().messages({
-    "string.base": "category_name must be string",
+  categoryName: Joi.string().messages({
+    "string.base": "categoryName must be string",
   }),
 }).options({
   stripUnknown: true,

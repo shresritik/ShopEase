@@ -7,8 +7,8 @@ export const createReviewSchema = Joi.object({
     "number.base": "userId must be number",
   }),
 
-  product_name: Joi.string().optional().messages({
-    "string.base": "product_name must be string",
+  productName: Joi.string().optional().messages({
+    "string.base": "productName must be string",
   }),
   name: Joi.string().optional().allow("").allow(null).messages({
     "string.base": "name must be string",

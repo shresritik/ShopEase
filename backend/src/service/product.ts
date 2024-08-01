@@ -31,7 +31,9 @@ export const deleteAProducts = async (id: number) => {
 export const createAProduct = async (userId: number, product: IProduct) => {
   const products = await ProductModel.createProduct(userId, {
     ...product,
-    pic: `http://localhost:8000/static/products/${product.pic}`,
+    pic: product.pic
+      ? `http://localhost:8000/static/products/${product.pic}`
+      : `http://localhost:8000/static/products/default-product-image.png`,
   });
   return products;
 };
