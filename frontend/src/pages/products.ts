@@ -14,17 +14,13 @@ export const render = async (params: {
   const divSection = createElement("div", { className: "flex items-start" });
 
   const page = createElement("div", {
-    className: "  text-xl font-semibold px-20 mb-10",
+    className: "  text-xl font-semibold  mb-10",
   });
   const categoryTitle = createElement("div", {
     className: "flex flex-col justify-center gap-2 text-orange-800  ",
   });
   const productList = createElement("div", {
-    className: `page grid ${
-      pathname[pathname.length - 1] == "products"
-        ? "grid-cols-3"
-        : "grid-cols-4"
-    } justify-center gap-2 mx-auto`,
+    className: `page flex flex-wrap justify-center md:justify-start  w-full gap-2 mx-auto`,
   });
   try {
     let products: MetaCart[];

@@ -11,7 +11,7 @@ export const Navbar = () => {
     const profileImg = document.getElementById(
       "profileImg"
     ) as HTMLImageElement;
-    logo?.addEventListener("click", (e) => {
+    logo?.addEventListener("click", () => {
       dispatch("/");
     });
     userProfileStore.subscribe(() => {
@@ -87,10 +87,10 @@ export const Navbar = () => {
           <div class="flex productClick items-center py-4 cursor-pointer  group focus:text-gray-600 focus:outline-none focus-visible:outline-none lg:px-8" >
           <img src="${productImg}" class="cursor-pointer group-hover:black-to-orange-filter w-8 "/>
 
-            <h1 class="text-black text-lg cursor-pointer group-hover:black-to-orange-filter">Products</h1>
+            <h1 class="text-black text-lg cursor-pointer group-hover:black-to-orange-filter hidden md:block">Products</h1>
           </div>
         </li>
-          <div id="cartIcon" class="flex items-center px-6 cursor-pointer group ">
+          <div id="cartIcon" class="flex items-center px-2 md:px-6 cursor-pointer group ">
         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" class="cursor-pointer group-hover:black-to-orange-filter ">
           <path fill="black" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2"/>
         </svg>
@@ -106,7 +106,7 @@ export const Navbar = () => {
         </li>
          <div id="profile" class="relative hidden  items-center md:px-6 ml-auto lg:ml-0 lg:p-0">
           <!-- Avatar -->
-          <a   id="profileAvatar" data-link class="relative inline-flex  items-center shadow-lg hover:scale-110 duration-200 ease-out justify-center w-12 h-12 text-white rounded-full">
+          <a   id="profileAvatar" data-link class="relative inline-flex  items-center shadow-lg hover:scale-110 duration-200 ease-out justify-center w-10 h-10 md:w-12 md:h-12 text-white rounded-full">
             <img id="profileImg" src="https://i.pravatar.cc/40?img=35" alt="user name"  width="60" height="60" class="max-w-full rounded-full inline cursor-pointer border-2 border-gray-300  "/>
           </a>
           <!-- Dropdown menu -->

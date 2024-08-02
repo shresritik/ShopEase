@@ -9,14 +9,15 @@ import { CategorizedProducts } from "../interface/categories";
 //first get all categories then loop through it and fetch their products limiting to size 4
 export const render = async (): Promise<HTMLElement> => {
   const container = createElement("div", {
-    className: "flex flex-col justify-center gap-2  md:w-max mx-auto",
+    className: "grid justify-center gap-2 mx-auto px-8 py-5",
   });
   try {
     const ratedWrapper = createElement("div", {
       className: " flex flex-col gap-4 flex-wrap ",
     });
     const ratedList = createElement("div", {
-      className: "products-list flex gap-4 flex-wrap ",
+      className:
+        "products-list justify-center md:justify-start flex gap-4 flex-wrap ",
     });
 
     const topRated: IProduct = await getAllProducts({ rating: "2" });
@@ -62,7 +63,8 @@ export const render = async (): Promise<HTMLElement> => {
         });
 
         const productsList = createElement("div", {
-          className: "products-list flex gap-4 flex-wrap ",
+          className:
+            "products-list justify-center md:justify-start flex gap-4 flex-wrap ",
         });
 
         categoryTitle.textContent = category;

@@ -11,10 +11,10 @@ export default function BaseCard(props: ICard) {
 
   return /*html */ `
   <div
-  class="hover:cursor-pointer relative flex flex-col text-gray-700 bg-white drop-shadow-lg  bg-clip-border rounded-xl  lg:w-96"
+  class="hover:cursor-pointer relative flex flex-col text-gray-700 bg-white drop-shadow-lg  bg-clip-border rounded-xl w-72 md:w-96"
 >
   <div
-    class="card relative mx-4 mt-4 overflow-hidden text-gray-700  bg-clip-border rounded-xl lg:h-72"
+    class="card relative mx-4 mt-4 overflow-hidden text-gray-700  bg-clip-border rounded-xl h-60 md:h-72"
   >
     <img
       alt="prod"
