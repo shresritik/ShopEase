@@ -9,8 +9,6 @@ services:
           path: ./backend/package.json
 
   frontend:
-    env_file:
-      - ./frontend/.env
     develop:
       watch:
         - action: sync
