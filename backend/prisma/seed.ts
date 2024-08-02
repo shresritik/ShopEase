@@ -23,6 +23,7 @@ const productData: IProduct[] = [
     sellingPrice: 60,
     categoryId: 1,
     createdBy: 1,
+    avgRating: 3,
     pic: "http://localhost:8000/static/products/ddc-standard-milk.jpg",
     stock: 5,
   },

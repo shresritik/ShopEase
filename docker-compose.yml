@@ -11,6 +11,18 @@ services:
     restart: always
     depends_on:
       - postgres
+    command: >
+      sh -c "
+        echo 'Waiting for postgres...'
+        while ! nc -z postgres 5432; do
+          sleep 1
+        done
+        echo 'PostgreSQL started'
+        npx prisma db push --force-reset
+        npx prisma migrate reset --force
+        npm run seed
+        npm start
+      "
 
   frontend:
     container_name: interactiva-frontend
@@ -30,6 +42,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+      - LANG=en_US.utf8
+      - LC_ALL=en_US.utf8
     volumes:
       - postgresql_data:/var/lib/postgresql/data
     ports:

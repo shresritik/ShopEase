@@ -7,9 +7,6 @@ export const getProducts = async (query: IQuery) => {
   const products = await ProductModel.getAllProducts(query);
   const count = await ProductModel.count(query);
 
-  if (products.length == 0) {
-    return { message: "Product is empty" };
-  }
   const meta = {
     page: query.page,
     size: products.length,

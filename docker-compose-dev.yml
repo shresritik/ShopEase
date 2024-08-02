@@ -21,7 +21,7 @@ services:
 
   pgadmin:
     env_file: "./backend/.env"
-    container_name: pgadmin_2
+    container_name: pgadmin_3
     image: dpage/pgadmin4:8.9
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
