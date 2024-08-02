@@ -71,7 +71,7 @@ export function CardWrapper(prod: MetaCart) {
       e.preventDefault();
       cartStore.dispatch({
         type: "REMOVE",
-        payload: prod.id!,
+        payload: { id: prod?.id! },
       });
       counterStore.dispatch({
         type: "REMOVE",

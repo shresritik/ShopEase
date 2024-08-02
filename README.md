@@ -22,19 +22,31 @@ Create .env file with the help of .env.example inside backend and optionally fro
 npm install
 ```
 
-2. Run the fronend server
+2. Run the frontend server
 
 ```bash
 npm run dev
 ```
 
-2. Run the backend server
+3. Database migration inside backend folder
+
+```bash
+npm run migrate
+```
+
+4. Seed
+
+```bash
+npm run seed
+```
+
+5. Run the backend server
 
 ```bash
 npm start
 ```
 
-## Method 2
+## Method 2 (Docker build)
 
 Run script.sh
 
@@ -52,7 +64,7 @@ For build mode
 ./script.sh -b
 ```
 
-## Resource
+## Resources
 
 [eSewa Guide](https://developer.esewa.com.np/pages/Epay#transactionflow)
 [prisma Guide](https://www.prisma.io/docs/orm/overview/databases/postgresql)

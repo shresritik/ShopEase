@@ -1,7 +1,6 @@
 import { Action, Listener, Reducer } from "./types/store";
 import { cartReducer } from "./reducers/cartReducer";
 import { counterReducer } from "./reducers/counterReducer";
-import { locationReducer } from "./reducers/locationReducer";
 import { updateProdReducer, userProfileReducer } from "./reducers/userReducer";
 import { CartAction, CartState } from "./types/cartStore";
 import { getToken, saveToken } from "./utils/auth";
@@ -59,8 +58,3 @@ export const userProfileStore = createStore<
   UserProfileState,
   UserProfileAction
 >("user-profile", {}, userProfileReducer);
-export const locationStore = createStore<UserProfileState, UserProfileAction>(
-  "location",
-  {},
-  locationReducer
-);

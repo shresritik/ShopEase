@@ -2,11 +2,10 @@ import { CheckoutAmount } from "../components/checkout/CheckoutAmountView";
 import { CheckoutCardView } from "../components/checkout/CheckoutCardView";
 import { CheckoutView } from "../components/checkout/CheckoutView";
 import { ICheckoutProduct } from "../interface/checkout";
-import { cartStore, locationStore, userProfileStore } from "../store";
+import { cartStore, userProfileStore } from "../store";
 import { roundOff } from "../utils";
 import { createElement } from "../utils/createElement";
 import { dispatch } from "../utils/dispatch";
-import { getCurrentLocation } from "../api/locationApi";
 import { createOrders } from "../api/ordersApi";
 import { esewaCall } from "../api/paymentApi";
 import { toast } from "../utils/toast";
@@ -16,7 +15,6 @@ import { MetaCart } from "../interface/product";
 //checkout page to list all the products from the cart and proceed for payment
 export const render = () => {
   let coupon: string;
-  getCurrentLocation();
   const container = createElement("div", { className: "p-6" });
   const checkoutState = cartStore.getState();
   if (checkoutState.length == 0) {
@@ -44,9 +42,7 @@ export const render = () => {
   const address = container.querySelector(
     "#billing-address"
   ) as HTMLInputElement;
-  locationStore.subscribe(
-    (state) => (address.value = state.location ? state.location : "")
-  );
+
   //check for discount
   checkoutAmount
     ?.querySelector("#discountBtn")
