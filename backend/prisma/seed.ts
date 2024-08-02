@@ -18,19 +18,51 @@ const categoryData = ["Dairy", "Bakery", "Packaged Food"];
 const productData: IProduct[] = [
   {
     productName: "DDC Milk",
-    description: "Refined Cow Milk",
+    description: "Refined Cow Milk 500ml",
     costPrice: 40,
     sellingPrice: 60,
     categoryId: 1,
     createdBy: 1,
+    pic: "http://localhost:8000/static/products/ddc-standard-milk.jpg",
     stock: 5,
   },
   {
-    productName: "Utsav Bread",
-    description: "Refined Bread from utsav",
+    productName: "DDC Cow Milk",
+    description: "DDC Cow Milk 500ml",
+    costPrice: 50,
+    sellingPrice: 70,
+    categoryId: 1,
+    createdBy: 1,
+    pic: "http://localhost:8000/static/products/ddc-cow-milk.jpg",
+    stock: 5,
+  },
+  {
+    productName: "Nanglo Bread",
+    description: "Milk Bread from Nanglo",
     costPrice: 40,
     sellingPrice: 50,
     categoryId: 2,
+    pic: "http://localhost:8000/static/products/nanglo-bread.jpg",
+    createdBy: 1,
+    stock: 2,
+  },
+  {
+    productName: "Lays Blue chips",
+    description: "Lays Blue chips, 41gm",
+    costPrice: 40,
+    sellingPrice: 50,
+    pic: "http://localhost:8000/static/products/lays-blue.jpg",
+    categoryId: 3,
+    createdBy: 1,
+    stock: 2,
+  },
+  {
+    productName: "Lays Green chips",
+    description: "Lays Green chips, 41gm",
+    costPrice: 40,
+    sellingPrice: 50,
+    pic: "http://localhost:8000/static/products/lays-green.jpg",
+    categoryId: 3,
     createdBy: 1,
     stock: 2,
   },
@@ -118,6 +150,14 @@ async function main() {
       data: productData[i],
     });
   }
+  await prisma.discount.create({
+    data: {
+      code: "shopease",
+      percentage: 0.2,
+      validFrom: new Date().toISOString(),
+      validUntil: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+  });
 }
 main()
   .then(async () => {
