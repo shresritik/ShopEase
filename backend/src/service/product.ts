@@ -1,3 +1,4 @@
+import config from "../config";
 import { NotFound } from "../error";
 import { IProduct } from "../interface/product";
 import { IQuery } from "../interface/utils";
@@ -32,8 +33,8 @@ export const createAProduct = async (userId: number, product: IProduct) => {
   const products = await ProductModel.createProduct(userId, {
     ...product,
     pic: product.pic
-      ? `http://localhost:8000/static/products/${product.pic}`
-      : `http://localhost:8000/static/products/default-product-image.png`,
+      ? `http://localhost:${config.port}/static/products/${product.pic}`
+      : `http://localhost:${config.port}/static/products/default-product-image.png`,
   });
   return products;
 };
@@ -48,8 +49,8 @@ export const updateAProduct = async (
   const products = await ProductModel.updateProduct(id, userId, {
     ...product,
     pic: product.pic
-      ? `http://localhost:8000/static/products/${product.pic}`
-      : "http://localhost:8000/static/products/default-product-image.png",
+      ? `http://localhost:${config.port}/static/products/${product.pic}`
+      : `http://localhost:${config.port}/static/products/default-product-image.png`,
   });
   return products;
 };

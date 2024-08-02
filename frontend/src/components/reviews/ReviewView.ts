@@ -23,7 +23,7 @@ export const ReviewView = () => {
       <div class="items-center px-4 py-3">
         <button
           id="review-btn"
-          class="px-4 py-2 bg-gray-900 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="px-4 py-2 bg-orange-800 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
         >
           Submit Review
         </button>

@@ -40,7 +40,7 @@ export const render = async ({
     className: "w-3/4 mx-auto ",
   });
   const titleDiv = createElement("div", {
-    className: "w-3/4 mx-auto ",
+    className: "w-3/4 mx-auto font-semibold text-lg",
   });
   container.appendChild(similarProdDiv);
   if (details.totalReview) {
@@ -152,7 +152,8 @@ export const render = async ({
     .filter(([key, value]) => key !== "meta" && typeof value === "object")
     .map(([_, product]) => product as MetaCart);
   if (productArray.length > 1) {
-    similarProdDiv.innerHTML += "<h1>Similar Products</h1>";
+    similarProdDiv.innerHTML +=
+      "<h1 class='font-semibold text-lg'>Similar Products</h1>";
   }
   productArray.forEach((prod: MetaCart) => {
     if (details.id != prod.id) {
@@ -169,7 +170,7 @@ export const render = async ({
       user: review.user.name,
       pic: review.user.pic,
     };
-    const reviewElement = createElement("div");
+    const reviewElement = createElement("div", { className: "p-5" });
     reviewElement.innerHTML += ProductReview(reviewInfo);
     reviewDetailsContainer.appendChild(reviewElement);
 

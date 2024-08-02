@@ -1,6 +1,7 @@
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { Request, Response, Express } from "express";
+import config from "../config";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -20,7 +21,7 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: "http://localhost:8000/api",
+        url: `http://localhost:${config.port}/api`,
         description: "Development server",
       },
     ],

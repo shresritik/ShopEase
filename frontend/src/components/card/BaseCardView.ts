@@ -36,7 +36,7 @@ export default function BaseCard(props: ICard) {
       </p>
     </div>
     <p
-      class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75"
+      class="block font-sans text-sm antialiased font-normal leading-normal text-black  opacity-75"
     >
    Category: ${props.category}
     </p>
@@ -55,7 +55,7 @@ export default function BaseCard(props: ICard) {
   </div>
   ${
     props.avgRating
-      ? ` <div class="rate flex items-center "> <span class="mr-2">Rating:<span> </div>`
+      ? ` <div class="rate flex items-center "> <span class="mr-2 text-sm">Rating:<span> </div>`
       : ""
   }
  

@@ -81,3 +81,25 @@ export async function getAllOrders(query?: { q: string }) {
     }
   }
 }
+export async function getOrderById(id: string) {
+  const token = getToken("accessToken");
+  try {
+    const orders = await axios.get(BASE_URL + "/api/orders/order/" + id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (orders.status == 200) {
+      return orders.data;
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      toast(error.response?.data.error, "danger");
+      throw new Error(
+        error.response?.data.error
+          ? error.response.data.error
+          : error.response?.data.message
+      );
+    }
+  }
+}

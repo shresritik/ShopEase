@@ -13,7 +13,7 @@ export const CreateProductView = (create = false) => {
       </label>
       <button
         id="checkName"
-        class="mt-6 block w-full select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        class="mt-6 block w-full select-none rounded-lg bg-orange-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
         type="button"
       >
         Check
@@ -107,7 +107,7 @@ export const CreateProductView = (create = false) => {
     />
     <label
       for="file-upload"
-      class="inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-gray-900 hover:bg-gray-900 focus:bg-gray-900 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-gray-900"
+      class="inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-orange-800 hover:bg-orange-800 focus:bg-orange-800 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-orange-800"
     >
       Upload
     </label>
@@ -132,7 +132,7 @@ export const CreateProductView = (create = false) => {
      Product ${!create ? "updated" : "created"}  successfully
   </div>
   <button
-    class="mt-6 block w-full select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+    class="mt-6 block w-full select-none rounded-lg bg-orange-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
   >
    ${!create ? "Update" : "Create"} 
   </button>

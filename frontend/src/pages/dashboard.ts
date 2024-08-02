@@ -18,7 +18,7 @@ import axios from "axios";
 import { SidebarView } from "../components/admin-panel/SidebarView";
 //dashboard to display all the tabs for users,admin and superadmin
 export const render = async () => {
-  const container = createElement("div", { className: "p-6 bg-gray-100" });
+  const container = createElement("div", { className: "p-6 " });
   const divElement = createElement("div", { className: "flex item-center" });
   const leftElement = createElement("div", {
     className: "flex flex-col item-center  fixed top-30",

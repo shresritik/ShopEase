@@ -1,14 +1,19 @@
 import { cartStore, userProfileStore } from "../../store";
 import { dispatch } from "../../utils/dispatch";
 import productImg from "../../assets/svg/products.svg";
+import logo from "../../assets/svg/logo.svg";
 export const Navbar = () => {
   // login and profile pic logic
   document.addEventListener("DOMContentLoaded", () => {
     const login = document.getElementById("showLogin");
+    const logo = document.getElementById("logo");
     const profile = document.getElementById("profile");
     const profileImg = document.getElementById(
       "profileImg"
     ) as HTMLImageElement;
+    logo?.addEventListener("click", (e) => {
+      dispatch("/");
+    });
     userProfileStore.subscribe(() => {
       let user = userProfileStore.getState();
       if (!user.name) {
@@ -72,9 +77,9 @@ export const Navbar = () => {
   <div class="sticky top-0 mx-auto max-w-full px-6 lg:max-w-5xl xl:max-w-7xl 2xl:max-w-[96rem]">
     <nav id="navbar" aria-label="main navigation" class="flex h-[5.5rem] items-stretch justify-between font-medium text-slate-700 sticky top-0 w-full" role="navigation">
       <!-- Brand logo -->
-      <a id="WindUI" aria-label="WindUI logo" aria-current="page" class="flex  text-orange-900 items-center gap-2 py-3 text-xl whitespace-nowrap focus:outline-none" href="/" data-link>
-        shopEase
-      </a>
+      <div id="logo" aria-current="page" class="flex cursor-pointer items-center py-3 text-2xl whitespace-nowrap focus:outline-none"  data-link>
+       <img src="${logo}" class="black-to-orange-filter mb-1" alt="logo"><span class="text-gray-800">shop</span><span class=" text-orange-900">Ease</span>
+      </div>
     
       <!-- Navigation links -->
       <ul   class="  flex ">

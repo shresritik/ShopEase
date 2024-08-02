@@ -1,3 +1,4 @@
+import config from "../config";
 import { BadRequest, NotFound } from "../error";
 import { IUser } from "../interface/users";
 import * as UserModel from "../model/user";
@@ -24,8 +25,8 @@ export const createAUser = async (body: IUser) => {
   const users = await UserModel.createUser({
     ...body,
     profile: body.profile
-      ? `http://localhost:8000/static/profile/` + body.profile
-      : `http://localhost:8000/static/profile/default.png`,
+      ? `http://localhost:${config.port}/static/profile/` + body.profile
+      : `http://localhost:${config.port}/static/profile/default.png`,
     password: hashedPassword,
   });
   logger.info("Get user data");
@@ -64,8 +65,8 @@ export const updateAUser = async (id: number, body: IUser, userId: number) => {
     {
       ...body,
       profile: body.profile
-        ? `http://localhost:8000/static/profile/` + body.profile
-        : `http://localhost:8000/static/profile/default.png`,
+        ? `http://localhost:${config.port}/static/profile/` + body.profile
+        : `http://localhost:${config.port}/static/profile/default.png`,
       password: hashedPassword,
     },
     userId

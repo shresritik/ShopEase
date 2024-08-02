@@ -70,7 +70,7 @@ export default function OrderView(
                 userRoleId == 3 && order.status != "pending"
                   ? `
                 <td class="px-4 py-2">
-                  <button data-review="${product[0].productName}" data-dialog-target="sign-in-dialog" class="btn bg-gray-900 text-white px-4 py-1 rounded">Rate</button>
+                  <button data-review="${product[0].productName}" data-dialog-target="sign-in-dialog" class="btn bg-orange-800 text-white px-8 py-2 hover:shadow-md hover:shadow-gray-900/20 transition duration-200 ease-out rounded">Rate</button>
                 </td>
               `
                   : ""

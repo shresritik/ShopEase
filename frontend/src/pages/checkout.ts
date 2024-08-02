@@ -105,8 +105,9 @@ export const render = () => {
       toast("Admin or Super Admin cannot pay", "danger");
     } else {
       const formResult = await createOrders(form);
-      if (formResult && formResult.status == 200) {
+      if (formResult && formResult.status == 201) {
         toast("Order Placed Successfully", "");
+        console.log(formResult.data.formData);
         esewaCall(formResult.data.formData);
       } else {
         toast("Something went wrong", "danger");

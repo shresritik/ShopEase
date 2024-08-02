@@ -172,7 +172,11 @@ router.get(
   "/order/:id",
   validateReqId(orderByIdSchema),
   authenticate(),
-  authorize([PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET]),
+  authorize([
+    PERMISSION.SUPER_ADMIN_GET,
+    PERMISSION.ADMIN_GET,
+    PERMISSION.USER_GET,
+  ]),
   getOrderById
 );
 export default router;

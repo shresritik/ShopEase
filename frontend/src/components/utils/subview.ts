@@ -21,6 +21,6 @@ export const DateDropDownView = () => {
     <option value="15" >Last 15 days</option>
     <option value="30" >Last 30 days</option>
   </select>
-  <button class="filter-drop bg-gray-900 px-5 text-white py-2">Filter</button>
+  <button class="filter-drop bg-orange-800 px-5 mt-1 rounded-md text-white py-2 hover:shadow-md hover:shadow-gray-800/20">Filter</button>
   </div>`;
 };

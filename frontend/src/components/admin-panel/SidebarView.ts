@@ -39,16 +39,16 @@ export const SidebarView = () => {
         </svg>
       </button>
       <div class="hidden p-4 pt-0">
-        <div class="sidebar profile py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Profile</div>
+        <div class="sidebar profile py-2 px-5 cursor-pointer hover:bg-blue-gray-50 border-b">Profile</div>
         ${
           user.role?.roleRank != 3
             ? `
-        <div class="sidebar create-user py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Create User</div>
-        <div class="sidebar update-user py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Update User</div>
+        <div class="sidebar create-user py-2 px-5 cursor-pointer hover:bg-blue-gray-50 border-b">Create User</div>
+        <div class="sidebar update-user py-2 px-5 cursor-pointer hover:bg-blue-gray-50 border-b">Update User</div>
         `
             : ""
         }
-        <div class="sidebar delete py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Delete</div>
+        <div class="sidebar delete py-2 px-5 cursor-pointer hover:bg-blue-gray-50 border-b">Delete</div>
       </div>
     </div>
 
@@ -67,9 +67,9 @@ export const SidebarView = () => {
         </svg>
       </button>
       <div class="hidden p-4 pt-0">
-        <div class="sidebar create-product py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Create Product</div>
-        <div class="sidebar update-product py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Update Product</div>
-        <div class="sidebar delete-product py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Delete Product</div>
+        <div class="sidebar create-product py-2 px-5  cursor-pointer hover:bg-blue-gray-50 border-b">Create Product</div>
+        <div class="sidebar update-product py-2 px-5  cursor-pointer hover:bg-blue-gray-50 border-b">Update Product</div>
+        <div class="sidebar delete-product py-2 px-5  cursor-pointer hover:bg-blue-gray-50 border-b">Delete Product</div>
       </div>
     </div>
 
@@ -85,9 +85,9 @@ export const SidebarView = () => {
         </svg>
       </button>
       <div class="hidden p-4 pt-0">
-        <div class="sidebar create-category py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Create Category</div>
-        <div class="sidebar update-category py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Update Category</div>
-        <div class="sidebar delete-category py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Delete Category</div>
+        <div class="sidebar create-category py-2 px-5  cursor-pointer hover:bg-blue-gray-50 border-b">Create Category</div>
+        <div class="sidebar update-category py-2 px-5  cursor-pointer hover:bg-blue-gray-50 border-b">Update Category</div>
+        <div class="sidebar delete-category py-2 px-5  cursor-pointer hover:bg-blue-gray-50 border-b">Delete Category</div>
       </div>
     </div>
     <!-- Coupon Management Section -->
@@ -104,9 +104,9 @@ export const SidebarView = () => {
         </svg>
       </button>
       <div class="hidden p-4 pt-0">
-        <div class="sidebar create-coupon py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Create Coupon</div>
-        <div class="sidebar update-coupon py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Update Coupon</div>
-        <div class="sidebar delete-coupon py-2 cursor-pointer hover:bg-blue-gray-50 border-b">Delete Coupon</div>
+        <div class="sidebar create-coupon py-2 px-5 cursor-pointer hover:bg-blue-gray-50 border-b">Create Coupon</div>
+        <div class="sidebar update-coupon py-2 px-5 cursor-pointer hover:bg-blue-gray-50 border-b">Update Coupon</div>
+        <div class="sidebar delete-coupon py-2 px-5 cursor-pointer hover:bg-blue-gray-50 border-b">Delete Coupon</div>
       </div>
     </div>`
         : ""

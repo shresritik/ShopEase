@@ -1,5 +1,5 @@
 import { userProfileStore } from "../../store";
-
+import eSewaImg from "../../assets/images/esewa.png";
 export const CheckoutView = () => {
   const user = userProfileStore.getState();
   return `
@@ -28,7 +28,7 @@ export const CheckoutView = () => {
           disabled
           required
           value="${user.email}"
-          class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+          class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 "
           placeholder="your.email@gmail.com"
         />
       </div>
@@ -43,8 +43,8 @@ export const CheckoutView = () => {
             id="billing-address"
             name="billing-address"
             required
-            class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-            placeholder="Street Address"
+            class="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-gray-800 focus:ring-gray-800"
+            placeholder="Address"
           />
         </div>
       </div>
@@ -55,9 +55,9 @@ export const CheckoutView = () => {
     <button
     type="button"
     id="payBtn"
-      class="mt-4 mb-8 w-full rounded-md bg-green-500 px-6 py-3 font-medium text-white"
+      class="mt-4 mb-8 w-full flex justify-center items-center rounded-md bg-green-600 px-6 py-4 text-lg font-medium text-white hover:shadow-md transition duration-200 ease-out hover:shadow-gray-700/60"
     >
-      Pay via eSewa
+      <span>Pay via </span><img class="w-24" src="${eSewaImg}">
     </button>
   </div>
 </div>

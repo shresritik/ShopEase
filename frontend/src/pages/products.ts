@@ -14,10 +14,10 @@ export const render = async (params: {
   const divSection = createElement("div", { className: "flex items-start" });
 
   const page = createElement("div", {
-    className: "  text-xl font-bold px-20 mb-10",
+    className: "  text-xl font-semibold px-20 mb-10",
   });
   const categoryTitle = createElement("div", {
-    className: "flex flex-col justify-center gap-2   ",
+    className: "flex flex-col justify-center gap-2 text-orange-800  ",
   });
   const productList = createElement("div", {
     className: `page grid ${

@@ -25,7 +25,7 @@ export async function createOrder(
       discount,
     };
     const order = await createOrderProduct(orderDetails);
-    res.status(HttpStatusCode.OK).json(order);
+    res.status(HttpStatusCode.CREATED).json(order);
   } catch (error) {
     next(error);
   }
