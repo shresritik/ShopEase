@@ -64,7 +64,11 @@ For build mode
 ./script.sh -b
 ```
 
-## Resources
+### API Endpoints
+
+[Swagger Docs](http://localhost:8000/docs)
+
+### Resources
 
 [eSewa Guide](https://developer.esewa.com.np/pages/Epay#transactionflow)
 [prisma Guide](https://www.prisma.io/docs/orm/overview/databases/postgresql)

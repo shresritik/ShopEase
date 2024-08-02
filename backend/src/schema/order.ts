@@ -1,4 +1,89 @@
 import Joi from "joi";
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Product:
+ *       type: object
+ *       required:
+ *         - id
+ *         - quantity
+ *         - sellingPrice
+ *         - categoryId
+ *       properties:
+ *         id:
+ *           type: integer
+ *           minimum: 1
+ *         quantity:
+ *           type: integer
+ *           minimum: 1
+ *         sellingPrice:
+ *           type: string
+ *           pattern: ^\d+(\.\d{1,2})?$
+ *         categoryId:
+ *           type: integer
+ *           minimum: 1
+ *     CreateOrderInput:
+ *       type: object
+ *       required:
+ *         - products
+ *         - totalAmount
+ *         - userId
+ *       properties:
+ *         location:
+ *           type: string
+ *         products:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Product'
+ *           minItems: 1
+ *         totalAmount:
+ *           type: number
+ *         userId:
+ *           type: integer
+ *           minimum: 1
+ *         discount:
+ *           type: string
+ *         profit:
+ *           type: number
+ *         vat:
+ *           type: number
+ *     Order:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         location:
+ *           type: string
+ *         products:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Product'
+ *         totalAmount:
+ *           type: number
+ *         userId:
+ *           type: integer
+ *         discount:
+ *           type: string
+ *         profit:
+ *           type: number
+ *         vat:
+ *           type: number
+ *     OrderQuery:
+ *       type: object
+ *       properties:
+ *         page:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         size:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 10
+ *           default: 10
+ */
+
 export const getOrderByQuerySchema = Joi.object({
   page: Joi.number()
     .min(1)
