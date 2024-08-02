@@ -22,7 +22,7 @@ export const render = async (): Promise<HTMLElement> => {
     const topRated: IProduct = await getAllProducts({ rating: "2" });
     if (topRated) {
       ratedWrapper.innerHTML +=
-        "<h1 class='text-xl font-bold mt-16'>Top Rated Products</h1>";
+        "<h1 class='text-xl  my-16 mb-5 font-semibold text-orange-800'>Top Rated Products</h1>";
 
       for (const prod of Object.values(topRated)) {
         if ("page" in prod) continue;
@@ -43,16 +43,17 @@ export const render = async (): Promise<HTMLElement> => {
       // Only proceed if there are products in this category
       if (products.length > 0) {
         const categoryDiv = createElement("div", {
-          className: "category p-2 md:p-10 ",
+          className: "category p-2 ",
         });
         const categoryTitle = createElement("h1", {
-          className: "text-xl font-bold mb-4",
+          className: "text-xl font-semibold mb-2",
         });
         const viewTitle = createElement("h1", {
-          className: "view text-xl font-bold mb-4 cursor-pointer",
+          className:
+            "view text-xl text-orange-800 font-semibold  mb-2 cursor-pointer",
         });
         const titleDiv = createElement("div", {
-          className: "title p-10 flex justify-between",
+          className: "title p-10 pb-6 text-orange-800 flex justify-between",
         });
 
         viewTitle.addEventListener("click", (e) => {

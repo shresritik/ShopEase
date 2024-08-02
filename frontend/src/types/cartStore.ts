@@ -6,6 +6,7 @@ export type CartItem = {
   qty: number;
   pic: string;
   productName: string;
+  avgRating?: number;
   sellingPrice: number;
   category: { categoryName: string; id?: number };
   subtotal: number;

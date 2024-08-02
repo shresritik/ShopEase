@@ -4,7 +4,9 @@ const withMT = require("@material-tailwind/html/utils/withMT");
 export default withMT({
   content: ["./index.html", "./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    fontFamily: {
+      poppins: ["Poppins", "sans-serif"],
+    },
   },
   plugins: [],
 });

@@ -106,7 +106,7 @@ export const RegisterView = (admin = false, update = false) => {
   />
   <label
     for="file-upload"
-    class="inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-gray-900 hover:bg-gray-900 focus:bg-gray-900 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-gray-900"
+    class="inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-orange-800 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-gray-900"
   >
     Upload
   </label>
@@ -137,9 +137,9 @@ ${user.role?.roleRank == 2 ? "" : `<option value="1">Super Admin</option>`}
   } successfully</div>
 
 <button
-  class="mt-6 block w-full select-none rounded-lg bg-gray-900 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+  class="mt-6 block w-full select-none rounded-lg bg-orange-800 py-3 px-6 text-center align-middle font-sans text-lg  text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
 >
-  ${admin && update ? "update" : "sign up"}
+  ${admin && update ? "Update" : "Sign up"}
 </button>
 ${
   admin
@@ -148,7 +148,7 @@ ${
   class="block mt-4 font-sans text-base antialiased font-normal leading-relaxed text-center text-gray-700"
 >
   Already have an account?
-  <a href="/login" data-link class="font-medium text-gray-900"> Sign In </a>
+  <a href="/login" data-link class="font-medium text-orange-800"> Sign In </a>
 </p>`
 }
 </div>

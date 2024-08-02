@@ -4,4 +4,5 @@ export type CardFunction = (props: {
   title: string;
   qty: number;
   category: string;
+  avgRating?: number;
 }) => string;

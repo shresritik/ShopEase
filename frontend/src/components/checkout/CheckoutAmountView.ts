@@ -12,7 +12,7 @@ export const CheckoutAmount = (
 
             <input id="discount" placeholder="COUPON" class=" text-gray-900 border-2 rounded-md py-1 px-3">
             <span id="discountValue" class="hidden text-gray-900 font-medium"></span>
-            <button id="discountBtn" class="bg-orange-600 text-white px-4 rounded-md py-1">Check</button>
+            <button id="discountBtn" class="bg-orange-800 text-white px-4 rounded-md py-1">Check</button>
             </div>
           </div>
            <div class="flex items-center justify-between">

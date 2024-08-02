@@ -4,6 +4,8 @@ import { CardFunction } from "../../types/card";
 import { createElement } from "../../utils/createElement";
 import { dispatch } from "../../utils/dispatch";
 import Card from "./BaseCardView";
+import starCover from "../../assets/svg/star-cover.svg";
+
 // Card Wrapper dom manipulation with state updates
 export function CardWrapper(prod: MetaCart) {
   const productElement = createElement("div", {
@@ -14,10 +16,17 @@ export function CardWrapper(prod: MetaCart) {
     price: prod.sellingPrice,
     title: prod.productName,
     qty: prod.stock,
+    avgRating: prod?.avgRating && +prod.avgRating,
     category: prod.category?.categoryName,
   });
 
   productElement.innerHTML += card;
+  if (prod.avgRating) {
+    for (let i = 0; i < prod.avgRating; i++) {
+      productElement.querySelector(".rate")!.innerHTML += `
+      <div class="w-5"><img src="${starCover}"/></div>`;
+    }
+  }
   productElement.querySelector(".card")?.addEventListener("click", (e) => {
     e.preventDefault();
     dispatch(`/products/${prod.category.categoryName}/${prod.id}`);
