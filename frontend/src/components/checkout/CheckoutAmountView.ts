@@ -8,9 +8,9 @@ export const CheckoutAmount = (
          
           <div class="flex items-center justify-between my-2">
             <p class="text-sm font-medium text-gray-900">Discount</p>
-            <div>
+            <div class="flex items-end justify-end gap-2">
 
-            <input id="discount" placeholder="COUPON" class="  text-gray-900 ring-gray-800 border border-gray-500 rounded-md py-1 px-3">
+            <input id="discount" placeholder="COUPON" class=" w-1/2 py-2 text-gray-900 ring-gray-800 border border-gray-500 rounded-md px-3">
             <span id="discountValue" class="hidden text-gray-900 font-medium"></span>
             <button id="discountBtn" class="bg-orange-800 text-white px-4 rounded-md py-2 hover:shadow-md hover:shadow-gray-700/30">Check</button>
             </div>

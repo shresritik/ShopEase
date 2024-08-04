@@ -13,7 +13,7 @@ export const CheckoutCardView = (prod: CheckoutCard) => {
             <p  text-gray-800">Quantity: ${prod.qty}</p>
             <p  text-gray-800">Category: ${prod.category.categoryName}</p>
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col items-end">
             <p class=" font-bold">Price: Rs. ${prod.sellingPrice}</p>
             <p class=" font-bold text-right">Subtotal: Rs. ${prod.subtotal}</p>
             </div>

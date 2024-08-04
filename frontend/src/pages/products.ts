@@ -45,7 +45,7 @@ export const render = async (params: {
         const pageValue = queryParam.get("page")!;
         const filterSection = await Filter.render(productList);
         const query = {
-          size: "4",
+          size: "6",
           page: pageValue,
         };
         products = (await getAllProducts(query)) as MetaCart;
@@ -54,7 +54,7 @@ export const render = async (params: {
         filterTitle.addEventListener("click", () => {
           document.querySelector(".filter-section")?.classList.toggle("hidden");
         });
-        const pageLength = products.meta.total / 4;
+        const pageLength = products.meta.total / 6;
         for (let i = 0; i < pageLength; i++) {
           pageButtons.innerHTML += `  <button
             data-add="${i + 1}"
@@ -76,7 +76,7 @@ export const render = async (params: {
             e.preventDefault();
             if (pageValue) {
               const query = {
-                size: "4",
+                size: "6",
                 page: pageValue,
               };
               const products = await getAllProducts(query);
