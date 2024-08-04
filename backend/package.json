@@ -50,9 +50,6 @@
     "@types/typescript": "^2.0.0",
     "@types/winston": "^2.4.4",
     "expect": "^29.7.0",
-    "mocha": "^10.7.0",
-    "sinon": "^18.0.0",
-    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   }
