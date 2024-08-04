@@ -48,6 +48,11 @@ export const render = async () => {
         if (updateRes!.status == 200) {
           const successElement = form.querySelector(".success") as HTMLElement;
           successElement.classList.remove("hidden");
+
+          name.value = "";
+          email.value = "";
+          password.value = "";
+          confirmPassword.value = "";
         }
       } catch (error) {
         const errorElement = form.querySelector(".error") as HTMLElement;

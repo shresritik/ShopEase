@@ -80,6 +80,10 @@ export const render = (forUsers = true, update = false) => {
       } else {
         await register(formData);
       }
+      name.value = "";
+      email.value = "";
+      password.value = "";
+      confirmPassword.value = "";
       if (!forUsers) {
         const successElement = form?.querySelector(".success") as HTMLElement;
         successElement?.classList.remove("hidden");
