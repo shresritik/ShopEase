@@ -8,6 +8,7 @@ import { signUser } from "../utils/auth";
 import crypto from "crypto";
 import config from "../config";
 import loggerWithNameSpace from "../utils/logger";
+import { verify } from "jsonwebtoken";
 const logger = loggerWithNameSpace("AuthService");
 /**
  * login the user if email or password exists and generate the tokens
@@ -48,3 +49,31 @@ export const createSignature = (message: string) => {
   logger.info("base64 digested");
   return hashInBase64;
 };
+/**
+ *generate new tokens from the previous refresh token
+ * @param token refresh token
+ * @returns {access token, refresh token}
+ */
+export async function refresh(token: string) {
+  try {
+    const { id, email, name, roleId, permissions } = verify(
+      token,
+      config.jwt.secret!
+    ) as IUser;
+    const payload = {
+      id,
+      email,
+      name,
+      roleId,
+      permissions,
+    };
+    logger.info("refresh token");
+    const { accessToken } = signUser(payload);
+    return { accessToken };
+  } catch (error: unknown) {
+    if (error instanceof Error) throw new BadRequest(error.message);
+    else {
+      throw new BadRequest("Something went wrong");
+    }
+  }
+}
