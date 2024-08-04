@@ -15,7 +15,6 @@ export async function createProduct(data: FormData) {
     });
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      toast(error.response?.data.error, "danger");
       throw new Error(
         error.response?.data.error
           ? error.response.data.error
@@ -35,7 +34,6 @@ export async function updateProduct(id: number, data: FormData) {
     });
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      toast(error.response?.data.error, "danger");
       throw new Error(
         error.response?.data.error
           ? error.response.data.error

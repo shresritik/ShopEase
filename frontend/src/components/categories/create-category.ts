@@ -17,7 +17,7 @@ export const render = async () => {
       const categoryData = { categoryName: input.value };
       try {
         const res = await createCategory(categoryData);
-        if (res && res.status == 200) {
+        if (res && res.status == 201) {
           toast("Category created Successfully", "");
         } else {
           toast("Something went wrong", "danger");

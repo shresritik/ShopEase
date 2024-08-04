@@ -79,11 +79,14 @@ export const render = (forUsers = true, update = false) => {
         await updateUser("" + userValue.id, formData);
       } else {
         await register(formData);
+        name.value = "";
+        email.value = "";
+        password.value = "";
+        confirmPassword.value = "";
       }
-      name.value = "";
-      email.value = "";
-      password.value = "";
-      confirmPassword.value = "";
+
+      container.appendChild(form);
+
       if (!forUsers) {
         const successElement = form?.querySelector(".success") as HTMLElement;
         successElement?.classList.remove("hidden");
@@ -91,7 +94,8 @@ export const render = (forUsers = true, update = false) => {
         dispatch("/dashboard");
       }
     } catch (error) {
-      const errorElement = form.querySelector(".error") as HTMLElement;
+      console.log(error);
+      const errorElement = form.querySelector(".user-error") as HTMLElement;
       errorElement.textContent = `${error}`;
       errorElement.classList.remove("hidden");
     }
@@ -99,7 +103,8 @@ export const render = (forUsers = true, update = false) => {
 
   inputs.forEach((input) => {
     input.addEventListener("input", () => {
-      const errorElement = form.querySelector(".error") as HTMLElement;
+      const errorElement = form.querySelector(".user-error") as HTMLElement;
+      console.log(document.querySelector(".user-error"));
       errorElement.classList.add("hidden");
       const successElement = form?.querySelector(".success") as HTMLElement;
       successElement?.classList.add("hidden");

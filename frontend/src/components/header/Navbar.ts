@@ -29,13 +29,9 @@ export const Navbar = () => {
       } else {
         login?.classList.add("hidden");
         profileImg!.src = user.pic!;
-        if (profile?.classList.contains("hidden")) {
-          profile?.classList.remove("hidden");
-          profile?.classList.add("flex");
-        } else {
-          profile?.classList.add("hidden");
-          profile?.classList.remove("flex");
-        }
+
+        profile?.classList.remove("hidden");
+        profile?.classList.add("flex");
       }
     });
     const logoutButton = document.getElementById("logout");

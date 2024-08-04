@@ -2,6 +2,7 @@ import { fetchUserProfile, updateUser } from "../../api/userApi.ts";
 import { createElement } from "../../utils/createElement.ts";
 import { RegisterView } from "../dashboard-view/RegisterView.ts";
 import { toast } from "../../utils/toast.ts";
+import { userProfileStore } from "../../store.ts";
 
 export const render = async () => {
   const container = createElement("div", {
@@ -48,21 +49,23 @@ export const render = async () => {
         if (updateRes!.status == 200) {
           const successElement = form.querySelector(".success") as HTMLElement;
           successElement.classList.remove("hidden");
-
-          name.value = "";
-          email.value = "";
-          password.value = "";
-          confirmPassword.value = "";
+          const user = userProfileStore.getState();
+          if (user.email == email.value) {
+            userProfileStore.dispatch({
+              type: "STORE",
+              payload: updateRes!.data,
+            });
+          }
         }
       } catch (error) {
-        const errorElement = form.querySelector(".error") as HTMLElement;
+        const errorElement = form.querySelector(".user-error") as HTMLElement;
         errorElement.textContent = `${error}`;
         errorElement.classList.remove("hidden");
       }
     });
     inputs.forEach((input) => {
       input.addEventListener("input", () => {
-        const errorElement = form.querySelector(".error") as HTMLElement;
+        const errorElement = form.querySelector(".user-error") as HTMLElement;
         errorElement.classList.add("hidden");
         const successElement = form.querySelector(".success") as HTMLElement;
         successElement.classList.add("hidden");

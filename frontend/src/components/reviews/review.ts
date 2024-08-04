@@ -70,6 +70,7 @@ export const render = async () => {
       if (error instanceof AxiosError)
         toast(error.response!.data.error, "danger");
     }
+    reviewText.value = "";
   });
   return container;
 };

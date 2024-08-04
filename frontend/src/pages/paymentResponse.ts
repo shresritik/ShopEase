@@ -23,7 +23,7 @@ export const render = async () => {
       const order = await getOrderById(id);
       const filteredOrderDetail = mapOrdersToDetail([order]);
       container.innerHTML +=
-        "<h1 class='text-lg text-green-600'>Order completed success</h1>";
+        "<h1 class='text-lg text-green-600'>Order completed successfully</h1>";
       filteredOrderDetail.forEach((data: OrderDetail[]) => {
         container.innerHTML += OrderView(data, 3);
       });

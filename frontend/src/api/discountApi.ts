@@ -14,12 +14,6 @@ export async function createDiscount(data: IDiscount) {
     });
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      toast(
-        error.response?.data.error
-          ? error.response.data.error
-          : error.response?.data.message,
-        "danger"
-      );
       throw new Error(
         error.response?.data.error
           ? error.response.data.error

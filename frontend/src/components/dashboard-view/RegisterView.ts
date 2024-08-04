@@ -130,7 +130,7 @@ ${user.role?.roleRank == 2 ? "" : `<option value="1">Super Admin</option>`}
 }
 
 <!-- End Button large file input -->
-<div class="text-red-500 my-2 hidden error"></div>
+<div class="text-red-500 my-2 hidden user-error"></div>
 <div class="text-green-500 my-2 hidden success">User ${
     update ? "updated" : "created"
   } successfully</div>
