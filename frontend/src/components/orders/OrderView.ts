@@ -7,7 +7,7 @@ export default function OrderView(
 ): string {
   const order = orderData[0];
   return `
-    <div class="bg-white shadow-md rounded-lg p-6 mb-6" data-order-id="${
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6 " data-order-id="${
       order.id
     }">
       <h3 class="text-xl font-semibold mb-2">Order #${order.id}</h3>
@@ -25,19 +25,19 @@ export default function OrderView(
       <table class="w-full mb-4">
         <thead>
           <tr class="bg-gray-100">
-            <th class="px-4 py-2 text-left">Product</th>
-            <th class="px-4 py-2 text-left">Category</th>
-            <th class="px-4 py-2 text-left">Quantity</th>
-            <th class="px-4 py-2 text-left">Selling Price</th>
+            <th class="p-2 md:px-4 md:py-2 text-left">Product</th>
+            <th class="hidden md:block md:px-4 md:py-2 text-left">Category</th>
+            <th class="p-2 md:px-4 md:py-2 text-left">Qty</th>
+            <th class="p-2 md:px-4 md:py-2 text-left">Selling Price</th>
             ${
               userRoleId == 1
-                ? `<th class="px-4 py-2 text-left">Cost Price</th>`
+                ? `<th class="md:px-4 md:py-2 text-left">Cost Price</th>`
                 : ""
             }
-            <th class="px-4 py-2 text-left">Net Amount</th>
+            <th class="md:px-4 md:py-2 text-left">Net Amount</th>
             ${
               userRoleId == 3 && order.status != "pending"
-                ? `<th class="px-4 py-2 text-left">Action</th>`
+                ? `<th class="md:px-4 md:py-2 text-center md:text-left hidden md:block">Action</th>`
                 : ""
             }
           </tr>
@@ -51,11 +51,11 @@ export default function OrderView(
                 <div class="flex items-center">
                   <img src="${product[0].pic}" alt="${
                 product[0].productName
-              }" class="w-12 h-12 object-cover rounded-md mr-2">
+              }" class="hidden md:block w-12 h-12 object-cover rounded-md mr-2">
                   <span>${product[0].productName}</span>
                 </div>
               </td>
-              <td class="px-4 py-2">${product[0].category}</td>
+              <td class="px-4 hidden md:block py-2">${product[0].category}</td>
               <td class="px-4 py-2">${product[0].quantity}</td>
               <td class="px-4 py-2">Rs. ${product[0].sellingPrice}</td>
               ${
@@ -70,7 +70,7 @@ export default function OrderView(
                 userRoleId == 3 && order.status != "pending"
                   ? `
                 <td class="px-4 py-2">
-                  <button data-review="${product[0].productName}" data-dialog-target="sign-in-dialog" class="btn bg-orange-800 text-white px-8 py-2 hover:shadow-md hover:shadow-gray-900/20 transition duration-200 ease-out rounded">Rate</button>
+                  <button data-review="${product[0].productName}" data-dialog-target="sign-in-dialog" class="btn hidden md:block bg-orange-800 text-white px-8 py-2 hover:shadow-md hover:shadow-gray-900/20 transition duration-200 ease-out rounded">Rate</button>
                 </td>
               `
                   : ""
@@ -110,7 +110,7 @@ export default function OrderView(
           }
         </div>
         <div class="flex flex-col items-end space-y-2">
-          <p class="text-base font-semibold text-gray-900">Status: ${
+          <p class="text-base font-semibold text-gray-900">Payment: ${
             order.status
           }</p>
           ${

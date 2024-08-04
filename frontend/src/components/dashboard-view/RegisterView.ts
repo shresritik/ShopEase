@@ -17,7 +17,6 @@ export const RegisterView = (admin = false, update = false) => {
       <button
         id="checkName"
         class="mt-6 block w-full select-none rounded-lg bg-orange-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-        type="button"
       >
         Check
       </button>
@@ -102,25 +101,25 @@ export const RegisterView = (admin = false, update = false) => {
     id="file-upload"
     name="file-upload"
     type="file"
-    class="peer order-2 [&::file-selector-button]:hidden"
+    class="peer px-3  [&::file-selector-button]:hidden py-5  "
   />
   <label
     for="file-upload"
-    class="inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-orange-800 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-orange-800"
+    class="inline-flex items-center  h-12 absolute right-0  gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-orange-800 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-orange-800"
   >
     Upload
   </label>
 </div>
 ${
   user.role?.roleRank != 3 && admin
-    ? `<div class="relative inline-block w-64">
+    ? `<div class="relative inline-block ">
   <label for="user-role" class="block text-sm font-medium text-gray-700 mb-2"
     >Select Role</label
   >
   <select
     id="user-role"
     name="user-role"
-    class="block w-full mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-900 focus:border-indigo-500"
+    class="block mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-900 focus:border-indigo-500"
   >
     <option value="3" selected>Users</option>
     <option value="2">Admin</option>

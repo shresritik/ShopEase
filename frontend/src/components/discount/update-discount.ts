@@ -59,7 +59,7 @@ export const render = async () => {
         ?.classList.replace("hidden", "flex");
 
       couponName.value = discountInfo.code;
-      worth.value = "" + discountInfo.percentage * 100;
+      worth.value = "" + discountInfo.percentage;
       fromDate.value = discountInfo.validFrom.substring(0, 10);
       toDate.value = discountInfo.validUntil.substring(0, 10);
     }

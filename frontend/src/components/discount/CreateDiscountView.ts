@@ -1,8 +1,8 @@
 export const CreateCouponView = (update = false) => {
   return `
-  <div  class=" w-1/3">
+  <div  class="w-full md:w-1/3">
   <div   class="relative  w-full">
-    <form class="bg-white p-5 w-full" >
+    <form class="bg-white  w-full" >
       ${
         update
           ? ` <div id="update-select" class=" relative hidden w-full p-5">
@@ -23,7 +23,7 @@ export const CreateCouponView = (update = false) => {
     <button
     id="checkBtn"
       class="mt-6 block w-max select-none rounded-lg bg-orange-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-      type="button">
+     >
    Check
     </button>
   </div>`
@@ -32,9 +32,7 @@ export const CreateCouponView = (update = false) => {
   
   
   <div id="update-form" class="relative flex flex-col text-gray-700 bg-white p-5 shadow-none rounded-xl bg-clip-border">
-  <h4 class="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-Create Coupon
-  </h4>
+
  
   <form class="max-w-screen-lg mt-8 mb-2 w-80 sm:w-96">
     <div class="flex flex-col gap-6 mb-1">
@@ -90,7 +88,7 @@ Create Coupon
     <button
     id="submit"
       class="mt-6 block w-full select-none rounded-lg bg-orange-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-      type="button">
+      >
    ${update ? "Update" : "Create"}  
     </button>
    

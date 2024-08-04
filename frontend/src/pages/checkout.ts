@@ -59,8 +59,14 @@ export const render = () => {
           if (new Date() > new Date(res.validUntil))
             toast("Discount time is finished", "danger");
           else {
+            console.log(
+              amount,
+              res.percentage,
+              (amount * (100 - res.percentage)) / 100
+            );
+
             coupon = res.code;
-            totalAmount.subtotal = amount - res.percentage;
+            totalAmount.subtotal = (amount * (100 - res.percentage)) / 100;
             totalAmount.total = roundOff(totalAmount.subtotal * 1.13);
             checkoutAmount!.innerHTML = CheckoutAmount(totalAmount);
             const showValue = checkoutAmount?.querySelector(
@@ -68,7 +74,7 @@ export const render = () => {
             ) as HTMLParagraphElement;
 
             showValue?.classList.remove("hidden");
-            showValue.textContent = `${res.percentage * 100}%`;
+            showValue.textContent = `${res.percentage}%`;
             checkoutAmount
               ?.querySelector("#discountBtn")
               ?.classList.add("hidden");
@@ -107,7 +113,6 @@ export const render = () => {
       const formResult = await createOrders(form);
       if (formResult && formResult.status == 201) {
         toast("Order Placed Successfully", "");
-        console.log(formResult.data.formData);
         esewaCall(formResult.data.formData);
       } else {
         toast("Something went wrong", "danger");

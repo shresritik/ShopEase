@@ -7,8 +7,6 @@ export interface ICard {
   avgRating: number;
 }
 export default function BaseCard(props: ICard) {
-  console.log(props);
-
   return /*html */ `
   <div
   class="hover:cursor-pointer relative flex flex-col text-gray-700 bg-white drop-shadow-lg  bg-clip-border rounded-xl w-72 md:w-96"

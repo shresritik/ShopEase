@@ -12,9 +12,7 @@ export const mapOrdersToDetail = (orders: Order[]): OrderDetail[][] => {
       profit: order.profit,
       vat: order.vat,
       status: order.status,
-      discountValue: order.discount
-        ? `${order.discount.percentage * 100}%`
-        : "0%",
+      discountValue: order.discount ? `${order.discount.percentage}%` : "0%",
       discountCode: order.discount?.code,
       createdAt: order.createdAt,
       products: order.OrderProduct.map((e: OrderProduct) => [
@@ -51,7 +49,7 @@ export const downloadAllOrders = async () => {
 
     csv += `${order.id},${order.user?.name || ""},${order.totalAmount},${
       order.profit
-    },${order.status},${order?.discount?.percentage! * 100 + "%"},${
+    },${order.status},${order?.discount?.percentage! + "%"},${
       order?.discount?.code || ""
     },${order.createdAt},${products}\n`;
   });

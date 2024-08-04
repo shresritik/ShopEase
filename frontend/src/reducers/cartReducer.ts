@@ -53,7 +53,6 @@ export const cartReducer: Reducer<CartState, CartAction> = (
       const { id } = action.payload;
       const newState = [...state];
       const existingProduct = newState.findIndex((p) => p.id == id);
-      console.log(existingProduct, newState);
       if (existingProduct > -1) newState.splice(existingProduct, 1);
       return newState;
     }

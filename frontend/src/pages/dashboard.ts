@@ -19,12 +19,14 @@ import { SidebarView } from "../components/admin-panel/SidebarView";
 //dashboard to display all the tabs for users,admin and superadmin
 export const render = async () => {
   const container = createElement("div", { className: "p-6 " });
-  const divElement = createElement("div", { className: "flex item-center" });
+  const divElement = createElement("div", {
+    className: "flex flex-col md:flex-row item-center",
+  });
   const leftElement = createElement("div", {
-    className: "flex flex-col item-center  fixed top-30",
+    className: "flex flex-col item-center  md:fixed top-30",
   });
   const rightElement = createElement("div", {
-    className: "p-6 flex flex-col w-full",
+    className: "py-6 md:p-6 flex flex-col w-full",
   });
   const renderSidebar = async () => {
     try {

@@ -30,8 +30,10 @@ export const render = async (productList: HTMLElement) => {
   };
 
   const filterContent = createElement("div", {
-    className: "flex flex-col justify-center items-center",
+    className:
+      "filter-section hidden md:flex flex-col justify-center items-center fixed md:static top-28 left-0 z-40 transition-all  delay-150 duration-300 ease-out",
   });
+
   filterContent.innerHTML = FilterView();
 
   const priceValue = filterContent.querySelector("#priceValue");

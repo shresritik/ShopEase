@@ -62,7 +62,7 @@ export const createProduct = async (
       ...body,
       pic: file?.filename,
     });
-    res.status(HttpStatusCode.OK).json(products);
+    res.status(HttpStatusCode.CREATED).json(products);
   } catch (error) {
     next(error);
   }

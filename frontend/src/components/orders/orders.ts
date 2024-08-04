@@ -71,7 +71,7 @@ const setupEventListeners = (container: HTMLElement, user: IUser) => {
 
 export const render = async () => {
   const container = createElement("div", {
-    className: "flex flex-col justify-center items-center",
+    className: "flex flex-col justify-center md:items-center",
   });
 
   const user = userProfileStore.getState() as IUser;

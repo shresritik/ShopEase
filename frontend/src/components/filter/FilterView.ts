@@ -1,6 +1,6 @@
 export const FilterView = () => {
   return `
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto p-4 ">
   <div class="flex flex-wrap -mx-2 flex-[0.3]">
     <!-- Filter Section -->
     <div class="w-full px-2">

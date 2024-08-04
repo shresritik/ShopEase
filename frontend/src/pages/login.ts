@@ -6,12 +6,12 @@ import { LoginView } from "../components/dashboard-view/LoginView.ts";
 //login page
 export const render = () => {
   const container = createElement("div", {
-    className: "flex justify-center items-center h-[90vh]",
+    className: "flex justify-center items-center h-[90vh] p-10",
   });
 
   const form = createElement("form", {
     className:
-      "bg-white p-6 rounded shadow-md w-full mt-8 mb-2 w-1/2 sm:w-1/4 ",
+      "bg-white p-6 rounded shadow-md w-full mt-8 mb-2 w-1/2 md:w-1/3 ",
   });
   form.innerHTML = LoginView();
   const email = form.querySelector("#email") as HTMLInputElement;

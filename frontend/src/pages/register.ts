@@ -7,12 +7,12 @@ import { IUser } from "../interface/user.ts";
 //signup page and update
 export const render = (forUsers = true, update = false) => {
   const container = createElement("div", {
-    className: "flex justify-center items-center ",
+    className: "flex justify-center items-center md:px-6 ",
   });
   const form = createElement("form", {
     className: `bg-white p-6 rounded shadow-md w-full ${
       forUsers ? "mt-8" : ""
-    }  mb-2 w-80 sm:w-1/3 `,
+    }  mb-2 w-80 md:w-1/3`,
   });
 
   let userRoleSelect: HTMLSelectElement;

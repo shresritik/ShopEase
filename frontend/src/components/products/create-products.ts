@@ -27,7 +27,7 @@ export const render = async (create: boolean = true) => {
     className: "flex flex-col justify-center items-center",
   });
   const form = createElement("form", {
-    className: "bg-white p-6 rounded shadow-md w-full  mb-2 w-1/2 sm:w-1/3 ",
+    className: "bg-white p-6 rounded shadow-md w-full  mb-2 w-1/2 md:w-[28rem]",
   });
   try {
     let selectedCategoryId: string;

@@ -14,7 +14,7 @@ export const CreateProductView = (create = false) => {
       <button
         id="checkName"
         class="mt-6 block w-full select-none rounded-lg bg-orange-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-        type="button"
+        
       >
         Check
       </button>
@@ -37,11 +37,11 @@ export const CreateProductView = (create = false) => {
       class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all before:content-none after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all after:content-none peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500"
     ></label>
   </div>
-  <div class="w-96 mt-3">
+  <div class="md:w-96 mt-3">
     <div class="relative w-full ">
       <textarea
         id="description"
-        class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+        class="peer w-full h-full min-h-[100px] resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent p-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
         placeholder=" "
       ></textarea>
       <label
@@ -51,7 +51,7 @@ export const CreateProductView = (create = false) => {
       </label>
     </div>
   </div>
-  <div class="py-2 bg-white rounded w-80">
+  <div class="py-2 bg-white rounded ">
     <label for="number-input" class="block text-gray-700 text-sm font-bold mb-2"
       >Cost Price</label
     >
@@ -61,10 +61,10 @@ export const CreateProductView = (create = false) => {
       name="number-input"
       min="0"
       step="1"
-      class="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      class="border border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
-  <div class="py-2 bg-white rounded w-80">
+  <div class="py-2 bg-white rounded ">
     <label for="number-input" class="block text-gray-700 text-sm font-bold mb-2"
       >Selling Price</label
     >
@@ -77,7 +77,7 @@ export const CreateProductView = (create = false) => {
       class="border border-gray-300 p-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
-  <div class="py-2 bg-white rounded w-80">
+  <div class="py-2 bg-white rounded ">
     <label for="number-input" class="block text-gray-700 text-sm font-bold mb-2"
       >Stock</label
     >
@@ -99,20 +99,20 @@ export const CreateProductView = (create = false) => {
   <div
     class="relative inline-flex items-center w-full gap-2 my-6 text-sm border rounded border-slate-200 text-slate-500"
   >
-    <input
-      id="file-upload"
-      name="file-upload"
-      type="file"
-      class="peer order-2 [&::file-selector-button]:hidden"
-    />
-    <label
-      for="file-upload"
-      class="inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-orange-800 hover:bg-orange-800 focus:bg-orange-800 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-orange-800"
-    >
-      Upload
-    </label>
+  <input
+    id="file-upload"
+    name="file-upload"
+    type="file"
+    class="peer  [&::file-selector-button]:hidden py-5 px-3  "
+  />
+  <label
+    for="file-upload"
+    class="inline-flex items-center  h-12 absolute right-0  gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded cursor-pointer whitespace-nowrap bg-orange-800 focus-visible:outline-none peer-disabled:cursor-not-allowed peer-disabled:border-gray-900 peer-disabled:bg-orange-800"
+  >
+    Upload
+  </label>
   </div>
-  <div class="select relative inline-block w-full px-10">
+  <div class="select relative inline-block w-full md:px-10">
     <label
       for="category-dropdown"
       class="block text-sm font-medium text-gray-700 mb-2"

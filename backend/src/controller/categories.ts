@@ -25,7 +25,7 @@ export const createCategories = async (
 ) => {
   try {
     const products = await createCategory(req.body);
-    res.status(HttpStatusCode.OK).json(products);
+    res.status(HttpStatusCode.CREATED).json(products);
   } catch (error) {
     next(error);
   }

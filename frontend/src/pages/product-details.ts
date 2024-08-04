@@ -40,7 +40,7 @@ export const render = async ({
     className: "w-3/4 mx-auto ",
   });
   const titleDiv = createElement("div", {
-    className: "w-3/4 mx-auto font-semibold text-lg",
+    className: "md:w-3/4 mx-auto font-semibold text-lg",
   });
   container.appendChild(similarProdDiv);
   if (details.totalReview) {

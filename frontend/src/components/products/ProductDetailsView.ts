@@ -9,7 +9,7 @@ export const ProductDetails = (
       <div class="w-3/4 mx-auto  py-8">
   <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row -mx-4">
-      <div class="px-4  md:flex-1">
+      <div class="px-4 md:w-1/2 ">
         <div class="rounded-lg bg-gray-300 dark:bg-gray-700 mb-4 max-w-[30rem] overflow-hidden  ">
           <img
             class="w-full h-full object-contain transition hover:scale-110  duration-300 ease-out"
@@ -17,7 +17,7 @@ export const ProductDetails = (
             alt="Product Image"
           />
         </div>
-        <div class="flex -mx-2 mb-4 justify-center w-[30rem] ">
+        <div class="flex -mx-2 mb-4 justify-center max-w-[30rem]  ">
           <div class="w-max px-2">
         
     <button
@@ -45,7 +45,7 @@ export const ProductDetails = (
         </div>
         </div>
       </div>
-      <div class="md:flex-1 px-4">
+      <div class=" px-4">
         <h2 class="text-2xl font-semibold text-orange-800 mb-2">${
           details.productName
         }</h2>
@@ -81,7 +81,7 @@ export const ProductDetails = (
             ? `  <div
           class="flex items-center w-full rounded-lg lg:overflow-visible gap-2 mt-3"
         >
-          <h3 >Rating: ${details.avgRating} </h3>
+          <h3 >Rating:  </h3>
            <div class="star inline-flex items-center mb-1">
          </div>
         </div>
