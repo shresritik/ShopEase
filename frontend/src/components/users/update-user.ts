@@ -73,10 +73,8 @@ export const render = async () => {
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error("Error rendering user update form:", error);
       toast(error.message, "danger");
     }
-    // Handle error appropriately, e.g., display an error message
   }
 
   container.appendChild(form);

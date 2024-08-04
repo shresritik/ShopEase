@@ -94,7 +94,6 @@ export const render = (forUsers = true, update = false) => {
         dispatch("/dashboard");
       }
     } catch (error) {
-      console.log(error);
       const errorElement = form.querySelector(".user-error") as HTMLElement;
       errorElement.textContent = `${error}`;
       errorElement.classList.remove("hidden");
@@ -104,7 +103,6 @@ export const render = (forUsers = true, update = false) => {
   inputs.forEach((input) => {
     input.addEventListener("input", () => {
       const errorElement = form.querySelector(".user-error") as HTMLElement;
-      console.log(document.querySelector(".user-error"));
       errorElement.classList.add("hidden");
       const successElement = form?.querySelector(".success") as HTMLElement;
       successElement?.classList.add("hidden");

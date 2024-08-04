@@ -117,7 +117,6 @@ export const updateProductFromPayment = async (
     const results = await Promise.all(updatePromises);
     return results;
   } catch (error) {
-    console.error("Error in updateProductFromPayment:", error);
     if (error instanceof BadRequest || error instanceof NotFound) {
       throw error;
     } else {

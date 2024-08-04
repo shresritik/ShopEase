@@ -123,7 +123,6 @@ export const render = async () => {
           element.addEventListener("click", handleSidebarClick)
         );
     } catch (error: unknown) {
-      console.error("Error fetching sidebar:", error);
       if (axios.isAxiosError(error)) alert(error.response?.data.error);
       removeToken("accessToken");
       userProfileStore.dispatch({ type: "RESET" });

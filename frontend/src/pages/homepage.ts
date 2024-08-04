@@ -92,7 +92,6 @@ export const render = async (): Promise<HTMLElement> => {
         }
       }
     } catch (error) {
-      console.error("Error in renderProducts:", error);
       const errorMessage = createElement("div", { className: "error" });
       errorMessage.textContent = "An error occurred while loading products.";
       container.appendChild(errorMessage);

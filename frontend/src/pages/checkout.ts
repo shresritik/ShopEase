@@ -59,12 +59,6 @@ export const render = () => {
           if (new Date() > new Date(res.validUntil))
             toast("Discount time is finished", "danger");
           else {
-            console.log(
-              amount,
-              res.percentage,
-              (amount * (100 - res.percentage)) / 100
-            );
-
             coupon = res.code;
             totalAmount.subtotal = (amount * (100 - res.percentage)) / 100;
             totalAmount.total = roundOff(totalAmount.subtotal * 1.13);

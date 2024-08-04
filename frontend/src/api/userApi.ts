@@ -28,7 +28,6 @@ export const updateUser = async (id: string, data: FormData) => {
     });
     if (res.status == 200) {
       toast("Update Successful", "");
-      console.log(res.data);
     }
     return res;
   } catch (error: unknown) {

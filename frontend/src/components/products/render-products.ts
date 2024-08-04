@@ -2,6 +2,8 @@ import { IProduct } from "../../interface/product";
 import { IQuery } from "../../interface/query";
 import { getProductsByCategories } from "../../api/productApi";
 import { getCategories } from "../../api/categoriesApi";
+import { toast } from "../../utils/toast";
+import { AxiosError } from "axios";
 // get categories then products
 export const getProductsArray = async (query: IQuery) => {
   const categorizedProducts: { [key: string]: IProduct[] } = {};
@@ -16,7 +18,8 @@ export const getProductsArray = async (query: IQuery) => {
       categorizedProducts[categoryName] = products;
     }
   } catch (error) {
-    console.error("An error occurred:", error);
+    if (error instanceof AxiosError)
+      toast(error.response?.data.error, "danger");
   }
 
   return categorizedProducts;

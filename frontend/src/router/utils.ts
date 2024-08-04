@@ -1,6 +1,7 @@
 import { routes } from "../constants";
 import { RouteDefinition } from "../interface/route";
 import { dispatch } from "../utils/dispatch";
+import { toast } from "../utils/toast";
 // match route based on comparision of length by splitting on "/" and find ":" which is the params
 export const matchRoute = (
   path: string,
@@ -29,7 +30,6 @@ export const navigate = async (path: string, app: HTMLElement) => {
   try {
     const match = matchRoute(path, routes);
     if (!match) {
-      console.error(`Route not found for path: ${path}`);
       dispatch("not-found");
       return;
     }
@@ -38,6 +38,6 @@ export const navigate = async (path: string, app: HTMLElement) => {
     app.innerHTML = "";
     app.appendChild(await view.render(params));
   } catch (error) {
-    console.error(`Failed to navigate to ${path}:`, error);
+    toast(`Failed to navigate to ${path}:`, "danger");
   }
 };

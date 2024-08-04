@@ -34,7 +34,6 @@ export const render = async () => {
       }
     } catch (error) {
       const errorElement = container.querySelector(".error") as HTMLElement;
-      console.log(errorElement);
       if (error instanceof AxiosError) {
         errorElement.textContent = `${error.response?.data.error}`;
         errorElement.classList.remove("hidden");

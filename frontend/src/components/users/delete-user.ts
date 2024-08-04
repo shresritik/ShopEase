@@ -114,7 +114,6 @@ export const render = async (prod = false, forUsers: boolean = true) => {
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error("Error rendering delete notification:", error);
       toast(error.message, "danger");
     }
   }

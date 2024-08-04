@@ -23,7 +23,6 @@ export const renderProducts = ({
       });
     }
   } else {
-    console.error("Invalid products data:", products);
     productList.innerHTML =
       "<div>An error occurred while loading products.</div>";
   }
