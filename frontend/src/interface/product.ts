@@ -30,6 +30,6 @@ export interface ProductsResponse {
 }
 
 export interface RenderProductsParams {
-  products: MetaCart[] | { message: string };
+  products: MetaCart | MetaCart[] | { message: string };
   productList: HTMLElement;
 }

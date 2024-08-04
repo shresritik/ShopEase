@@ -5,6 +5,7 @@ export interface IQuery {
   rating?: string;
   size?: string;
   search?: string;
+  page?: string;
 }
 export interface FilterState {
   categoryId: string;

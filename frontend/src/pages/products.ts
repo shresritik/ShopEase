@@ -29,6 +29,9 @@ export const render = async (params: {
     src: filterICon,
     className: "w-full",
   });
+  const pageButtons = createElement("div", {
+    className: "flex justify-center gap-2",
+  });
   const filterDiv = createElement("div", {
     className:
       "  fixed top-[6rem] block md:hidden text-left filter-drop w-9 text-orange-800 text-lg cursor-pointer z-50 bg-white rounded-full border border-gray-300 shadow-md p-2",
@@ -36,23 +39,57 @@ export const render = async (params: {
   const loader = showLoader(container);
   setTimeout(async () => {
     try {
-      let products: MetaCart[];
+      let products: MetaCart | MetaCart[];
       if (pathname[pathname.length - 1] == "products") {
+        const queryParam = new URLSearchParams(window.location.search);
+        const pageValue = queryParam.get("page")!;
         const filterSection = await Filter.render(productList);
-        products = (await getAllProducts()) as MetaCart[];
+        const query = {
+          size: "4",
+          page: pageValue,
+        };
+        products = (await getAllProducts(query)) as MetaCart;
+
         divSection.appendChild(filterSection);
         filterTitle.addEventListener("click", () => {
           document.querySelector(".filter-section")?.classList.toggle("hidden");
         });
-
+        const pageLength = products.meta.total / 4;
+        for (let i = 0; i < pageLength; i++) {
+          pageButtons.innerHTML += `  <button
+            data-add="${i + 1}"
+            class="add-more px-8 bg-orange-800 text-white py-2 mt-2 rounded-lg hover:shadow-lg hover:shadow-gray-900/15 transition duration-300"
+            >
+        ${i + 1}
+            </button>`;
+        }
         divSection.appendChild(productList);
         filterDiv.appendChild(filterTitle);
         container.appendChild(filterDiv);
         container.appendChild(divSection);
+        container.appendChild(pageButtons);
+        document.querySelectorAll<HTMLDivElement>(".add-more").forEach((el) => {
+          el.addEventListener("click", async function (e) {
+            window.history.pushState(null, "", "?page=" + this.dataset.add);
+            const queryParam = new URLSearchParams(window.location.search);
+            const pageValue = queryParam.get("page")!;
+            e.preventDefault();
+            if (pageValue) {
+              const query = {
+                size: "4",
+                page: pageValue,
+              };
+              const products = await getAllProducts(query);
+              renderProducts({ products, productList });
+            }
+          });
+        });
 
         renderProducts({ products, productList });
       } else {
-        products = await getProductsByCategories(params.category);
+        products = (await getProductsByCategories(
+          params.category
+        )) as MetaCart[];
         categoryTitle.textContent += `
        ${products[0].category.categoryName}`;
         page.appendChild(categoryTitle);

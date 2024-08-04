@@ -19,7 +19,7 @@ export const render = async ({
   category: string;
 }) => {
   const container = createElement("div", {
-    className: "flex flex-col justify-center  gap-2 bg-gray-100 mx-auto",
+    className: "flex flex-col justify-center  gap-2 bg-gray-200 mx-auto",
   });
   const loader = showLoader(container);
   setTimeout(async () => {

@@ -114,6 +114,8 @@ export async function getAllProducts(query?: IQuery) {
     if (query && query!.name) queryValue.append("search", query!.name);
     if (query && query!.rating) queryValue.append("rating", query!.rating);
     if (query && query!.price) queryValue.append("price", query!.price);
+    if (query && query!.size) queryValue.append("size", query!.size);
+    if (query && query!.page) queryValue.append("page", query!.page);
     const res = await axios.get(BASE_URL + "/api/products" + `?${queryValue}`);
     return res.data;
   } catch (error: unknown) {

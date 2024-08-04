@@ -76,6 +76,8 @@ export const render = async (productList: HTMLElement) => {
       category: filterState.categoryId,
       price: filterState.price,
       rating: filterState.rating,
+      size: "4",
+      page: "1",
     };
     const products = await getAllProducts(query);
     renderProducts({ products, productList });
@@ -84,8 +86,10 @@ export const render = async (productList: HTMLElement) => {
   filterBtn?.addEventListener("click", (e: Event) => {
     e.preventDefault();
     applyFilters();
+    document.querySelectorAll(".add-more").forEach((el) => {
+      el.classList.add("hidden");
+    });
   });
-
   await applyFilters();
 
   return filterContent;

@@ -111,6 +111,7 @@ export const FilterView = () => {
         >
           Apply Filters
         </button>
+
       </form>
     </div>
   </div>
