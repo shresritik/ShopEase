@@ -4,6 +4,7 @@ import { MetaCart } from "../interface/product";
 import * as Filter from "../components/filter/filter";
 import { renderProducts } from "../components/products/products-page";
 import filterICon from "../assets/svg/filter.svg";
+import { removeLoader, showLoader } from "../utils/loader";
 // get all products page, initially get all products and then change on basis of filter
 export const render = async (params: {
   category: string;
@@ -32,38 +33,42 @@ export const render = async (params: {
     className:
       "  fixed top-[6rem] block md:hidden text-left filter-drop w-9 text-orange-800 text-lg cursor-pointer z-50 bg-white rounded-full border border-gray-300 shadow-md p-2",
   });
-  try {
-    let products: MetaCart[];
-    if (pathname[pathname.length - 1] == "products") {
-      const filterSection = await Filter.render(productList);
-      products = (await getAllProducts()) as MetaCart[];
-      divSection.appendChild(filterSection);
-      filterTitle.addEventListener("click", (e) => {
-        document.querySelector(".filter-section")?.classList.toggle("hidden");
-      });
+  const loader = showLoader(container);
+  setTimeout(async () => {
+    try {
+      let products: MetaCart[];
+      if (pathname[pathname.length - 1] == "products") {
+        const filterSection = await Filter.render(productList);
+        products = (await getAllProducts()) as MetaCart[];
+        divSection.appendChild(filterSection);
+        filterTitle.addEventListener("click", () => {
+          document.querySelector(".filter-section")?.classList.toggle("hidden");
+        });
 
-      divSection.appendChild(productList);
-      filterDiv.appendChild(filterTitle);
-      container.appendChild(filterDiv);
-      container.appendChild(divSection);
+        divSection.appendChild(productList);
+        filterDiv.appendChild(filterTitle);
+        container.appendChild(filterDiv);
+        container.appendChild(divSection);
 
-      renderProducts({ products, productList });
-    } else {
-      products = await getProductsByCategories(params.category);
-      categoryTitle.textContent += `
+        renderProducts({ products, productList });
+      } else {
+        products = await getProductsByCategories(params.category);
+        categoryTitle.textContent += `
        ${products[0].category.categoryName}`;
-      page.appendChild(categoryTitle);
-      divSection.appendChild(productList);
-      container.appendChild(page);
-      container.appendChild(divSection);
-      renderProducts({ products, productList });
+        page.appendChild(categoryTitle);
+        divSection.appendChild(productList);
+        container.appendChild(page);
+        container.appendChild(divSection);
+        renderProducts({ products, productList });
+      }
+    } catch (error) {
+      console.error("Error in renderProducts:", error);
+      const errorMessage = createElement("div", { className: "error" });
+      errorMessage.textContent = "An error occurred while loading products.";
+      container.appendChild(errorMessage);
+    } finally {
+      removeLoader(container, loader);
     }
-  } catch (error) {
-    console.error("Error in renderProducts:", error);
-    const errorMessage = createElement("div", { className: "error" });
-    errorMessage.textContent = "An error occurred while loading products.";
-    container.appendChild(errorMessage);
-  }
-
+  }, 0);
   return container;
 };
