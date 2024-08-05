@@ -18,7 +18,7 @@ export const render = async () => {
   const reviewText = container.querySelector(
     "#review-area"
   ) as HTMLInputElement;
-  // star login
+  // star logic
   const reviewBtn = container.querySelector("#review-btn");
   for (let i = 0; i < 5; i++) {
     let starImg = createElement("img", {
@@ -36,6 +36,7 @@ export const render = async () => {
   function onStarHover(i: number) {
     fill(i);
   }
+  //fill the star
   function fill(ratingVal: number) {
     for (let i = 0; i < 5; i++) {
       if (i <= ratingVal) {

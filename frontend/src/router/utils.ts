@@ -15,6 +15,7 @@ export const matchRoute = (
     let match = true;
     for (let i = 0; i < routeParts.length; i++) {
       if (routeParts[i].startsWith(":")) {
+        //get the :categories and :id and store them
         params[routeParts[i].slice(1)] = pathParts[i];
       } else if (routeParts[i] !== pathParts[i]) {
         match = false;

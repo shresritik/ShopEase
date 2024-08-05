@@ -129,16 +129,7 @@ export const render = async () => {
       dispatch("/login");
     }
   };
-
-  leftElement.querySelectorAll("nav > div > button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const content = button.nextElementSibling;
-      content!.classList.toggle("hidden");
-      button.querySelector("svg")!.classList.toggle("rotate-180");
-    });
-  });
   renderSidebar();
-
   divElement.appendChild(leftElement);
   divElement.appendChild(rightElement);
   container.appendChild(divElement);

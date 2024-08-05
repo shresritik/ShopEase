@@ -26,6 +26,7 @@ export const cartReducer: Reducer<CartState, CartAction> = (
       if (!!cartStore.getState()) {
         newState.push(...cartStore.getState());
       }
+      //increase the quantity of the stored product
       const combinedState = newState.reduce<CartState>((acc, product) => {
         const existingProduct = acc.find((p) => p.id == product.id);
         if (existingProduct) {

@@ -76,8 +76,7 @@ export const render = async (productList: HTMLElement) => {
       category: filterState.categoryId,
       price: filterState.price,
       rating: filterState.rating,
-      size: "4",
-      page: "1",
+      size: "6",
     };
     const products = await getAllProducts(query);
     renderProducts({ products, productList });

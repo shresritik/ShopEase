@@ -14,7 +14,6 @@ export const permissions = {
     PERMISSION.USER_POST,
     PERMISSION.USER_DELETE,
     PERMISSION.USER_PUT,
-
     PERMISSION.REPORT_GET,
   ],
   [ROLE.ADMIN]: [
