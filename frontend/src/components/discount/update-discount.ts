@@ -69,7 +69,7 @@ export const render = async () => {
 
     const couponData: IDiscount = {
       code: couponName.value,
-      percentage: +worth.value,
+      percentage: +worth.value / 100,
       validFrom: new Date(fromDate.value).toISOString(),
       validUntil: new Date(toDate.value).toISOString(),
     };

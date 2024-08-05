@@ -40,7 +40,6 @@ export const render = async (create: boolean = true) => {
     const costField = form.querySelector("#cost-input") as HTMLInputElement;
     const sellField = form.querySelector("#sales-input") as HTMLInputElement;
     const stockField = form.querySelector("#stock") as HTMLInputElement;
-    const inputs = [productName, description, costField, sellField, stockField];
     if (!create) {
       form.querySelector(".form")?.classList.add("hidden");
       const product = form.querySelector("#product") as HTMLInputElement;
@@ -97,11 +96,6 @@ export const render = async (create: boolean = true) => {
         } else {
           await updateProduct(state.id!, formData);
         }
-        productName.value = "";
-        description.value = "";
-        costField.value = "";
-        sellField.value = "";
-        stockField.value = "";
         const successElement = form?.querySelector(".success") as HTMLElement;
         successElement?.classList.remove("hidden");
       } catch (error) {
@@ -112,14 +106,6 @@ export const render = async (create: boolean = true) => {
           toast(error.message, "danger");
         }
       }
-    });
-    inputs.forEach((input) => {
-      input.addEventListener("input", () => {
-        const errorElement = form.querySelector(".error") as HTMLElement;
-        errorElement.classList.add("hidden");
-        const successElement = form.querySelector(".success") as HTMLElement;
-        successElement.classList.add("hidden");
-      });
     });
   } catch (error) {
     if (error instanceof Error) {

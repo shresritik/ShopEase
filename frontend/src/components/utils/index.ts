@@ -39,7 +39,7 @@ export const downloadAllOrders = async () => {
   }
   let amount = 0;
   let csv =
-    "Order ID,User,Total Amount,Profit,Status,Discount,Coupon,Created At,Products\n";
+    "Order ID,User,Products,Payment,Discount,Coupon,Created At,Total Amount,Profit,,\n";
   // converting the orders to csv format
   orders.forEach((order: Order) => {
     const products = order.OrderProduct.map(
@@ -47,13 +47,13 @@ export const downloadAllOrders = async () => {
         `${p.product.productName}(${p.quantity})`
     ).join("; ");
     amount += +order.profit;
-    csv += `${order.id},${order.user?.name || ""},${order.totalAmount},${
+    csv += `${order.id},${order.user?.name || ""},${products},${order.status},${
+      order?.discount?.percentage! + "%"
+    },${order?.discount?.code || ""},${order.createdAt},${order.totalAmount},${
       order.profit
-    },${order.status},${order?.discount?.percentage! + "%"},${
-      order?.discount?.code || ""
-    },${order.createdAt},${products}\n`;
+    }\n`;
   });
-  csv += `,,Total Profit,` + amount;
+  csv += `,,,,,,,Total Profit,` + amount;
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const link = createElement("a") as HTMLAnchorElement;
   if (link.download !== undefined) {
