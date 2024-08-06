@@ -111,7 +111,7 @@ export const RegisterView = (admin = false, update = false) => {
   </label>
 </div>
 ${
-  user.role?.roleRank != 3 && admin
+  user.role?.roleRank != 3 && admin && !update
     ? `<div class="relative inline-block ">
   <label for="user-role" class="block text-sm font-medium text-gray-700 mb-2"
     >Select Role</label
