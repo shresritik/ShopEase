@@ -176,6 +176,7 @@ export const updateProduct = async (
     },
     data: {
       productName: product.productName,
+      pic: product.pic,
       category: {
         connect: {
           id: +product.categoryId,

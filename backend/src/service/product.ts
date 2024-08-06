@@ -48,9 +48,9 @@ export const updateAProduct = async (
   if (!prod) throw new NotFound("No product found with the id " + id);
   const products = await ProductModel.updateProduct(id, userId, {
     ...product,
-    pic: product.pic
-      ? `http://localhost:${config.port}/static/products/${product.pic}`
-      : `http://localhost:${config.port}/static/products/default-product-image.png`,
+    pic:
+      product.pic &&
+      `http://localhost:${config.port}/static/products/${product.pic}`,
   });
   return products;
 };

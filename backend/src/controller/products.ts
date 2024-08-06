@@ -73,9 +73,12 @@ export const updateProduct = async (
   next: NextFunction
 ) => {
   try {
-    const { body, user } = req;
+    const { body, user, file } = req;
     const { id } = req.params;
-    const products = await updateAProduct(+id, user?.id!, body);
+    const products = await updateAProduct(+id, user?.id!, {
+      ...body,
+      pic: file?.filename,
+    });
     res.status(HttpStatusCode.OK).json(products);
   } catch (error) {
     next(error);
