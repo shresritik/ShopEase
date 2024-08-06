@@ -18,11 +18,11 @@ export const createReview = async (review: IReviews, prodId: number) => {
   const aggregations = await prisma.review.aggregate({
     where: { productId: prodId },
     _avg: { rating: true },
-    _count: { rating: true },
+    _count: { rating: true, review: true },
   });
 
   const newAvgRating = aggregations._avg.rating || 0;
-  const totalReviews = aggregations._count.rating || 0;
+  const totalReviews = aggregations._count.review || 0;
 
   const clampedAvgRating = Math.min(5, Math.round(newAvgRating * 100) / 100);
 

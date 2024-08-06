@@ -88,7 +88,11 @@ router.post(
 router.get(
   "/",
   authenticate(),
-  authorize([PERMISSION.SUPER_ADMIN_GET, PERMISSION.ADMIN_GET]),
+  authorize([
+    PERMISSION.SUPER_ADMIN_GET,
+    PERMISSION.ADMIN_GET,
+    PERMISSION.USER_GET,
+  ]),
   getAllOrders
 );
 router.post("/success", handleEsewaSuccess, updateProductAfterPayment);
