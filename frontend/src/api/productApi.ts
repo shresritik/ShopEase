@@ -25,6 +25,7 @@ export async function createProduct(data: FormData) {
 }
 export async function updateProduct(id: number, data: FormData) {
   const token = getToken("accessToken");
+
   try {
     return await axios.put(BASE_URL + "/api/products/" + id, data, {
       headers: {
